@@ -15,6 +15,13 @@ The program requires Root! Before using the program, make system backup!
 
 <b>x86 devices are not supported!</b>
 
+## Requirements
+- Android 4.0.3+ , ARM
+- Root
+- Init.d support
+- SELinux: Permissive
+
+
 ## Features:
 ✪ optimized for all devices based on Android 4.0 and above<br>
 ✪ has a lot of settings and functions (see below)<br>
@@ -22,12 +29,6 @@ The program requires Root! Before using the program, make system backup!
 ✪ no ads<br>
 ✪ frequent updates with new features and fixes<br>
 ✪ very easy, fast, does not load the system, does not work in the background<br>
-
-## Requirements
-- Android 4.0.3+
-- Root
-- Init.d support
-- SELinux: Permissive
 
 ## Functions:
 ★ "Speeding up your device in one click"<br>
