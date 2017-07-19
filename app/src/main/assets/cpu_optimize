@@ -1,0 +1,95 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+$busybox echo "20000 1400000:40000 1700000:20000" > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+$busybox echo "0" > /sys/devices/system/cpu/cpufreq/interactive/boost
+$busybox echo "80000" > /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+$busybox echo "0" > /sys/devices/system/cpu/cpufreq/interactive/enforced_mode
+$busybox echo "95" > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+$busybox echo "833200" > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+$busybox echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+$busybox echo "10000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+$busybox echo "0" > /sys/devices/system/cpu/cpufreq/interactive/mode
+$busybox echo "340" > /sys/devices/system/cpu/cpufreq/interactive/multi_enter_load
+$busybox echo "99000" > /sys/devices/system/cpu/cpufreq/interactive/multi_enter_time
+$busybox echo "90" > /sys/devices/system/cpu/cpufreq/interactive/multi_exit_load
+$busybox echo "299000" > /sys/devices/system/cpu/cpufreq/interactive/multi_exit_time
+$busybox echo "0" > /sys/devices/system/cpu/cpufreq/interactive/param_index
+$busybox echo "100000" > /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+$busybox echo "90" > /sys/devices/system/cpu/cpufreq/interactive/single_enter_load
+$busybox echo "199000" > /sys/devices/system/cpu/cpufreq/interactive/single_enter_time
+$busybox echo "60" > /sys/devices/system/cpu/cpufreq/interactive/single_exit_load
+$busybox echo "99000" > /sys/devices/system/cpu/cpufreq/interactive/single_exit_time
+$busybox echo "1036800" > /sys/devices/system/cpu/cpufreq/interactive/sync_freq
+$busybox echo "85 1200000:90 1500000:70" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
+$busybox echo "50000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+$busybox echo "20000" > /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+$busybox echo "1190400" > /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
+$busybox echo "50" > /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
+
+
+if [ -e /dev/cpuctl/cpu.shares ]; then
+$busybox echo "1024" > /dev/cpuctl/cpu.shares
+fi
+if [ -e /dev/cpuctl/cpu.rt_runtime_us ]; then
+$busybox echo "800000" > /dev/cpuctl/cpu.rt_runtime_us
+fi
+if [ -e /dev/cpuctl/cpu.rt_period_us ]; then
+$busybox echo "1000000" > /dev/cpuctl/cpu.rt_period_us
+fi
+
+if [ -e /dev/cpuctl/apps/cpu.shares ]; then
+$busybox echo "1024" > /dev/cpuctl/apps/cpu.shares
+fi
+if [ -e /dev/cpuctl/apps/cpu.rt_runtime_us ]; then
+$busybox echo "800000" > /dev/cpuctl/apps/cpu.rt_runtime_us
+fi
+if [ -e /dev/cpuctl/apps/cpu.rt_period_us ]; then
+$busybox echo "1000000" > /dev/cpuctl/apps/cpu.rt_period_us
+fi
+
+if [ -e /dev/cpuctl/bg_non_interactive/cpu.shares ]; then
+$busybox echo "96" > /dev/cpuctl/bg_non_interactive/cpu.shares
+fi
+if [ -e /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us ]; then
+$busybox echo "700000" > /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us
+fi
+if [ -e /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us ]; then
+$busybox echo "1000000" > /dev/cpuctl/bg_non_interactive/cpu.rt_period_us
+fi
+
+if [ -e /dev/cpuctl/apps/bg_non_interactive/cpu.shares ]; then
+$busybox echo "96" > /dev/cpuctl/apps/bg_non_interactive/cpu.shares
+fi
+if [ -e /dev/cpuctl/apps/bg_non_interactive/cpu.rt_runtime_us ]; then
+$busybox echo "700000" > /dev/cpuctl/apps/bg_non_interactive/cpu.rt_runtime_us
+fi
+if [ -e /dev/cpuctl/apps/bg_non_interactive/cpu.rt_runtime_us ]; then
+$busybox echo "1000000" > /dev/cpuctl/apps/bg_non_interactive/cpu.rt_period_us
+fi
+
+pid=$($busybox pgrep surfaceflinger 2>/dev/null)
+$busybox $pid >> /dev/cpuctl/cgroup.procs 2>/dev/null
+for i in `ls /proc/$pid/task 2>/dev/null`; do
+  $busybox $i >> /dev/cpuctl/tasks 2>/dev/null
+done
+
+pid=$($busybox pgrep binder 2>/dev/null)
+$busybox echo $pid >> /dev/cpuctl/cgroup.procs 2>/dev/null
+for i in `ls /proc/$pid/task 2>/dev/null`; do
+  $busybox echo $i >> /dev/cpuctl/tasks 2>/dev/null
+done
+
+$busybox echo "CPU is optimized"

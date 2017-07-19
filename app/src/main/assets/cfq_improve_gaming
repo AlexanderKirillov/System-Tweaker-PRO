@@ -1,0 +1,22 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+path=`$busybox ls -d /sys/block/* 2>/dev/null`;
+for S in $path;
+do
+	if [ -e $S/queue/iosched/low_latency ]; then
+		$busybox echo "0" > $S/queue/iosched/low_latency
+	fi
+done

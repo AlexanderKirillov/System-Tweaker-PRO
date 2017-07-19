@@ -1,0 +1,101 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+
+mem=`$busybox awk '/MemTotal/{print $2}' /proc/meminfo`
+MFK=$(($mem/1024*4))
+
+$busybox chmod 644 /proc/sys/vm/*
+$busybox sysctl -w vm.block_dump=0
+$busybox sysctl -w vm.laptop_mode=0
+$busybox sysctl -w vm.min_free_kbytes=$MFK
+$busybox sysctl -w vm.min_free_order_shift=4
+# 75% of physical memory for allocations
+$busybox sysctl -w vm.overcommit_memory=1
+$busybox sysctl -w vm.overcommit_ratio=75
+# 4 swap pages per single attempt
+$busybox sysctl -w vm.page-cluster=2
+
+if [ "$mem" -lt 524288 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=10
+    $busybox sysctl -w vm.dirty_ratio=5
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+  $busybox echo "VM profile for 512mb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 
+elif [ "$mem" -lt 786432 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=10
+    $busybox sysctl -w vm.dirty_ratio=5
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+  $busybox echo "VM profile for 768mb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 
+elif [ "$mem" -lt 1048576 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+	$busybox echo "VM profile for 1gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 
+elif [ "$mem" -lt 1572864 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 1.5gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 
+elif [ "$mem" -lt 2097152 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 2gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 	
+elif [ "$mem" -lt 3145728 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 3gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" 	
+else
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+ 	$busybox echo "VM profile for 3gb+ applied at $( date +"%m-%d-%Y %H:%M:%S" )" 
+fi

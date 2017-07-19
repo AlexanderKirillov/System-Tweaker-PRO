@@ -1,0 +1,4 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+rngd -t 2 -T 1 -s 256 --fill-watermark=80%
+

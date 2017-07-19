@@ -1,0 +1,8 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+mount -o rw,remount /system
+
+echo "Switching entropy generator off..."
+sleep 1
+pkill rngd
+echo "Done!"

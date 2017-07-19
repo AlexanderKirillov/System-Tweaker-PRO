@@ -1,0 +1,44 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o remount,rw /
+mount -o remount,rw rootfs
+mount -o remount,rw /system
+$busybox mount -o remount,rw /
+$busybox mount -o remount,rw rootfs
+$busybox mount -o remount,rw /system
+
+$busybox mount -o remount,noatime,nobh,nodiratime,nodelalloc,commit=60,noauto_da_alloc,barrier=0 /cache /cache
+$busybox mount -o remount,noatime,nodiratime,delalloc,commit=60,noauto_da_alloc,barrier=0 /data /data
+$busybox mount -o remount,noatime,nodiratime /dev
+$busybox mount -o remount,noatime,nodiratime /proc
+$busybox mount -o remount,noatime,nodiratime /sys
+$busybox mount -o remount,noatime,nodiratime /system;
+
+settings put global device_idle_constants light_after_inactive_to=35000;
+settings put global device_idle_constants light_pre_idle_to=35000;
+settings put global device_idle_constants light_idle_to=35000;
+settings put global device_idle_constants light_idle_factor=1.7;
+settings put global device_idle_constants light_max_idle_to=50000;
+settings put global device_idle_constants light_idle_maintenance_min_budget=28000;
+settings put global device_idle_constants light_idle_maintenance_max_budget=58000;
+settings put global device_idle_constants min_light_maintenance_time=6000;
+settings put global device_idle_constants min_deep_maintenance_time=11000;
+settings put global device_idle_constants inactive_to=60000;
+settings put global device_idle_constants sensing_to=0;
+settings put global device_idle_constants locating_to=0;
+settings put global device_idle_constants location_accuracy=10.0;
+settings put global device_idle_constants motion_inactive_to=5000;
+settings put global device_idle_constants idle_after_inactive_to=0;
+settings put global device_idle_constants idle_pending_to=35000;
+settings put global device_idle_constants max_idle_pending_to=60000;
+settings put global device_idle_constants idle_pending_factor=2.1;
+settings put global device_idle_constants idle_to=3680000;
+settings put global device_idle_constants max_idle_to=20000000;
+settings put global device_idle_constants idle_factor=2.0;
+settings put global device_idle_constants min_time_to_alarm=3500000;
+settings put global device_idle_constants max_temp_app_whitelist_duration=30000;
+settings put global device_idle_constants mms_temp_app_whitelist_duration=30000;
+settings put global device_idle_constants sms_temp_app_whitelist_duration=30000;
+settings put global device_idle_constants notification_whitelist_duration=30000;

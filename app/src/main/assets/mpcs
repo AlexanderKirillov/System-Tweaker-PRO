@@ -1,0 +1,23 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
+$busybox echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
+fi
+
+if [ "`$busybox grep 2 /sys/devices/system/cpu/sched_mc_power_savings`" ]; then
+$busybox echo "Feature enabled"; else
+$busybox echo "This feature is not avaible for you, because your device is not multi core or your CPU doesn't support it"
+fi

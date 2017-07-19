@@ -1,0 +1,44 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+if [ -e /sys/devices/system/cpu/cpufreq/ondemand/up_threshold ]; then
+$busybox echo "82" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate ]; then
+$busybox echo "80000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor ]; then
+$busybox echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/ondemand/down_differential ]; then
+$busybox echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+fi
+
+
+if [ -e /sys/devices/system/cpu/cpufreq/hotplug/up_threshold ]; then
+$busybox echo "82" > /sys/devices/system/cpu/cpufreq/hotplug/up_threshold
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/hotplug/sampling_rate ]; then
+$busybox echo "80000" > /sys/devices/system/cpu/cpufreq/hotplug/sampling_rate
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/hotplug/sampling_down_factor ]; then
+$busybox echo "1" > /sys/devices/system/cpu/cpufreq/hotplug/sampling_down_factor
+fi
+if [ -e /sys/devices/system/cpu/cpufreq/hotplug/down_differential ]; then
+$busybox echo "10" > /sys/devices/system/cpu/cpufreq/hotplug/down_differential
+fi
+
+
+$busybox echo "ONDEMAND/HOTPLUG tweaked!"

@@ -1,0 +1,36 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o remount,rw / 2>/dev/null
+mount -o remount,rw / / 2>/dev/null
+mount -o remount,rw rootfs 2>/dev/null
+mount -o remount,rw /system 2>/dev/null
+mount -o remount,rw /system /system 2>/dev/null
+$busybox mount -o remount,rw / 2>/dev/null
+$busybox mount -o remount,rw / / 2>/dev/null
+$busybox mount -o remount,rw rootfs 2>/dev/null
+$busybox mount -o remount,rw /system 2>/dev/null
+$busybox mount -o remount,rw /system /system 2>/dev/null
+
+
+$busybox echo "Activating Kernel samepage merging"
+
+# Kernel samepage merging
+$busybox chmod 644 /sys/kernel/mm/ksm/*
+$busybox echo "1" > /sys/kernel/mm/ksm/run
+$busybox echo "128" > /sys/kernel/mm/ksm/pages_to_scan
+$busybox echo "1000" > /sys/kernel/mm/ksm/sleep_millisecs
+
+$busybox echo "Kernel samepage merging is activated"
+
+mount -o remount,ro / 2>/dev/null
+mount -o remount,ro / / 2>/dev/null
+mount -o remount,ro rootfs 2>/dev/null
+mount -o remount,ro /system 2>/dev/null
+mount -o remount,ro /system /system 2>/dev/null
+$busybox mount -o remount,ro / 2>/dev/null
+$busybox mount -o remount,ro / / 2>/dev/null
+$busybox mount -o remount,ro rootfs 2>/dev/null
+$busybox mount -o remount,ro /system 2>/dev/null
+$busybox mount -o remount,ro /system /system 2>/dev/null

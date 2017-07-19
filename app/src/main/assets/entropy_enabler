@@ -1,0 +1,28 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+mount -o rw,remount /system
+
+    echo "Switching entropy generator on..."
+	if pgrep qrngd > /dev/null; then
+	  sleep 1
+      echo "qrngd already running! Seeder will not be started!"
+	  echo ""
+	  echo "Press enter to continue..."
+	  read enterKey
+	  seeder
+	else
+	  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
+	    sleep 1
+        echo "qrngd found in /system!"
+	 else
+	    rngd -t 2 -T 1 -s 256 --fill-watermark=80%
+        sleep 2
+        echo -8 > /proc/$(pgrep rngd)/oom_adj
+        renice 5 `pidof rngd`
+        echo "Done!"
+	    echo "Press enter to continue..."
+	    read enterKey
+	    seeder
+	  fi
+	fi
+   fi

@@ -1,0 +1,31 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+L=256
+
+MMC=`$busybox ls -d /sys/block/mmc* 2>/dev/null`;
+for S in $MMC;
+do
+	if [ -e $S/queue/read_ahead_kb ];
+	then
+		$busybox echo "$L" >  $S/queue/read_ahead_kb;
+	fi;
+	if [ -e $S/bdi/read_ahead_kb ];
+        then
+              $busybox echo "$L" >  $S/bdi/read_ahead_kb;
+        fi;
+done
+
+$busybox echo "SD speed tweak added"

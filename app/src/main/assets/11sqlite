@@ -1,0 +1,43 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+echo "";
+echo "*********************************************";
+echo "Optimizing and defragging your database files (*.db)";
+echo "*********************************************";
+echo "";
+
+for i in \
+`$busybox find /data -iname "*.db"`; 
+do \
+	/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'VACUUM;'; 
+	/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'REINDEX;'; 
+done;
+
+if [ -d "/dbdata" ]; then
+	for i in \
+	`$busybox find /dbdata -iname "*.db"`; 
+	do \
+		/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'VACUUM;'; 
+		/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'REINDEX;'; 
+	done;
+fi;
+
+
+if [ -d "/datadata" ]; then
+	for i in \
+	`$busybox find /datadata -iname "*.db"`; 
+	do \
+		/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'VACUUM;'; 
+		/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'REINDEX;'; 
+	done;
+fi;
+
+
+for i in \
+`$busybox find /sdcard -iname "*.db"`; 
+do \
+	/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'VACUUM;'; 
+	/data/data/com.nowenui.systemtweaker/files/sqlite3 $i 'REINDEX;'; 
+done;

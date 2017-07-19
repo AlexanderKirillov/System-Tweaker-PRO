@@ -1,0 +1,42 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+mount -o remount,rw / 2>/dev/null
+mount -o remount,rw / / 2>/dev/null
+mount -o remount,rw rootfs 2>/dev/null
+mount -o remount,rw /system 2>/dev/null
+mount -o remount,rw /system /system 2>/dev/null
+$busybox mount -o remount,rw / 2>/dev/null
+$busybox mount -o remount,rw / / 2>/dev/null
+$busybox mount -o remount,rw rootfs 2>/dev/null
+$busybox mount -o remount,rw /system 2>/dev/null
+$busybox mount -o remount,rw /system /system 2>/dev/null
+
+$busybox echo "Activating fast charging mode..."
+
+#Force fast-charge
+if [ -f /sys/kernel/fast_charge/force_fast_charge ]; then
+       $busybox echo "1" > /sys/kernel/fast_charge/force_fast_charge
+fi
+if grep 1 /sys/kernel/fast_charge/force_fast_charge; then
+$busybox echo "Force fast charge enabled enabled"
+else
+$busybox echo "Force fast charge doesn't exist on your kernel"
+fi
+
+if [ -e /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override ]; then
+ $busybox echo "1500" > /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override;
+ $busybox echo "1500" > /sys/devices/platform/i2c-gpio.15/i2c-15/15-0034/power_supply/sec-charger/charge_current_override;
+fi;
+
+mount -o remount,ro / 2>/dev/null
+mount -o remount,ro / / 2>/dev/null
+mount -o remount,ro rootfs 2>/dev/null
+mount -o remount,ro /system 2>/dev/null
+mount -o remount,ro /system /system 2>/dev/null
+$busybox mount -o remount,ro / 2>/dev/null
+$busybox mount -o remount,ro / / 2>/dev/null
+$busybox mount -o remount,ro rootfs 2>/dev/null
+$busybox mount -o remount,ro /system 2>/dev/null
+$busybox mount -o remount,ro /system /system 2>/dev/null

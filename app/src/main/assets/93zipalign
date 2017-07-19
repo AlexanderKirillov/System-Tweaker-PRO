@@ -1,0 +1,49 @@
+#!/data/data/com.nowenui.systemtweaker/files/ash
+
+busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+
+#Zipalign /Data 
+
+ZIPALIGNDB=/data/zipalign.db
+
+if [ ! -f $ZIPALIGNDB ]; then
+	touch $ZIPALIGNDB
+fi
+
+$busybox echo "Starting Automatic ZipAlign $( date +"%m-%d-%Y %H:%M:%S" )" 
+
+for DIR in /data/app /system/app /system/priv-app
+do
+	cd $DIR;
+	for APK in *.apk */*.apk
+	do
+		if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ]; then
+			echo "Already checked: $DIR/$APK" 
+		else
+			ZIPCHECK=`/data/data/com.nowenui.systemtweaker/files/zipalign -c -v 4 $APK | grep FAILED | wc -l`
+			if [ $ZIPCHECK == "1" ]; then
+				echo "Now aligning: $DIR/$APK" 
+				/data/data/com.nowenui.systemtweaker/files/zipalign -f 4 $APK /data/local/$APK
+				rc = "$?"
+				if [ $rc -eq 0 ]; then
+					if [ -e "/data/local/$APK" ]; then
+						cp -f -p "/data/local/$APK" "$APK" 
+						rm -f "/data/local/$APK";
+						grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+					else
+						echo "ZipAligning $APK Failed (no output file)"  
+					fi
+				else
+					[ -f "/data/local/$APK" ] && rm -f "/data/local/$APK"
+					echo "ZipAligning $APK Failed (rc: $rc)"  
+				fi
+			else
+				echo "Already aligned: $DIR/$APK" ;
+				grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+			fi
+		fi
+	done
+done
+
+touch $ZIPALIGNDB
+$busybox echo "Automatic ZipAlign finished at $( date +"%m-%d-%Y %H:%M:%S" )" 
