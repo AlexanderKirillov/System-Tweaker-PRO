@@ -1,10 +1,8 @@
-# System Tweaker PRO (Paid software)
-
 ![alt text](http://savepic.ru/14997951.png)
 
 ## <i><b>Current version: 4.0.1</b></i>
 
-## Buy on Google Play: [Google Play](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)
+[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)
 
 ## Description
 Speeding up your device has never been so easy! With this program you can really speed up your device, increase powersaving and etc!
@@ -15,11 +13,17 @@ This is full version.
 1. Clone this repository
 2. Open Android Studio
 3. Open project from folder (1)
-4. Fix one 'mistake'
+4. Fix one 'mistake' in SplashActivity.java
 5. Rebuild project
 6. Done :D
 
-## Used libraries
+## How to request a feature
+Send to NowenUI@bk.ru:
+1. A detailed description of the feature
+2. All kind of information
+3. How to integrate new function
+
+## Credits (Used libraries)
 
 * Stericson: [RootTools](https://github.com/Stericson/RootTools)
 * Stericson: [RootShell](https://github.com/Stericson/RootShell)
@@ -38,8 +42,8 @@ This is full version.
 * ckurtm [FabButton](https://github.com/ckurtm/FabButton)
 * franmontiel [LocaleChanger](https://github.com/franmontiel/LocaleChanger)
 
-## Screenshots
-![alt text](http://s013.radikal.ru/i323/1707/94/06f95f42745d.png) ![alt text](http://s018.radikal.ru/i525/1707/98/3dcc78611095.png) ![alt text](http://s018.radikal.ru/i521/1707/2b/7faa8318bda0.png) ![alt text](http://s019.radikal.ru/i616/1707/48/d6493a5f6bd0.png) ![alt text](http://s019.radikal.ru/i625/1707/fa/0757a0dd0fd4.png) ![alt text](http://s019.radikal.ru/i605/1707/62/aa789c7df2d7.png) ![alt text](http://s019.radikal.ru/i635/1707/01/e617c073415a.png)
+## Screenshots (russian language)
+![](http://s013.radikal.ru/i323/1707/94/06f95f42745d.png) ![](http://s018.radikal.ru/i525/1707/98/3dcc78611095.png) ![](http://s018.radikal.ru/i521/1707/2b/7faa8318bda0.png) ![](http://s019.radikal.ru/i616/1707/48/d6493a5f6bd0.png) ![](http://s019.radikal.ru/i625/1707/fa/0757a0dd0fd4.png) ![](http://s019.radikal.ru/i605/1707/62/aa789c7df2d7.png) ![](http://s019.radikal.ru/i635/1707/01/e617c073415a.png)
 
 
 ## License
@@ -48,5 +52,5 @@ This is full version.
     
     System Tweaker PRO is paid software
     Please observe few rules:
-    1) You can use all tweaks and files in assets folder as you want
+    1) You CAN use all tweaks and files in assets folder as you want
     2) You CAN'T use code in java folder without my permission
