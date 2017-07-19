@@ -23,6 +23,12 @@ The program requires Root! Before using the program, make system backup!
 ✪ frequent updates with new features and fixes<br>
 ✪ very easy, fast, does not load the system, does not work in the background<br>
 
+## Requirements
+- Android 4.0.3+
+- Root
+- Init.d support
+- SELinux: Permissive
+
 ## Functions:
 ★ "Speeding up your device in one click"<br>
 ★ Battery Calibration<br>
