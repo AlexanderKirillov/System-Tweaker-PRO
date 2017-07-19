@@ -39,7 +39,7 @@ This is full version.
 * franmontiel [LocaleChanger](https://github.com/franmontiel/LocaleChanger)
 
 ## Screenshots
-![alt text](http://savepic.ru/14978480.png) ![alt text](http://savepic.ru/14967216.png) ![alt text](http://savepic.ru/14959024.png) ![alt text](http://savepic.ru/14950832.png) ![alt text](http://savepic.ru/14954928.png) ![alt text](http://savepic.ru/14949808.png) ![alt text](http://savepic.ru/15001011.png)
+![alt text](http://s013.radikal.ru/i323/1707/94/06f95f42745d.png) ![alt text](http://s018.radikal.ru/i525/1707/98/3dcc78611095.png) ![alt text](http://s018.radikal.ru/i521/1707/2b/7faa8318bda0.png) ![alt text](http://s019.radikal.ru/i616/1707/48/d6493a5f6bd0.png) ![alt text](http://s019.radikal.ru/i625/1707/fa/0757a0dd0fd4.png) ![alt text](http://s019.radikal.ru/i605/1707/62/aa789c7df2d7.png) ![alt text](http://s019.radikal.ru/i635/1707/01/e617c073415a.png)
 
 
 ## License
