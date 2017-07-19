@@ -3,6 +3,7 @@
 ## <i><b>Current version: 4.0.1</b></i>
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)
+[![4PDA](http://s.4pda.to/IhH7WppM5BiNVg742YhOtE9HnCGIOv6bNez0yNNTbkFooz2gO2waN6.png)](http://4pda.ru/forum/index.php?showtopic=768857&view=findpost&p=52780864)
 
 ## Description
 Speeding up your device has never been so easy! With this program you can really speed up your device, increase powersaving and etc!
@@ -15,10 +16,10 @@ The program requires Root! Before using the program, make system backup!
 ## Features:
 ✪ optimized for all devices based on Android 4.0 and above<br>
 ✪ has a lot of settings and functions (see below)<br>
-✪ has a nice Material Design style, beautiful animations
-✪ no ads
-✪ frequent updates with new features and fixes
-✪ very easy, fast, does not load the system, does not work in the background
+✪ has a nice Material Design style, beautiful animations<br>
+✪ no ads<br>
+✪ frequent updates with new features and fixes<br>
+✪ very easy, fast, does not load the system, does not work in the background<br>
 
 ## Functions:
 ★ "Speeding up your device in one click"<br>
@@ -29,85 +30,19 @@ The program requires Root! Before using the program, make system backup!
 ★ SD Card Read/Write fix<br>
 ★ DPI Changer<br>
 ★ Kernel Tuner<br>
-  - change min. and max. frequencies<br>
-  - change Governor-а<br>
-  - change I/O Sheduler-а<br>
-  - KSM control (the kernel must support this feature)<br>
-  - ZRAM control (the kernel must support this feature)<br>
-  - fast charge control (the kernel must support this feature)<br>
-  - multi-core power management<br>
-  - speeding up sdcard read/write speed<br>
-  - and other<br>
 ★ Shutdown and restart manager<br>
 ★ Battery Tweaks<br>
-  - disable logging<br>
-  - Power Supply control<br>
-  - Power Collapse control<br>
-  - Wifi power saving<br>
-  - sensors sleep control<br>
-  - VM battery tweaks<br>
-  - and many other<br>
 ★ Internet Tweaks<br>
-  - TCP mode changer<br>
-  - Google DNS enable<br>
-  - Fast Dormancy<br>
-  - IPv4 support<br>
-  - IPv6 support<br>
-  - etc<br>
 ★ System Tweaks<br>
-  - OOM Killer<br>
-  - low RAM Flag<br>
-  - gaming mode<br>
-  - FPS Unlocker<br>
-  - change RAM mode <br>
-  - heap and runtime optimization<br>
-  - android 7.X tweaks<br>
-  - improve perfomance<br>
-  - improve touchscreen work<br>
-  - Zipalign<br>
-  - SQLite optimization<br>
-  - increasing the quality of the image on the display device<br>
-  - improve scrolling quality and speed<br>
-  - and etc!<br>
 ★ FSTRIM<br>
 ★ Entropy Generator<br>
 ★ MediaServer и MediaScanner control (enabling/disabling) <br>
 ★ Media Tweaks<br>
-  - improve image quality<br>
-  - AMR WideBand<br>
-  - acceleration of streaming video<br>
-  - flash and flashlight tweak<br>
-  - acceleration of the quality of shooting photos and video<br>
-  - and etc!<br><br>
 ★ GPS Booster (support: Russia, Ukraine, Belarus, Slovakia, Canada, Germany, United Kingdom, Iran\Azerbaijan)<br>
-★ Varios tweaks
-  - speeding up booting
-  - disable bootanimation
-  - disable ADB icon in statusbar
-  - and etc
-<b> ★  Init.d folder and build.prop file backup</b> (but please make backup via custom recovery)
-<b> ★ Getting information about the device</b>
-  - model
-  - serial number
-  - device id
-  - Android version
-  - bootloader version
-  - radio version
-  - rom version
-  - active language
-  - Android ID
-  - PseudoID
-  - SDK version
-  - processor
-  - processor type
-  - RAM
-  - ROM
-  - Heap Size
-  - info about battery (health, voltage, temperature, battery type и т.п)
-  - screen resolution
-  - DPI
-
-
+★ Varios tweaks<br>
+★ Init.d folder and build.prop file backup (but please make backup via custom recovery)<br>
+★ Getting information about the device<br>
+  
 ## Download & Build
 
 1. Clone this repository
