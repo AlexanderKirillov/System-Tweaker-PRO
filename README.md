@@ -8,88 +8,79 @@
 Speeding up your device has never been so easy! With this program you can really speed up your device, increase powersaving and etc!
 This is full version.
 
-Functions:
-Speeding up your device has never been so easy! With this program you can really speed up your device, increase powersaving and etc!
-
-<font color=red><b>Important! The program requires Root!
- Before using the program, make system backup!</b></font>
+The program requires Root! Before using the program, make system backup!
 
 <b>x86 devices are not supported!</b>
 
-<font color="red"><b>NOT RECOMMENDED TO USE THIS PROGRAM ON CUSTOM ROMS
-ON CYANOGEMOD ROMS MAY NOT WORKING!</b></font>
-
-<b>Sources (FREE):</b> https://github.com/AlexanderKirillov/System-Tweaker-FREE
-
-<b><font color=red>Features:</font></b>
-✪ optimized for all devices based on Android 4.0 and above
-✪ has a lot of settings and functions (see below)
+## Features:
+✪ optimized for all devices based on Android 4.0 and above<br>
+✪ has a lot of settings and functions (see below)<br>
 ✪ has a nice Material Design style, beautiful animations
 ✪ no ads
 ✪ frequent updates with new features and fixes
 ✪ very easy, fast, does not load the system, does not work in the background
 
-<b><font color=green>What can the program?</font></b>
-<b> ★ "Speeding up your device in one click"</b>
-<b> ★ Battery Calibration</b>
-<b> ★ Bravia Engine Installer</b>
-<b> ★ WiFi Passwords</b>
-<b> ★ Sound Improver</b>
-<b> ★ SD Card Read/Write fix</b>
-<b> ★ DPI Changer</b>
-<b> ★ Kernel Tuner</b>
-  - change min. and max. frequencies
-  - change Governor-а
-  - change I/O Sheduler-а
-  - KSM control (the kernel must support this feature)
-  - ZRAM control (the kernel must support this feature)
-  - fast charge control (the kernel must support this feature)
-  - multi-core power management
-  - speeding up sdcard read/write speed
-  - and other
-<b> ★ Shutdown and restart manager</b>
-<b> ★ Battery Tweaks</b>
-  - disable logging
-  - Power Supply control
-  - Power Collapse control
-  - Wifi power saving
-  - sensors sleep control
-  - VM battery tweaks
-  - and many other
-<b> ★ Internet Tweaks</b>
-  - TCP mode changer
-  - Google DNS enable
-  - Fast Dormancy
-  - IPv4 support
-  - IPv6 support
-  - etc
-<b> ★ System Tweaks</b>
-  - OOM Killer
-  - low RAM Flag
-  - gaming mode
-  - FPS Unlocker
-  - change RAM mode 
-  - heap and runtime optimization
-  - android 7.X tweaks
-  - improve perfomance
-  - improve touchscreen work
-  - Zipalign
-  - SQLite optimization
-  - increasing the quality of the image on the display device
-  - improve scrolling quality and speed
-  - and etc!
-<b> ★ FSTRIM</b>
-<b> ★ Entropy Generator</b>
-<b> ★ MediaServer и MediaScanner control (enabling/disabling) </b>
-<b> ★ Media Tweaks</b>
-  - improve image quality
-  - AMR WideBand
-  - acceleration of streaming video
-  - flash and flashlight tweak
-  - acceleration of the quality of shooting photos and video
-  - and etc!
-<b> ★ GPS Booster</b> (support: Russia, Ukraine, Belarus, Slovakia, Canada, Germany, United Kingdom, Iran\Azerbaijan)
-<b> ★ Varios tweaks</b>
+## Functions:
+★ "Speeding up your device in one click"<br>
+★ Battery Calibration<br>
+★ Bravia Engine Installer<br>
+★ WiFi Passwords<br>
+★ Sound Improver<br>
+★ SD Card Read/Write fix<br>
+★ DPI Changer<br>
+★ Kernel Tuner<br>
+  - change min. and max. frequencies<br>
+  - change Governor-а<br>
+  - change I/O Sheduler-а<br>
+  - KSM control (the kernel must support this feature)<br>
+  - ZRAM control (the kernel must support this feature)<br>
+  - fast charge control (the kernel must support this feature)<br>
+  - multi-core power management<br>
+  - speeding up sdcard read/write speed<br>
+  - and other<br>
+★ Shutdown and restart manager<br>
+★ Battery Tweaks<br>
+  - disable logging<br>
+  - Power Supply control<br>
+  - Power Collapse control<br>
+  - Wifi power saving<br>
+  - sensors sleep control<br>
+  - VM battery tweaks<br>
+  - and many other<br>
+★ Internet Tweaks<br>
+  - TCP mode changer<br>
+  - Google DNS enable<br>
+  - Fast Dormancy<br>
+  - IPv4 support<br>
+  - IPv6 support<br>
+  - etc<br>
+★ System Tweaks<br>
+  - OOM Killer<br>
+  - low RAM Flag<br>
+  - gaming mode<br>
+  - FPS Unlocker<br>
+  - change RAM mode <br>
+  - heap and runtime optimization<br>
+  - android 7.X tweaks<br>
+  - improve perfomance<br>
+  - improve touchscreen work<br>
+  - Zipalign<br>
+  - SQLite optimization<br>
+  - increasing the quality of the image on the display device<br>
+  - improve scrolling quality and speed<br>
+  - and etc!<br>
+★ FSTRIM<br>
+★ Entropy Generator<br>
+★ MediaServer и MediaScanner control (enabling/disabling) <br>
+★ Media Tweaks<br>
+  - improve image quality<br>
+  - AMR WideBand<br>
+  - acceleration of streaming video<br>
+  - flash and flashlight tweak<br>
+  - acceleration of the quality of shooting photos and video<br>
+  - and etc!<br><br>
+★ GPS Booster (support: Russia, Ukraine, Belarus, Slovakia, Canada, Germany, United Kingdom, Iran\Azerbaijan)<br>
+★ Varios tweaks
   - speeding up booting
   - disable bootanimation
   - disable ADB icon in statusbar
@@ -115,6 +106,7 @@ ON CYANOGEMOD ROMS MAY NOT WORKING!</b></font>
   - info about battery (health, voltage, temperature, battery type и т.п)
   - screen resolution
   - DPI
+
 
 ## Download & Build
 
