@@ -80,7 +80,18 @@
                 android:paddingTop="10dp"
                 android:text="@string/tcponboot"
                 app:buttonTint="@color/textview1good" />
+
         </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|top"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:text="@string/info"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
 
         <View
             android:layout_width="match_parent"

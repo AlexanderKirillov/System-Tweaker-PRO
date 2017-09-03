@@ -17,6 +17,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,9 +45,8 @@ import java.util.concurrent.TimeoutException;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int ALERT_DIALOG2 = 2;
-    private static final int ALERT_DIALOG3 = 3;
-    private static final int ALERT_DIALOG4 = 4;
     private static final int ALERT_DIALOG5 = 5;
+    private static final int ALERT_DIALOG4 = 4;
     private static final int ALERT_DIALOG7 = 7;
     public static int checksu, checkbusy, selinuxstatus;
     boolean doubleBackToExitPressedOnce = false;
@@ -57,6 +58,62 @@ public class SplashActivity extends AppCompatActivity {
             return 1;
         }
         return 0;
+    }
+
+    public void initd() {
+        final Dialog dialog3 = new Dialog(SplashActivity.this);
+        dialog3.setContentView(R.layout.initd);
+        Button rebootrec = dialog3.findViewById(R.id.rebootrec);
+        rebootrec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot recovery"});
+                    proc.waitFor();
+                } catch (Exception ex) {
+                }
+            }
+        });
+        Button skip = dialog3.findViewById(R.id.skippp);
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("skipnitd", "skipnitd");
+                editor.apply();
+                dialog3.dismiss();
+                startMainActivity();
+            }
+        });
+        Button exit = dialog3.findViewById(R.id.exitttt);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                SplashActivity.this.finish();
+                System.exit(0);
+            }
+        });
+
+        Button skipandsave = dialog3.findViewById(R.id.skipppandsave);
+        skipandsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("skipnitd", "skipnitd");
+                editor.putString("skipsave", "skipsave");
+                editor.apply();
+
+                dialog3.dismiss();
+                startMainActivity();
+            }
+        });
+        dialog3.show();
     }
 
     @Override
@@ -71,6 +128,7 @@ public class SplashActivity extends AppCompatActivity {
         return cm.getActiveNetworkInfo() != null;
     }
 
+
     public void SplashOK() {
         if (RootTools.isAccessGiven()) {
             Command com7 = new Command(0,
@@ -82,6 +140,15 @@ public class SplashActivity extends AppCompatActivity {
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
                     "chmod 777 /system/etc/init.d",
                     "chown -R root root /system/etc/init.d",
+                    "mkdir /system/SystemTweaker",
+                    "chown -R root root /system/SystemTweaker",
+                    "cp /data/data/com.nowenui.systemtweaker/files/busybox /system/SystemTweaker",
+                    "cp /data/data/com.nowenui.systemtweaker/files/sqlite3 /system/SystemTweaker",
+                    "cp /data/data/com.nowenui.systemtweaker/files/zipalign /system/SystemTweaker",
+                    "chmod 777 /system/SystemTweaker/busybox",
+                    "chmod 777 /system/SystemTweaker/sqlite3",
+                    "chmod 777 /system/SystemTweaker/zipalign",
+                    "ln -s /system/SystemTweaker/busybox /system/SystemTweaker/ash",
                     "/data/data/com.nowenui.systemtweaker/files/busybox dos2unix /system/etc/init.d/*",
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
@@ -100,21 +167,60 @@ public class SplashActivity extends AppCompatActivity {
                     if ((check.contains("dialog7check"))) {
                         checksu = 1;
                         checkbusy = 1;
-                        if (isInitdSupport() == 1) {
-                            startMainActivity();
+                        if ((check.contains("skipsave"))) {
+                            if (isInitdSupport() == 1) {
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.remove("skipnitd");
+                                editor.remove("skipsave");
+                                editor.apply();
+                                startMainActivity();
+                            } else {
+                                startMainActivity();
+                            }
+
                         } else {
-                            showDialog(ALERT_DIALOG3);
+                            if (isInitdSupport() == 1) {
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.remove("skipnitd");
+                                editor.remove("skipsave");
+                                editor.apply();
+                                startMainActivity();
+                            } else {
+                                initd();
+                            }
                         }
+
                     } else {
                         if (line.contains("Enforcing")) {
                             showDialog(ALERT_DIALOG7);
                         } else {
                             checksu = 1;
                             checkbusy = 1;
-                            if (isInitdSupport() == 1) {
-                                startMainActivity();
+                            if ((check.contains("skipsave"))) {
+                                if (isInitdSupport() == 1) {
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.remove("skipnitd");
+                                    editor.remove("skipsave");
+                                    editor.apply();
+                                    startMainActivity();
+                                } else {
+                                    startMainActivity();
+                                }
+
                             } else {
-                                showDialog(ALERT_DIALOG3);
+                                if (isInitdSupport() == 1) {
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.remove("skipnitd");
+                                    editor.remove("skipsave");
+                                    editor.apply();
+                                    startMainActivity();
+                                } else {
+                                    initd();
+                                }
                             }
                         }
                     }
@@ -126,12 +232,32 @@ public class SplashActivity extends AppCompatActivity {
                 if ((isSELinuxPresent() == 1) && (Build.VERSION.SDK_INT >= 18)) {
                     RootTools.getShell(true).add(com6);
                 } else {
+                    final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     checksu = 1;
                     checkbusy = 1;
-                    if (isInitdSupport() == 1) {
-                        startMainActivity();
+                    if ((check.contains("skipsave"))) {
+                        if (isInitdSupport() == 1) {
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.remove("skipnitd");
+                            editor.remove("skipsave");
+                            editor.apply();
+                            startMainActivity();
+                        } else {
+                            startMainActivity();
+                        }
+
                     } else {
-                        showDialog(ALERT_DIALOG3);
+                        if (isInitdSupport() == 1) {
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.remove("skipnitd");
+                            editor.remove("skipsave");
+                            editor.apply();
+                            startMainActivity();
+                        } else {
+                            initd();
+                        }
                     }
                 }
             } catch (IOException | RootDeniedException | TimeoutException ex) {
@@ -145,12 +271,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        copyAssets();
+
         setContentView(R.layout.splash_activity);
         final TextView status = (TextView) findViewById(R.id.status);
 
-        ////////////////////////////////////////////
-        ///// Show fake text progress launching ////
-        ////////////////////////////////////////////
+        //Show fake text progress launching
         final Timer timer = new Timer();
         final Timer timer2 = new Timer();
         final Timer timer3 = new Timer();
@@ -233,17 +359,11 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
 
-        copyAssets();
-
     }
 
     public void verify() {
         checker = new PiracyChecker(this)
-                ///////////////////////////////////////////////////////////////////////////////
-                ///// We removed our own signature in line 247 in order to avoid piracy ///////
-                ///// If you're real developer, you know what to do to start the application //
-                ///////////////////////////////////////////////////////////////////////////////
-                .enableSigningCertificate("//removed_certification_code///")
+                .enableSigningCertificate("xH7p3Ewa6/imZOQaqcb/mschpvs=")
                 .enableDebugCheck()
                 .callback(new PiracyCheckerCallback() {
                     @Override
@@ -356,10 +476,30 @@ public class SplashActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 checksu = 1;
                                 checkbusy = 1;
-                                if (isInitdSupport() == 1) {
-                                    startMainActivity();
+                                final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                if ((check.contains("skipsave"))) {
+                                    if (isInitdSupport() == 1) {
+                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.remove("skipnitd");
+                                        editor.remove("skipsave");
+                                        editor.apply();
+                                        startMainActivity();
+                                    } else {
+                                        startMainActivity();
+                                    }
+
                                 } else {
-                                    showDialog(ALERT_DIALOG3);
+                                    if (isInitdSupport() == 1) {
+                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.remove("skipnitd");
+                                        editor.remove("skipsave");
+                                        editor.apply();
+                                        startMainActivity();
+                                    } else {
+                                        initd();
+                                    }
                                 }
                             }
                         })
@@ -371,10 +511,26 @@ public class SplashActivity extends AppCompatActivity {
                                 editor.apply();
                                 checksu = 1;
                                 checkbusy = 1;
-                                if (isInitdSupport() == 1) {
-                                    startMainActivity();
+                                final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                if ((check.contains("skipsave"))) {
+                                    if (isInitdSupport() == 1) {
+                                        editor.remove("skipnitd");
+                                        editor.remove("skipsave");
+                                        editor.apply();
+                                        startMainActivity();
+                                    } else {
+                                        startMainActivity();
+                                    }
+
                                 } else {
-                                    showDialog(ALERT_DIALOG3);
+                                    if (isInitdSupport() == 1) {
+                                        editor.remove("skipnitd");
+                                        editor.remove("skipsave");
+                                        editor.apply();
+                                        startMainActivity();
+                                    } else {
+                                        initd();
+                                    }
                                 }
                             }
                         })
@@ -407,36 +563,8 @@ public class SplashActivity extends AppCompatActivity {
                                 System.exit(0);
                             }
                         });
-
                 dialog = builder.create();
-                break;
-            case ALERT_DIALOG3:
-                builder = new AlertDialog.Builder(SplashActivity.this);
 
-                builder.setTitle(R.string.error)
-                        .setMessage(R.string.initderror)
-                        .setCancelable(false)
-                        .setPositiveButton("REBOOT INTO RECOVERY", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                try {
-                                    Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot recovery"});
-                                    proc.waitFor();
-                                } catch (Exception ex) {
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                                System.exit(0);
-                            }
-                        });
-
-                dialog = builder.create();
                 break;
             case ALERT_DIALOG5:
                 builder = new AlertDialog.Builder(SplashActivity.this);
@@ -519,7 +647,6 @@ public class SplashActivity extends AppCompatActivity {
                 File outFile = new File(folder, filename);
                 out = new FileOutputStream(outFile);
                 copyFile(in, out);
-
 
             } catch (IOException e) {
             } finally {

@@ -242,7 +242,7 @@ public class SysUtils {
                             }
                         }
                     } else {
-                        Toast.makeText(ctx, "ERROR!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, "Произошла ошибка. Возможна проблема с применением I/O Sheduler-а. Пожалуйста свяжитесь с разработчиком!", Toast.LENGTH_LONG).show();
                     }
 
                 }

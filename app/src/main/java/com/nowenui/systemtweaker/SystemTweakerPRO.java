@@ -22,7 +22,7 @@ public class SystemTweakerPRO extends Application {
     public void onCreate() {
 
         ////////////////////////////////////////
-        ////// LocaleChanger init /////////////
+        ////// Check theme and apply ///////////
         ////////////////////////////////////////
         super.onCreate();
         LocaleChanger.initialize(getApplicationContext(), SUPPORTED_LOCALES);

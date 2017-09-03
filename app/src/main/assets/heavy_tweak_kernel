@@ -1,6 +1,6 @@
-#!/data/data/com.nowenui.systemtweaker/files/ash
+#!/system/SystemTweaker/ash
 
-busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+busybox=/system/SystemTweaker/busybox
 
 mount -o remount,rw / 2>/dev/null
 mount -o remount,rw / / 2>/dev/null
@@ -13,7 +13,7 @@ $busybox mount -o remount,rw rootfs 2>/dev/null
 $busybox mount -o remount,rw /system 2>/dev/null
 $busybox mount -o remount,rw /system /system 2>/dev/null
 
-$busybox echo "Activating heavy kernel tweaks.." | $busybox tee -a \$LS
+$busybox echo "Activating heavy kernel tweaks.." 
 
 # Kernel_tweaks
 $busybox sysctl -w kernel.msgmni=32768
@@ -28,7 +28,7 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
 $busybox echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi
 if grep 1 /sys/kernel/dyn_fsync/Dyn_fsync_active; then
-$busybox echo "Dyn_fsync enabled" | $busybox tee -a \$LS
+$busybox echo "Dyn_fsync enabled"
 else
 $busybox echo "Dyn_fsync doesn't exist on your kernel" 
 fi

@@ -2,8 +2,10 @@ package com.nowenui.systemtweaker.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -202,6 +204,12 @@ public class InternetTweaksFragment extends Fragment {
         ////// TCP mode changer ///////////
         ///////////////////////////////////
         final CheckBox tcpboot = view.findViewById(R.id.tcpboot);
+        final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (mSharedPreference.contains("skipnitd")) {
+            tcpboot.setEnabled(false);
+        } else {
+            tcpboot.setEnabled(true);
+        }
 
         TextView textView40 = view.findViewById(R.id.textView40);
 
@@ -358,6 +366,11 @@ public class InternetTweaksFragment extends Fragment {
             tcpboot.setChecked(true);
         } else {
             tcpboot.setChecked(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            tcpboot.setEnabled(false);
+        } else {
+            tcpboot.setEnabled(true);
         }
         tcpboot.post(new Runnable() {
             @Override
@@ -834,6 +847,11 @@ public class InternetTweaksFragment extends Fragment {
             checkbox11.setChecked(true);
         } else {
             checkbox11.setChecked(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox11.setEnabled(false);
+        } else {
+            checkbox11.setEnabled(true);
         }
         checkbox11.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {

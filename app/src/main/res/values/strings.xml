@@ -4,7 +4,7 @@
     <string name="settingstile">Settings</string>
     <string name="root">ROOT WORKING!</string>
     <string name="initd">INIT.D WORKING!</string>
-    <string name="busybox">BUSYBOX V1.26.2 \n(FROM THIS PROGRAM)!!</string>
+    <string name="busybox">BUSYBOX V1.27.2 \n(FROM THIS PROGRAM)!!</string>
     <string name="rootbad">NO ROOT</string>
     <string name="initdbad">NO INIT.D </string>
     <string name="busyboxbad">NO BUSYBOX</string>
@@ -115,8 +115,8 @@
     <string name="systemteweaks">This section contains tweaks that can be used to increase the stability and speed of the system and customize it\n</string>
     <string name="systemthree">Render UI with GPU, improving smooth of scrolling\nEnabling this tweak may improve performance and smooth, but only if your GPU is powerful</string>
     <string name="systemfour">Improving smooth and speed of scrolling</string>
-    <string name="systemfive">Auto-zipalign every boot and every week\nThis tweak improving speed and performance of your phone</string>
-    <string name="systemsix">Auto optimize SQLite every boot and every week\nThis tweak improving speed and performance of your phone</string>
+    <string name="systemfive">Auto-zipalign\nThis tweak improving speed and performance of your phone</string>
+    <string name="systemsix">Auto optimize SQLite\nThis tweak improving speed and performance of your phone</string>
     <string name="fstrim">FSTRIM- special utility that accelerates the operation of the device by performing the TRIM operation on the memory device\n</string>
     <string name="beforestrim">Select the partition(s) and press &quot;FSTRIM&quot;\n\n</string>
     <string name="installfstrim">Install fstrim library\n</string>
@@ -396,7 +396,7 @@ In this case- it increases the intensity and minimum illumination threshold
     <string name="battery2">[INIT.D TWEAK: 00BatteryImprove\n\nINCLUDES:\n\necho "500" > /proc/sys/vm/dirty_expire_centisecs
 \n\necho "1000" > /proc/sys/vm/dirty_writeback_centisecs\n\nIf you apply this tweak, file located in /system/etc/init.d ] \n\nTweak allows you to increase the battery lifetime by adjusting the individual settings for "dirty" buffers VM.</string>
     <string name="busy1">About busybox</string>
-    <string name="busy2">BUSYBOX 1.26.2 ARM \nLocated in /data/data/com.nowenui.systemtweaker/files/busybox</string>
+    <string name="busy2">BUSYBOX 1.27.2 ARM \nLocated in /data/data/com.nowenui.systemtweaker/files/busybox</string>
     <string name="ramflag">Low RAM flag</string>
     <string name="ramflageffect">Forced use high-quality graphic effects</string>
     <string name="sys13">[BUILD.PROP TWEAK:\npersist.sys.force_highendgfx=true]  \n\nTweak improves visual effects when LOW RAM mode is on!</string>
@@ -486,8 +486,7 @@ tcp_fin_timeout=30] \n\nTweak improves internet speed!</string>
     <string name="initderror"> Sorry, but we do not found init.d support. We removed the automatic init.d enabler at Google\'s request.
         \n\nYou can enable init.d support in two ways:\n\n
 1) Using Universal init.d application or init.d scripts application. You can find it in Google Play\n\n 2) If you have a custom recovery installed, then you can go into it and flash the file located: \n
-/sdcard/SystemTweaker/initd.zip. With it, you easily and quickly activate init.d support.\n\n
-AThanks for your attention! </string>
+/sdcard/SystemTweaker/initd.zip. With it, you easily and quickly activate init.d support.\n\n If you want to use the program without init.d support - press on the \'SKIP\' или \'DO NOT SHOW AGAIN\'. In this case the init.d tweaks will be unavailable and the functionality of the program will be limited!\n\nThanks for your attention! </string>
     <string name="bravia2">Click on the button to install the Bravia Engine on your device! \nAvailable for Android 4.4 and up!\nIt is used once before reinstalling the firmware</string>
     <string name="bravia3">BRAVIA (Best Resolution Audio Visual Integrated Architecture)-  unique software utility to provide high-quality images on the display of your device, increases sharpness and reduces noise. Enjoy high-quality video,photo viewing!</string>
     <string name="bravia4">ATTENTION! THIS FUNCTION MAY NOT WORK ON ALL DEVICES, SO UNTIL THE INSTALLATION MUST DO THE BACKUP THROUGH THE RECOVERY!!!</string>
@@ -572,4 +571,11 @@ AThanks for your attention! </string>
     <string name="enlanguage">English (US)</string>
     <string name="rulanguage">Russian</string>
     <string name="mostthanks">Thanks to: \n1) Wamus\n2) A$teroid\n3) Tokha Antokha\n4) Frost41\n5) SmoothDenis</string>
+    <string name="initdinfo">This section is made for the purpose of real testing of init.d support by your device (Note that when you start the program, programm checking /system/etc/init.d folder). This is necessary in order to recognize the cause of incorrect work of tweaks / programm. \n\nTo check, click on the button below, after that your device will automatically reboot. After 5 minutes after the reboot, go here and at the bottom of the page you will see the status of the work init.d.</string>
+    <string name="checkinitd">Check init.d support!</string>
+    <string name="clearinitd">Clear status!</string>
+    <string name="cant">NOT AVAILABLE</string>
+    <string name="statusssl">NOT INSPECTED OR INIT.D NOT SUPPORTED!</string>
+    <string name="info">If the TCP mode is not applied after the reboot, check the following conditions:\n1) SELinux must be Permissive\n2) Init.d Support</string>
+
 </resources>

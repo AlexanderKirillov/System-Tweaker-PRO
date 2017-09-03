@@ -13,13 +13,14 @@ $busybox mount -o remount,rw rootfs 2>/dev/null
 $busybox mount -o remount,rw /system 2>/dev/null
 $busybox mount -o remount,rw /system /system 2>/dev/null
 
-if [ -e /sys/class/touch/switch/set_touchscreen ]; then
-	 echo 7025 > /sys/class/touch/switch/set_touchscreen
-	 echo 8002 > /sys/class/touch/switch/set_touchscreen
-	 echo 11001 > /sys/class/touch/switch/set_touchscreen
-	 echo 13030 > /sys/class/touch/switch/set_touchscreen
-	 echo 14005 > /sys/class/touch/switch/set_touchscreen
-fi
+if [ -e /sys/module/msm_performance/parameters/touchboost ]; then
+ $busybox chmod 777 /sys/module/msm_performance/parameters/touchboost;
+ $busybox echo "0" > /sys/module/msm_performance/parameters/touchboost;
+fi;
+if [ -e /sys/module/cpu_boost/parameters/boost_ms ]; then
+ $busybox chmod 777 /sys/module/cpu_boost/parameters/input_boost_ms;
+ $busybox echo "0" > /sys/module/cpu_boost/parameters/input_boost_ms;
+fi;
 
 mount -o remount,ro / 2>/dev/null
 mount -o remount,ro / / 2>/dev/null
@@ -31,4 +32,3 @@ $busybox mount -o remount,ro / / 2>/dev/null
 $busybox mount -o remount,ro rootfs 2>/dev/null
 $busybox mount -o remount,ro /system 2>/dev/null
 $busybox mount -o remount,ro /system /system 2>/dev/null
-

@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         ////////////////////////////////////////
         super.onCreate(savedInstanceState);
 
+
         final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         if (check.contains("THEME_BASE")) {
             updateTheme();
@@ -520,6 +521,7 @@ public class MainActivity extends AppCompatActivity {
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     public void run() {
+                                        Intent vk = new Intent();
                                         Uri address = Uri.parse("http://vk.com/nowenui_official_group");
                                         Intent openlink = new Intent(Intent.ACTION_VIEW, address);
                                         startActivity(openlink);
@@ -535,6 +537,7 @@ public class MainActivity extends AppCompatActivity {
                                 Handler handler2 = new Handler();
                                 handler2.postDelayed(new Runnable() {
                                     public void run() {
+                                        Intent twitter = new Intent();
                                         Uri addresstwi = Uri.parse("https://twitter.com/intent/user?user_id=4771768877");
                                         Intent openlinktwi = new Intent(Intent.ACTION_VIEW, addresstwi);
                                         startActivity(openlinktwi);

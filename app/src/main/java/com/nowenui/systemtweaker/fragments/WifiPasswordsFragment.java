@@ -21,15 +21,18 @@ import android.widget.TextView;
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
 import com.nowenui.systemtweaker.Utility;
+import com.stericson.RootShell.exceptions.RootDeniedException;
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
 import com.tt.whorlviewlibrary.WhorlView;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,36 +113,29 @@ public class WifiPasswordsFragment extends Fragment {
             }
         }, 500);
 
+        if (RootTools.isAccessGiven()) {
+            Command command1 = new Command(0,
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                    "cp /data/misc/wifi/wpa_supplicant.conf /system/SystemTweaker/wifi.conf",
+                    "chmod 777 /system/SystemTweaker/wifi.conf",
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system");
+            try {
+                RootTools.getShell(true).add(command1);
+            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                ex.printStackTrace();
+                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+            }
+        } else {
+            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+        }
 
-        DataOutputStream dos = null;
-        DataInputStream dis = null;
-        String sourcefilename = "/data/misc/wifi/wpa_supplicant.conf";
-        File f = new File(getActivity().getApplicationContext().getFilesDir(), "/wifi.conf");
+        File f = new File("/system/SystemTweaker/wifi.conf");
         if (f.exists()) {
             System.out.println(f.delete());
-        }
-        try {
-            Process p = Runtime.getRuntime().exec("su");
-            dos = new DataOutputStream(p.getOutputStream());
-            dis = new DataInputStream(p.getInputStream());
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-            dos.writeBytes("mount -o rw,remount /system\n");
-            dos.writeBytes("cat " + sourcefilename + ">" + getActivity().getApplicationContext().getFilesDir() + "/wifi.conf \n");
-            dos.writeBytes("chmod 774 " + getActivity().getApplicationContext().getFilesDir() + "/wifi.conf \n");
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-            dos.writeBytes("mount -o ro,remount /system\n");
-            dos.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-            dos.writeBytes("exit\n");
-            getfile();
-            dos.flush();
-            dos.close();
-            dis.close();
-            p.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         handler = new Handler();
         handler.postDelayed(new Thread() {
@@ -154,7 +150,7 @@ public class WifiPasswordsFragment extends Fragment {
 
     private void getfile() {
         DataInputStream dis = null;
-        File f = new File(getActivity().getApplicationContext().getFilesDir(), "/wifi.conf");
+        File f = new File("/system/SystemTweaker/wifi.conf");
         try {
             if (f.exists()) {
                 BufferedReader br = new BufferedReader(new FileReader(f));

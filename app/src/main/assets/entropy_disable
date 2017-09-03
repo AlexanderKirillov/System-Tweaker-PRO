@@ -1,4 +1,4 @@
-#!/data/data/com.nowenui.systemtweaker/files/ash
+#!/system/SystemTweaker/ash
 
 mount -o rw,remount /system
 

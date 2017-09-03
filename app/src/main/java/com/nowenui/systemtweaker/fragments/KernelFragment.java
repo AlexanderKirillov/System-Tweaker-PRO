@@ -153,6 +153,12 @@ public class KernelFragment extends Fragment {
         CheckBox sdtweak = view.findViewById(R.id.sdcardtweak);
         String one = "/etc/init.d/sdcard_tweak";
         String one1 = "/system/etc/init.d/sdcard_tweak";
+        final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (mSharedPreference.contains("skipnitd")) {
+            sdtweak.setEnabled(false);
+        } else {
+            sdtweak.setEnabled(true);
+        }
         if (new File(Environment.getRootDirectory() + one).exists() || new File(one1).exists() || new File(Environment.getRootDirectory() + one1).exists()) {
             sdtweak.setChecked(true);
         } else {
@@ -273,6 +279,11 @@ public class KernelFragment extends Fragment {
             iotweak.setChecked(true);
         } else {
             iotweak.setChecked(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            iotweak.setEnabled(false);
+        } else {
+            iotweak.setEnabled(true);
         }
         iotweak.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
@@ -534,6 +545,11 @@ public class KernelFragment extends Fragment {
         ////// Kernel Tweaks Light/Hard //////////////
         //////////////////////////////////////////////
         final Spinner2 spinner3 = view.findViewById(R.id.spinner3);
+        if (mSharedPreference.contains("skipnitd")) {
+            spinner3.setEnabled(false);
+        } else {
+            spinner3.setEnabled(true);
+        }
 
         final ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(getActivity(), R.array.kernellist, android.R.layout.simple_spinner_item);
@@ -709,6 +725,11 @@ public class KernelFragment extends Fragment {
             CheckBox zram = view.findViewById(R.id.zram);
             String eight = "/etc/init.d/zram";
             String eight1 = "/system/etc/init.d/zram";
+            if (mSharedPreference.contains("skipnitd")) {
+                zram.setEnabled(false);
+            } else {
+                zram.setEnabled(true);
+            }
             if (new File(Environment.getRootDirectory() + eight).exists() || new File(eight1).exists() || new File(Environment.getRootDirectory() + eight1).exists()) {
                 zram.setChecked(true);
             } else {
@@ -831,6 +852,11 @@ public class KernelFragment extends Fragment {
         CheckBox ohtweak = view.findViewById(R.id.ohtweak);
         String n = "/etc/init.d/ondemand_hotplug";
         String n1 = "/system/etc/init.d/ondemand_hotplug";
+        if (mSharedPreference.contains("skipnitd")) {
+            ohtweak.setEnabled(false);
+        } else {
+            ohtweak.setEnabled(true);
+        }
         if (new File(Environment.getRootDirectory() + n).exists() || new File(n1).exists() || new File(Environment.getRootDirectory() + n1).exists()) {
             ohtweak.setChecked(true);
         } else {
@@ -962,6 +988,11 @@ public class KernelFragment extends Fragment {
         CheckBox cpuoptimize = view.findViewById(R.id.cpuoptimize);
         String nine = "/etc/init.d/cpu_optimize";
         String nine1 = "/system/etc/init.d/cpu_optimize";
+        if (mSharedPreference.contains("skipnitd")) {
+            cpuoptimize.setEnabled(false);
+        } else {
+            cpuoptimize.setEnabled(true);
+        }
         if (new File(Environment.getRootDirectory() + nine).exists() || new File(nine1).exists() || new File(Environment.getRootDirectory() + nine1).exists()) {
             cpuoptimize.setChecked(true);
         } else {
@@ -1096,6 +1127,11 @@ public class KernelFragment extends Fragment {
         ////// Kernel Sleepers tweaks ///////////
         /////////////////////////////////////////
         CheckBox kernelsleeper = view.findViewById(R.id.kernelsleeper);
+        if (mSharedPreference.contains("skipnitd")) {
+            kernelsleeper.setEnabled(false);
+        } else {
+            kernelsleeper.setEnabled(true);
+        }
         String ten = "/etc/init.d/kernel_sleeper";
         String ten3 = "/sys/kernel/debug/sched_features";
         String ten1 = "/system/etc/init.d/kernel_sleeper";
@@ -1215,6 +1251,11 @@ public class KernelFragment extends Fragment {
         ////// Normalize Sleeper Tweak ////////////
         ///////////////////////////////////////////
         CheckBox normsleeper = view.findViewById(R.id.normsleeper);
+        if (mSharedPreference.contains("skipnitd")) {
+            normsleeper.setEnabled(false);
+        } else {
+            normsleeper.setEnabled(true);
+        }
         String elev = "/etc/init.d/11NSTweak";
         String elev1 = "/system/etc/init.d/11NSTweak";
         String checknormsleeper = "/sys/kernel/debug/sched_features";
@@ -1332,6 +1373,11 @@ public class KernelFragment extends Fragment {
         ////////////////////////////////////////////
         if (ksm() == 1) {
             CheckBox ksm = view.findViewById(R.id.ksm);
+            if (mSharedPreference.contains("skipnitd")) {
+                ksm.setEnabled(false);
+            } else {
+                ksm.setEnabled(true);
+            }
             String twel = "/etc/init.d/ksm";
             String twel1 = "/system/etc/init.d/ksm";
             if (new File(Environment.getRootDirectory() + twel).exists() || new File(twel1).exists() || new File(Environment.getRootDirectory() + twel1).exists()) {
@@ -1456,6 +1502,11 @@ public class KernelFragment extends Fragment {
         if (mpcs() == 1) {
 
             CheckBox mpcs = view.findViewById(R.id.mpcs);
+            if (mSharedPreference.contains("skipnitd")) {
+                mpcs.setEnabled(false);
+            } else {
+                mpcs.setEnabled(true);
+            }
             String thi = "/etc/init.d/mpcs";
             String thi1 = "/system/etc/init.d/mpcs";
             if (new File(Environment.getRootDirectory() + thi).exists() || new File(thi1).exists() || new File(Environment.getRootDirectory() + thi1).exists()) {
@@ -1578,6 +1629,11 @@ public class KernelFragment extends Fragment {
         //////////////////////////////////////////////
         if (fastcharge() == 1) {
             CheckBox fastcharge = view.findViewById(R.id.fastcharge);
+            if (mSharedPreference.contains("skipnitd")) {
+                fastcharge.setEnabled(false);
+            } else {
+                fastcharge.setEnabled(true);
+            }
             String fix = "/etc/init.d/fastcharge";
             String fix1 = "/system/etc/init.d/fastcharge";
             if (new File(Environment.getRootDirectory() + fix).exists() || new File(fix1).exists() || new File(Environment.getRootDirectory() + fix1).exists()) {

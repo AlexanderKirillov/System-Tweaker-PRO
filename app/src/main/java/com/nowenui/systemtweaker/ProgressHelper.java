@@ -5,6 +5,9 @@ import android.os.Handler;
 
 import mbanje.kurt.fabbutton.FabButton;
 
+/**
+ * Created by kurt on 08 06 2015 .
+ */
 public class ProgressHelper {
 
     private final FabButton button;
@@ -33,6 +36,10 @@ public class ProgressHelper {
                 });
             }
         };
+    }
+
+    public void startIndeterminate() {
+        button.showProgress(true);
     }
 
     public void startDeterminate() {

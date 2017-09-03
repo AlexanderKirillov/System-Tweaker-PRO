@@ -35,7 +35,7 @@ public class AboutProgramFragment extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
 
         /////////////////////////////////////////////////
-        ////// Links to our site ////////////////////////
+        ////// Links to our site //////////// ///////////
         /////////////////////////////////////////////////
 
         TextView textView30 = view.findViewById(R.id.textView30);

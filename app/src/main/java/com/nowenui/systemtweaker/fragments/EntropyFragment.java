@@ -3,11 +3,13 @@ package com.nowenui.systemtweaker.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
@@ -252,6 +254,12 @@ public class EntropyFragment extends Fragment {
                     } else {
                         checkbox26.setChecked(false);
                     }
+                    final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    if (mSharedPreference.contains("skipnitd")) {
+                        checkbox26.setEnabled(false);
+                    } else {
+                        checkbox26.setEnabled(true);
+                    }
                     checkbox26.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
@@ -350,6 +358,11 @@ public class EntropyFragment extends Fragment {
                             }, 1000);
 
                             checkbox26.setEnabled(false);
+                            if (mSharedPreference.contains("skipnitd")) {
+                                checkbox26.setEnabled(false);
+                            } else {
+                                checkbox26.setEnabled(true);
+                            }
                             String check19 = "/etc/init.d/entropy_start";
                             String check19a = "/system/etc/init.d/entropy_start";
                             if (new File(Environment.getRootDirectory() + check19).exists() || new File(check19a).exists() || new File(Environment.getRootDirectory() + check19a).exists()) {
@@ -524,6 +537,12 @@ public class EntropyFragment extends Fragment {
         ////// Entropy start script ///////////
         ///////////////////////////////////////
         final CheckBox checkbox26 = view.findViewById(R.id.checkBox26);
+        final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox26.setEnabled(false);
+        } else {
+            checkbox26.setEnabled(true);
+        }
         if (!(f.exists())) {
             checkbox26.setEnabled(false);
         }
@@ -623,6 +642,12 @@ public class EntropyFragment extends Fragment {
                         checkbox26.setChecked(true);
                     } else {
                         checkbox26.setChecked(false);
+                    }
+                    final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    if (mSharedPreference.contains("skipnitd")) {
+                        checkbox26.setEnabled(false);
+                    } else {
+                        checkbox26.setEnabled(true);
                     }
 
                     delete.setEnabled(false);

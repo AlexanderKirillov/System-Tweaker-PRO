@@ -3,10 +3,12 @@ package com.nowenui.systemtweaker.fragments;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -185,6 +187,13 @@ public class BatteryTweaksFragment extends Fragment {
         } else {
             checkbox.setChecked(false);
         }
+        final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox.setEnabled(false);
+        } else {
+            checkbox.setEnabled(true);
+        }
+
         checkbox.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
                 if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
@@ -348,6 +357,11 @@ public class BatteryTweaksFragment extends Fragment {
         } else {
             lcd.setEnabled(false);
         }
+        if (mSharedPreference.contains("skipnitd")) {
+            lcd.setEnabled(false);
+        } else {
+            lcd.setEnabled(true);
+        }
         if (new File(Environment.getRootDirectory() + lcd1).exists() || new File(lcd1a).exists() || new File(Environment.getRootDirectory() + lcd1a).exists()) {
             lcd.setChecked(true);
         } else {
@@ -468,6 +482,11 @@ public class BatteryTweaksFragment extends Fragment {
         } else {
             checkbox2.setChecked(false);
         }
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox2.setEnabled(false);
+        } else {
+            checkbox2.setEnabled(true);
+        }
         checkbox2.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
                 if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
@@ -580,6 +599,11 @@ public class BatteryTweaksFragment extends Fragment {
             dynbs.setChecked(true);
         } else {
             dynbs.setChecked(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            dynbs.setEnabled(false);
+        } else {
+            dynbs.setEnabled(true);
         }
         dynbs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -756,6 +780,11 @@ public class BatteryTweaksFragment extends Fragment {
             doze.setEnabled(true);
         } else {
             doze.setEnabled(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            doze.setEnabled(false);
+        } else {
+            doze.setEnabled(true);
         }
         doze.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
@@ -1094,6 +1123,11 @@ public class BatteryTweaksFragment extends Fragment {
         } else {
             checkbox4.setChecked(false);
         }
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox4.setEnabled(false);
+        } else {
+            checkbox4.setEnabled(true);
+        }
         checkbox4.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
 
@@ -1220,6 +1254,11 @@ public class BatteryTweaksFragment extends Fragment {
             disableboost.setEnabled(true);
         } else {
             disableboost.setEnabled(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            disableboost.setEnabled(false);
+        } else {
+            disableboost.setEnabled(true);
         }
         String boostdisfile = "/etc/init.d/boostdel";
         String boostdis1file = "/system/etc/init.d/boostdel";
@@ -1687,6 +1726,11 @@ public class BatteryTweaksFragment extends Fragment {
             checkbox7.setChecked(true);
         } else {
             checkbox7.setChecked(false);
+        }
+        if (mSharedPreference.contains("skipnitd")) {
+            checkbox7.setEnabled(false);
+        } else {
+            checkbox7.setEnabled(true);
         }
         checkbox7.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {

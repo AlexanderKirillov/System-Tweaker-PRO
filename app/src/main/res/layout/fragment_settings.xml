@@ -13,7 +13,6 @@
 
 
         <TextView
-            android:id="@+id/textView41"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/theme" />
@@ -57,7 +56,6 @@
             android:text="@string/unlocktweaks" />
 
         <TextView
-            android:id="@+id/textView42"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/languageset" />
