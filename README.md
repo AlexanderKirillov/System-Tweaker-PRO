@@ -1,5 +1,5 @@
 <p align="center">
-  <i><b>Current version: 4.1.0</b></i>
+  <i><b>Current version: 4.1.1</b></i>
 </p>
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)<br><br>
