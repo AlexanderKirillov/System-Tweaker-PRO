@@ -852,11 +852,6 @@ public class KernelFragment extends Fragment {
         CheckBox ohtweak = view.findViewById(R.id.ohtweak);
         String n = "/etc/init.d/ondemand_hotplug";
         String n1 = "/system/etc/init.d/ondemand_hotplug";
-        if (mSharedPreference.contains("skipnitd")) {
-            ohtweak.setEnabled(false);
-        } else {
-            ohtweak.setEnabled(true);
-        }
         if (new File(Environment.getRootDirectory() + n).exists() || new File(n1).exists() || new File(Environment.getRootDirectory() + n1).exists()) {
             ohtweak.setChecked(true);
         } else {
@@ -873,7 +868,11 @@ public class KernelFragment extends Fragment {
         String n7 = "/sys/devices/system/cpu/cpufreq/hotplug/down_differential";
 
         if ((new File(n3).exists() && new File(n4).exists() && new File(n5).exists() && new File(n12).exists()) || (new File(n13).exists() && new File(n14).exists() && new File(n6).exists() && new File(n7).exists())) {
-            ohtweak.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                ohtweak.setEnabled(false);
+            } else {
+                ohtweak.setEnabled(true);
+            }
         } else {
             ohtweak.setEnabled(false);
         }
@@ -988,11 +987,6 @@ public class KernelFragment extends Fragment {
         CheckBox cpuoptimize = view.findViewById(R.id.cpuoptimize);
         String nine = "/etc/init.d/cpu_optimize";
         String nine1 = "/system/etc/init.d/cpu_optimize";
-        if (mSharedPreference.contains("skipnitd")) {
-            cpuoptimize.setEnabled(false);
-        } else {
-            cpuoptimize.setEnabled(true);
-        }
         if (new File(Environment.getRootDirectory() + nine).exists() || new File(nine1).exists() || new File(Environment.getRootDirectory() + nine1).exists()) {
             cpuoptimize.setChecked(true);
         } else {
@@ -1015,7 +1009,11 @@ public class KernelFragment extends Fragment {
         String nine15 = "/sys/devices/system/cpu/cpufreq/interactive/boost";
 
         if ((((new File(nine3).exists() && new File(nine4).exists() && new File(nine5).exists()) || (new File(nine12).exists() && new File(nine13).exists() && new File(nine14).exists())) && ((new File(nine6).exists() && new File(nine7).exists()) || (new File(nine10).exists() && new File(nine11).exists())) && new File(nine8).exists() && new File(nine9).exists()) && (new File(nine15).exists())) {
-            cpuoptimize.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                cpuoptimize.setEnabled(false);
+            } else {
+                cpuoptimize.setEnabled(true);
+            }
         } else {
             cpuoptimize.setEnabled(false);
         }
@@ -1127,16 +1125,17 @@ public class KernelFragment extends Fragment {
         ////// Kernel Sleepers tweaks ///////////
         /////////////////////////////////////////
         CheckBox kernelsleeper = view.findViewById(R.id.kernelsleeper);
-        if (mSharedPreference.contains("skipnitd")) {
-            kernelsleeper.setEnabled(false);
-        } else {
-            kernelsleeper.setEnabled(true);
-        }
         String ten = "/etc/init.d/kernel_sleeper";
         String ten3 = "/sys/kernel/debug/sched_features";
         String ten1 = "/system/etc/init.d/kernel_sleeper";
         if (!new File(ten3).exists()) {
             kernelsleeper.setEnabled(false);
+        } else {
+            if (mSharedPreference.contains("skipnitd")) {
+                kernelsleeper.setEnabled(false);
+            } else {
+                kernelsleeper.setEnabled(true);
+            }
         }
 
         if (new File(Environment.getRootDirectory() + ten).exists() || new File(ten1).exists() || new File(Environment.getRootDirectory() + ten1).exists()) {

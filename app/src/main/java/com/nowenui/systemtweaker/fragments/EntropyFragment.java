@@ -246,7 +246,6 @@ public class EntropyFragment extends Fragment {
                     ///////////////////////////////////////
 
                     final CheckBox checkbox26 = view.findViewById(R.id.checkBox26);
-                    checkbox26.setEnabled(true);
                     String check19 = "/etc/init.d/entropy_start";
                     String check19a = "/system/etc/init.d/entropy_start";
                     if (new File(Environment.getRootDirectory() + check19).exists() || new File(check19a).exists() || new File(Environment.getRootDirectory() + check19a).exists()) {
@@ -358,11 +357,6 @@ public class EntropyFragment extends Fragment {
                             }, 1000);
 
                             checkbox26.setEnabled(false);
-                            if (mSharedPreference.contains("skipnitd")) {
-                                checkbox26.setEnabled(false);
-                            } else {
-                                checkbox26.setEnabled(true);
-                            }
                             String check19 = "/etc/init.d/entropy_start";
                             String check19a = "/system/etc/init.d/entropy_start";
                             if (new File(Environment.getRootDirectory() + check19).exists() || new File(check19a).exists() || new File(Environment.getRootDirectory() + check19a).exists()) {
@@ -538,13 +532,14 @@ public class EntropyFragment extends Fragment {
         ///////////////////////////////////////
         final CheckBox checkbox26 = view.findViewById(R.id.checkBox26);
         final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if (mSharedPreference.contains("skipnitd")) {
-            checkbox26.setEnabled(false);
-        } else {
-            checkbox26.setEnabled(true);
-        }
         if (!(f.exists())) {
             checkbox26.setEnabled(false);
+        } else {
+            if (mSharedPreference.contains("skipnitd")) {
+                checkbox26.setEnabled(false);
+            } else {
+                checkbox26.setEnabled(true);
+            }
         }
         String check19 = "/etc/init.d/entropy_start";
         String check19a = "/system/etc/init.d/entropy_start";
@@ -643,13 +638,6 @@ public class EntropyFragment extends Fragment {
                     } else {
                         checkbox26.setChecked(false);
                     }
-                    final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    if (mSharedPreference.contains("skipnitd")) {
-                        checkbox26.setEnabled(false);
-                    } else {
-                        checkbox26.setEnabled(true);
-                    }
-
                     delete.setEnabled(false);
                     entropy.setEnabled(true);
                     entropy.setBackgroundResource(R.drawable.roundbuttoncal);

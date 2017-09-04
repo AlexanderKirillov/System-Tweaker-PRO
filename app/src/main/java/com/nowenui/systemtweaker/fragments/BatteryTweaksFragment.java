@@ -353,14 +353,13 @@ public class BatteryTweaksFragment extends Fragment {
         String lcd1 = "/etc/init.d/lcd";
         String lcd1a = "/system/etc/init.d/lcd";
         if (LCDCheck() == 1) {
-            lcd.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                lcd.setEnabled(false);
+            } else {
+                lcd.setEnabled(true);
+            }
         } else {
             lcd.setEnabled(false);
-        }
-        if (mSharedPreference.contains("skipnitd")) {
-            lcd.setEnabled(false);
-        } else {
-            lcd.setEnabled(true);
         }
         if (new File(Environment.getRootDirectory() + lcd1).exists() || new File(lcd1a).exists() || new File(Environment.getRootDirectory() + lcd1a).exists()) {
             lcd.setChecked(true);
@@ -777,14 +776,13 @@ public class BatteryTweaksFragment extends Fragment {
         ////////////////////////////////
         CheckBox doze = view.findViewById(R.id.doze);
         if (Build.VERSION.SDK_INT >= 24) {
-            doze.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                doze.setEnabled(false);
+            } else {
+                doze.setEnabled(true);
+            }
         } else {
             doze.setEnabled(false);
-        }
-        if (mSharedPreference.contains("skipnitd")) {
-            doze.setEnabled(false);
-        } else {
-            doze.setEnabled(true);
         }
         doze.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View arg0) {
@@ -1251,14 +1249,13 @@ public class BatteryTweaksFragment extends Fragment {
         ///////////////////////////////////////////
         CheckBox disableboost = view.findViewById(R.id.boostdis);
         if (BoostCheck() == 1) {
-            disableboost.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                disableboost.setEnabled(false);
+            } else {
+                disableboost.setEnabled(true);
+            }
         } else {
             disableboost.setEnabled(false);
-        }
-        if (mSharedPreference.contains("skipnitd")) {
-            disableboost.setEnabled(false);
-        } else {
-            disableboost.setEnabled(true);
         }
         String boostdisfile = "/etc/init.d/boostdel";
         String boostdis1file = "/system/etc/init.d/boostdel";

@@ -186,11 +186,6 @@ public class SystemTweaksFragment extends Fragment {
         ///// Dangerous tweak: ART Tweak /////
         /////////////////////////////////////
         CheckBox artfix = view.findViewById(R.id.artfix);
-        if (mSharedPreference.contains("skipnitd")) {
-            artfix.setEnabled(false);
-        } else {
-            artfix.setEnabled(true);
-        }
         if (mSharedPreference.contains("ALERTCHECK")) {
             artfix.setVisibility(View.VISIBLE);
         } else {
@@ -203,7 +198,11 @@ public class SystemTweaksFragment extends Fragment {
             artfix.setChecked(false);
         }
         if ((Build.VERSION.SDK_INT >= 21)) {
-            artfix.setEnabled(true);
+            if (mSharedPreference.contains("skipnitd")) {
+                artfix.setEnabled(false);
+            } else {
+                artfix.setEnabled(true);
+            }
         } else {
             artfix.setEnabled(false);
         }
@@ -1014,13 +1013,6 @@ public class SystemTweaksFragment extends Fragment {
         ////////////////////////////
         final Spinner2 spinner6 = view.findViewById(R.id.spinner6);
         SwitchCompat switchgamingmode = view.findViewById(R.id.switchgamingmode);
-        if (mSharedPreference.contains("skipnitd")) {
-            switchgamingmode.setEnabled(false);
-            spinner6.setEnabled(false);
-        } else {
-            switchgamingmode.setEnabled(true);
-            spinner6.setEnabled(true);
-        }
         String fucks = "/etc/init.d/ram_gaming";
         String fucksa = "/system/etc/init.d/ram_gaming";
         String fucksb = "/system/etc/init.d/cfq_improve_gaming";
