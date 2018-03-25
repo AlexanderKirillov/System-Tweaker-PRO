@@ -1,9 +1,11 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -148,6 +150,54 @@ public class DPIChangerFragment extends Fragment {
         final TextView statedpi = view.findViewById(R.id.statedpi);
         if (getActivity() == null)
             return;
+        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+
+            final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.pleasewait));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                        }
+            }, 1500);
+        }
+        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.pleasewait));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                        }
+            }, 1500);
+        }
+        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.pleasewait));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                         }
+            }, 1500);
+        }
 
         Thread t = new Thread() {
 

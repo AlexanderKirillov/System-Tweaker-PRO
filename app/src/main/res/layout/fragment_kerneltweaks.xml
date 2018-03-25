@@ -166,37 +166,6 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.13">
-
-            <TextView
-                android:id="@+id/textView40"
-                android:layout_width="103dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|top"
-                android:gravity="center_vertical|center|center_horizontal"
-                android:text="@string/tweakssystem"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <com.onebit.spinner2.Spinner2
-                android:id="@+id/spinner3"
-                android:layout_width="157dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|top" />
-
-        </FrameLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left|top"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="@string/aboutsystem"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
 
         <View
             android:layout_width="match_parent"

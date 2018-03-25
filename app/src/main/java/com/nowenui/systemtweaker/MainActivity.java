@@ -320,6 +320,14 @@ public class MainActivity extends AppCompatActivity {
                                         .commit();
 
                                 break;
+                            case R.id.navigation_drawer_item5:
+                                fragmentTitle = res.getString(R.string.calbattery);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, BatteryCalibrationFragment.newInstance(bundle))
+                                        .commit();
+                                break;
                             case R.id.navigation_drawer_item6:
                                 fragmentTitle = res.getString(R.string.internettweaks);
                                 getSupportFragmentManager()
@@ -334,14 +342,6 @@ public class MainActivity extends AppCompatActivity {
                                         .beginTransaction()
                                         .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
                                         .replace(R.id.content, SystemTweaksFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item5:
-                                fragmentTitle = res.getString(R.string.calbattery);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, BatteryCalibrationFragment.newInstance(bundle))
                                         .commit();
                                 break;
                             case R.id.navigation_drawer_item13:

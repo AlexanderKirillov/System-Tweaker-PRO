@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1007,276 +1006,6 @@ public class SystemTweaksFragment extends Fragment {
             }
 
         });
-
-        //////////////////////////////
-        ////// Gaming Mode //////////
-        ////////////////////////////
-        final Spinner2 spinner6 = view.findViewById(R.id.spinner6);
-        SwitchCompat switchgamingmode = view.findViewById(R.id.switchgamingmode);
-        String fucks = "/etc/init.d/ram_gaming";
-        String fucksa = "/system/etc/init.d/ram_gaming";
-        String fucksb = "/system/etc/init.d/cfq_improve_gaming";
-        if ((new File(Environment.getRootDirectory() + fucks).exists() || new File(fucksa).exists() || new File(Environment.getRootDirectory() + fucksa).exists()) && (new File(Environment.getRootDirectory() + fucksb).exists() || new File(fucksb).exists() || new File(Environment.getRootDirectory() + fucksb).exists())
-                && text.toString().contains("persist.sys.NV_FPSLIMIT=60") &&
-                text.toString().contains("persist.sys.NV_POWERMODE=1")
-                && text.toString().contains("persist.sys.NV_PROFVER=15") &&
-                text.toString().contains("persist.sys.NV_STEREOCTRL=0") &&
-                text.toString().contains("persist.sys.NV_STEREOSEPCHG=0")
-                && text.toString().contains("persist.sys.NV_STEREOSEP=20") &&
-                text.toString().contains("persist.sys.purgeable_assets=1")) {
-            switchgamingmode.setChecked(true);
-            spinner6.setEnabled(false);
-        } else {
-            switchgamingmode.setChecked(false);
-            if (mSharedPreference.contains("skipnitd")) {
-                spinner6.setEnabled(false);
-            } else {
-                spinner6.setEnabled(true);
-            }
-        }
-        switchgamingmode.setOnLongClickListener(new View.OnLongClickListener() {
-            public boolean onLongClick(View arg0) {
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                    new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.tweakabout)
-                            .setMessage(R.string.gamingmode)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                    new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                            .setTitle(R.string.tweakabout)
-                            .setMessage(R.string.gamingmode)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                    new AlertDialog.Builder(getContext(), R.style.AlertDialogBlack)
-                            .setTitle(R.string.tweakabout)
-                            .setMessage(R.string.gamingmode)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                return true;
-            }
-        });
-        switchgamingmode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-
-                                                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                                                            if (isChecked) {
-                                                                spinner6.setEnabled(false);
-                                                                if (RootTools.isAccessGiven()) {
-                                                                    Command command1 = new Command(0,
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop",
-                                                                            "echo \"persist.sys.NV_FPSLIMIT=60\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.NV_POWERMODE=1\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.NV_PROFVER=15\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.NV_STEREOCTRL=0\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.NV_STEREOSEPCHG=0\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.NV_STEREOSEP=20\" >> /system/build.prop",
-                                                                            "echo \"persist.sys.purgeable_assets=1\" >> /system/build.prop",
-                                                                            "setprop persist.sys.NV_FPSLIMIT 60",
-                                                                            "setprop persist.sys.NV_POWERMODE 1",
-                                                                            "setprop persist.sys.NV_PROFVER 15",
-                                                                            "setprop persist.sys.NV_STEREOCTRL 0",
-                                                                            "setprop persist.sys.NV_STEREOSEPCHG 0",
-                                                                            "setprop persist.sys.NV_STEREOSEP 20",
-                                                                            "setprop persist.sys.purgeable_assets 1",
-                                                                            "cp /data/data/com.nowenui.systemtweaker/files/cfq_improve_gaming /system/etc/init.d/",
-                                                                            "chmod 777 /system/etc/init.d/cfq_improve_gaming",
-                                                                            "/system/etc/init.d/cfq_improve_gaming",
-                                                                            "cp /data/data/com.nowenui.systemtweaker/files/ram_gaming /system/etc/init.d/",
-                                                                            "chmod 777 /system/etc/init.d/ram_gaming",
-                                                                            "rm -f /system/etc/init.d/ram_balanced",
-                                                                            "rm -f /system/etc/init.d/ram_multitasking",
-                                                                            "/system/etc/init.d/ram_gaming",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
-                                                                    );
-                                                                    try {
-                                                                        RootTools.getShell(true).add(command1);
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakenabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakenabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakenabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-
-                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                        ex.printStackTrace();
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                } else {
-                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                }
-
-
-                                                            } else {
-                                                                if (mSharedPreference.contains("skipnitd")) {
-                                                                    spinner6.setEnabled(false);
-                                                                } else {
-                                                                    spinner6.setEnabled(true);
-                                                                }
-
-                                                                if (RootTools.isAccessGiven()) {
-                                                                    Command command1 = new Command(0,
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop",
-                                                                            "rm -f /system/etc/init.d/ram_gaming",
-                                                                            "rm -f /system/etc/init.d/cfq_improve_gaming",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
-                                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
-                                                                    );
-                                                                    try {
-                                                                        RootTools.getShell(true).add(command1);
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakdisabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakdisabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-                                                                        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                                                                            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                            dialog.setIndeterminate(false);
-                                                                            dialog.setCancelable(false);
-                                                                            dialog.show();
-
-                                                                            Handler handler = new Handler();
-                                                                            handler.postDelayed(new Runnable() {
-                                                                                public void run() {
-                                                                                    dialog.dismiss();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.tweakdisabled)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                }
-                                                                            }, 4000);
-                                                                        }
-
-                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                        ex.printStackTrace();
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                } else {
-                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                }
-                                                            }
-
-                                                        }
-                                                    }
-
-        );
 
 
         //////////////////////////////////
@@ -3222,11 +2951,47 @@ public class SystemTweaksFragment extends Fragment {
         //////////////////////////////////
         ////// RAM MODE Tweak ////////////
         /////////////////////////////////
+        final Spinner2 spinner6 = view.findViewById(R.id.spinner6);
         ArrayAdapter<CharSequence> adapter3 =
                 ArrayAdapter.createFromResource(getActivity(), R.array.ramlist, android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String fucks = "/etc/init.d/ram_gaming";
+        String fucksa = "/system/etc/init.d/ram_gaming";
+        String fucksb = "/system/etc/init.d/cfq_improve_gaming";
 
         spinner6.setAdapter(adapter3, false);
+
+        if ((new File(Environment.getRootDirectory() + fucks).exists() || new File(fucksa).exists() || new File(Environment.getRootDirectory() + fucksa).exists()) && (new File(Environment.getRootDirectory() + fucksb).exists() || new File(fucksb).exists() || new File(Environment.getRootDirectory() + fucksb).exists())
+                && text.toString().contains("persist.sys.NV_FPSLIMIT=60") &&
+                text.toString().contains("persist.sys.NV_POWERMODE=1")
+                && text.toString().contains("persist.sys.NV_PROFVER=15") &&
+                text.toString().contains("persist.sys.NV_STEREOCTRL=0") &&
+                text.toString().contains("persist.sys.NV_STEREOSEPCHG=0")
+                && text.toString().contains("persist.sys.NV_STEREOSEP=20") &&
+                text.toString().contains("persist.sys.purgeable_assets=1")) {
+
+            boolean isLangRU = Locale.getDefault().getLanguage().equals("ru");
+            boolean isLangBE = Locale.getDefault().getLanguage().equals("be");
+            boolean isLangUK = Locale.getDefault().getLanguage().equals("uk");
+            if (isLangRU || isLangBE || isLangUK) {
+                final int spinnerPosition6 = adapter3.getPosition("Игровой");
+                spinner6.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        spinner6.setSelection(false, spinnerPosition6);
+                    }
+                });
+            } else {
+                final int spinnerPosition5 = adapter3.getPosition("Gaming");
+                spinner6.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        spinner6.setSelection(false, spinnerPosition5);
+                    }
+                });
+            }
+
+        }
 
         String fucks10 = "/etc/init.d/ram_balanced";
         String fucks10a = "/system/etc/init.d/ram_balanced";
@@ -3306,6 +3071,24 @@ public class SystemTweaksFragment extends Fragment {
                                 outputStream.flush();
                                 outputStream.writeBytes("rm -f /system/etc/init.d/ram_multitasking\n");
                                 outputStream.flush();
+                                outputStream.writeBytes("rm -f /system/etc/init.d/cfq_improve_gaming\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop\n");
+                                outputStream.flush();
                                 outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
@@ -3331,6 +3114,24 @@ public class SystemTweaksFragment extends Fragment {
                                 outputStream.flush();
                                 outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
                                 outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
+                                outputStream.flush();
                                 outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/ram_balanced /system/etc/init.d/\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("chmod 777 /system/etc/init.d/ram_balanced\n");
@@ -3338,6 +3139,8 @@ public class SystemTweaksFragment extends Fragment {
                                 outputStream.writeBytes("rm -f /system/etc/init.d/ram_gaming\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("rm -f /system/etc/init.d/ram_multitasking\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("rm -f /system/etc/init.d/cfq_improve_gaming\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("/system/etc/init.d/ram_balanced");
                                 outputStream.flush();
@@ -3366,6 +3169,24 @@ public class SystemTweaksFragment extends Fragment {
                                 outputStream.flush();
                                 outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
                                 outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
+                                outputStream.flush();
                                 outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/ram_multitasking /system/etc/init.d/\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("chmod 777 /system/etc/init.d/ram_multitasking\n");
@@ -3374,7 +3195,94 @@ public class SystemTweaksFragment extends Fragment {
                                 outputStream.flush();
                                 outputStream.writeBytes("rm -f /system/etc/init.d/ram_balanced\n");
                                 outputStream.flush();
+                                outputStream.writeBytes("rm -f /system/etc/init.d/cfq_improve_gaming\n");
+                                outputStream.flush();
                                 outputStream.writeBytes("/system/etc/init.d/ram_multitasking");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("exit\n");
+                                outputStream.flush();
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
+                            } catch (IOException e) {
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                            }
+                        }
+                        if (choose[position].contains("Gaming") || choose[position].contains("Игровой")) {
+                            try {
+                                Process su = Runtime.getRuntime().exec("su");
+                                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("mount -o rw,remount /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_FPSLIMIT/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_POWERMODE/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOCTRL/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEPCHG/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_STEREOSEP/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.NV_PROFVER/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/persist.sys.purgeable_assets/d' /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_FPSLIMIT=60\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_POWERMODE=1\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_PROFVER=15\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_STEREOCTRL=0\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_STEREOSEPCHG=0\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.NV_STEREOSEP=20\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("echo \"persist.sys.purgeable_assets=1\" >> /system/build.prop\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_FPSLIMIT 60\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_POWERMODE 1\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_PROFVER 15\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_STEREOCTRL 0\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_STEREOSEPCHG 0\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.NV_STEREOSEP 20\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("setprop persist.sys.purgeable_assets 1\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/cfq_improve_gaming /system/etc/init.d/\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("chmod 777 /system/etc/init.d/cfq_improve_gaming\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/system/etc/init.d/cfq_improve_gaming\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/ram_gaming /system/etc/init.d/\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("chmod 777 /system/etc/init.d/ram_gaming\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("rm -f /system/etc/init.d/ram_balanced\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("rm -f /system/etc/init.d/ram_multitasking\n");
+                                outputStream.flush();
+                                outputStream.writeBytes("/system/etc/init.d/ram_gaming\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
                                 outputStream.flush();
@@ -3394,9 +3302,6 @@ public class SystemTweaksFragment extends Fragment {
                 });
             }
         });
-        if (switchgamingmode.isChecked()) {
-            spinner6.setEnabled(false);
-        }
     }
 
 }

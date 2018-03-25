@@ -1,5 +1,6 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,15 +30,12 @@ import com.nowenui.systemtweaker.Frequency;
 import com.nowenui.systemtweaker.R;
 import com.nowenui.systemtweaker.SysUtils;
 import com.nowenui.systemtweaker.Utility;
-import com.onebit.spinner2.Spinner2;
 import com.stericson.RootShell.exceptions.RootDeniedException;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 public class KernelFragment extends Fragment {
@@ -65,6 +62,7 @@ public class KernelFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -539,182 +537,6 @@ public class KernelFragment extends Fragment {
                 });
             }
         }, 800);
-
-
-        //////////////////////////////////////////////
-        ////// Kernel Tweaks Light/Hard //////////////
-        //////////////////////////////////////////////
-        final Spinner2 spinner3 = view.findViewById(R.id.spinner3);
-        if (mSharedPreference.contains("skipnitd")) {
-            spinner3.setEnabled(false);
-        } else {
-            spinner3.setEnabled(true);
-        }
-
-        final ArrayAdapter<CharSequence> adapter =
-                ArrayAdapter.createFromResource(getActivity(), R.array.kernellist, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner3.setAdapter(adapter, false);
-
-        String fuck = "/etc/init.d/light_tweak_kernel";
-        String fucka = "/system/etc/init.d/light_tweak_kernel";
-
-        boolean isLangRU = Locale.getDefault().getLanguage().equals("ru");
-        boolean isLangBE = Locale.getDefault().getLanguage().equals("be");
-        boolean isLangUK = Locale.getDefault().getLanguage().equals("uk");
-        if (new File(Environment.getRootDirectory() + fuck).exists() || new File(fucka).exists() || new File(Environment.getRootDirectory() + fucka).exists()) {
-            if (isLangRU || isLangBE || isLangUK) {
-                final int spinnerPosition2 = adapter.getPosition("Легкие твики");
-                spinner3.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        spinner3.setSelection(false, spinnerPosition2);
-                    }
-                });
-            } else {
-                final int spinnerPosition1 = adapter.getPosition("'Light tweaks system'");
-                spinner3.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        spinner3.setSelection(false, spinnerPosition1);
-                    }
-                });
-            }
-
-        }
-
-        String fuck1 = "/etc/init.d/heavy_tweak_kernel";
-        String fuck1a = "/system/etc/init.d/heavy_tweak_kernel";
-        if (new File(Environment.getRootDirectory() + fuck1).exists() || new File(fuck1a).exists() || new File(Environment.getRootDirectory() + fuck1a).exists()) {
-            if (isLangRU || isLangBE || isLangUK) {
-                final int spinnerPosition4 = adapter.getPosition("Тяжелые твики");
-                spinner3.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        spinner3.setSelection(false, spinnerPosition4);
-                    }
-                });
-            } else {
-                final int spinnerPosition3 = adapter.getPosition("'Heavy tweaks system'");
-                spinner3.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        spinner3.setSelection(false, spinnerPosition3);
-                    }
-                });
-            }
-
-        }
-
-        spinner3.post(new Runnable() {
-            @Override
-            public void run() {
-                spinner3.setOnItemSelectedSpinner2Listener(new Spinner2.OnItemSelectedSpinner2Listener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        String[] choose = getResources().getStringArray(R.array.kernellist);
-
-                        if (choose[position].contains("(стандарт)") || choose[position].contains("(standart)")) {
-                            try {
-                                Process su = Runtime.getRuntime().exec("su");
-                                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("rm -f /system/etc/init.d/heavy_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("rm -f /system/etc/init.d/light_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("exit\n");
-                                outputStream.flush();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                            } catch (IOException e) {
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                            }
-                        }
-                        if (choose[position].contains("Light tweaks system") || choose[position].contains("Легкие твики")) {
-                            try {
-                                Process su = Runtime.getRuntime().exec("su");
-                                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/light_tweak_kernel /system/etc/init.d/\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("chmod 777 /system/etc/init.d/light_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("rm -f /system/etc/init.d/heavy_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/system/etc/init.d/light_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("exit\n");
-                                outputStream.flush();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                            } catch (IOException e) {
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                            }
-                        }
-                        if (choose[position].contains("Heavy tweaks system") || choose[position].contains("Тяжелые твики")) {
-                            try {
-                                Process su = Runtime.getRuntime().exec("su");
-                                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("mount -o rw,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/heavy_tweak_kernel /system/etc/init.d/\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("chmod 777 /system/etc/init.d/heavy_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("rm -f /system/etc/init.d/light_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/system/etc/init.d/heavy_tweak_kernel\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                outputStream.flush();
-                                outputStream.writeBytes("exit\n");
-                                outputStream.flush();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                            } catch (IOException e) {
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                            }
-                        }
-                    }
-                });
-            }
-        });
 
 
         ////////////////////////////////////////////

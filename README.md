@@ -1,5 +1,5 @@
 <p align="center">
-  <i><b>Current version: 4.1.1</b></i>
+  <i><b>Current version: 4.2.0</b></i>
 </p>
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)<br><br>
@@ -16,7 +16,7 @@ The program requires Root! Before using the program, make system backup!
 ## Requirements
 - Android 4.0.3+ , ARM
 - Root
-- Init.d support
+- Init.d\su.d support
 - SELinux: Permissive
 
 ## Features:
@@ -87,16 +87,13 @@ Send to NowenUI@bk.ru:
 * hrc: [No-frills CPU Control CLASSIC](https://github.com/hrk/no-frills-cpu-classic)
 * ycood: [wifipwdwatcher](https://github.com/ycood/wifipwdwatcher)
 
-## Screenshots (russian language)
-![](http://s013.radikal.ru/i323/1707/94/06f95f42745d.png) ![](http://s018.radikal.ru/i525/1707/98/3dcc78611095.png) ![](http://s018.radikal.ru/i521/1707/2b/7faa8318bda0.png) ![](http://s019.radikal.ru/i616/1707/48/d6493a5f6bd0.png) ![](http://s019.radikal.ru/i625/1707/fa/0757a0dd0fd4.png) ![](http://s019.radikal.ru/i605/1707/62/aa789c7df2d7.png)
-
 ## Developed by
 
 [Alexander Kirillov (NowenUI)](https://vk.com/nowenuidev) 
 
 ## License
 
-    Copyright (C) 2017 Alexander Kirillov <NowenUI@bk.ru>
+    Copyright (C) 2018 Alexander Kirillov <NowenUI@bk.ru>
     
     System Tweaker PRO is paid software
     Please observe few rules:

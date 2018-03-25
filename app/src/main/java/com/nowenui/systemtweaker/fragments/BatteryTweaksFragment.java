@@ -1,5 +1,6 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -74,6 +75,7 @@ public class BatteryTweaksFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -156,6 +158,7 @@ public class BatteryTweaksFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
 
         /////////////////////////////////////////////////
         ////// build.prop ->>> String........ ///////////
@@ -604,6 +607,50 @@ public class BatteryTweaksFragment extends Fragment {
         } else {
             dynbs.setEnabled(true);
         }
+
+        dynbs.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View arg0) {
+                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.tweakabout)
+                            .setMessage(R.string.batterydynbs)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+                }
+                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+                    new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
+                            .setTitle(R.string.tweakabout)
+                            .setMessage(R.string.batterydynbs)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+                }
+                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+                    new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
+                            .setTitle(R.string.tweakabout)
+                            .setMessage(R.string.batterydynbs)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+                }
+
+                return true;
+            }
+        });
+
         dynbs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 

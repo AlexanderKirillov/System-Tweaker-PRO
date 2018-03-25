@@ -1,6 +1,6 @@
-#!/data/data/com.nowenui.systemtweaker/files/ash
+#!/system/SystemTweaker/ash
 
-busybox=/data/data/com.nowenui.systemtweaker/files/busybox
+busybox=/system/SystemTweaker/busybox
 
 clear
 
@@ -263,14 +263,11 @@ echo "0" > /proc/sys/vm/oom_kill_allocating_task;
 echo "0" > /proc/sys/vm/panic_on_oom;
 echo "0" > /proc/sys/vm/laptop_mode;
 echo "0" > /proc/sys/vm/swappiness
-echo "50" > /proc/sys/vm/vfs_cache_pressure
-echo "90" > /proc/sys/vm/dirty_ratio
-echo "70" > /proc/sys/vm/dirty_background_ratio
 
-# SDcard tweaker
-$busybox echo "		SdCard tweaking..... OK"
+# Varios Tweaks
 $busybox sleep 5
 READ_AHEAD_KB="2048"
+mem=`$busybox awk '/MemTotal/{print $2}' /proc/meminfo`
 if [ -e /sys/devices/virtual/bdi/179:0/read_ahead_kb ]; then
     echo $READ_AHEAD_KB > /sys/devices/virtual/bdi/179:0/read_ahead_kb
 fi
@@ -317,26 +314,12 @@ fi
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
     echo "0" > /proc/sys/vm/dirty_background_ratio
 fi
-if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
-    echo "1000" > /proc/sys/vm/dirty_expire_centisecs
-fi
 if [ -e /proc/sys/vm/dirty_ratio ]; then
     echo "10" > /proc/sys/vm/dirty_ratio
-fi
-if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
-    echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
 fi
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
     echo "40" > /proc/sys/vm/vfs_cache_pressure
 fi
-
-#Disabling ZRAM
-swapoff /dev/block/zram0 > /dev/null 2>&1
-echo "0" > /sys/block/zram0/disksize
-echo "1" > /sys/block/zram0/reset
-setprop ro.config.zram false
-echo "0" > /proc/sys/vm/swappiness 
-
 
 #I/O
 path=`$busybox ls -d /sys/block/* 2>/dev/null`;

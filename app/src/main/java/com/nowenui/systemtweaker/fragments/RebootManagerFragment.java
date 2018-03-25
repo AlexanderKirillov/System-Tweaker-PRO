@@ -1,5 +1,6 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class RebootManagerFragment extends Fragment {
         reboot_1.setTextSize(18);
         reboot_1.setTextColor(Color.WHITE);
         reboot_1.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
                 if (isClicked) {

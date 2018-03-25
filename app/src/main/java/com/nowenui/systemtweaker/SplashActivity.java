@@ -131,6 +131,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public void SplashOK() {
         if (RootTools.isAccessGiven()) {
+            addSUDSupport();
             Command com7 = new Command(0,
                     "chmod 777 /data/data/com.nowenui.systemtweaker/files/*",
                     "ln -s /data/data/com.nowenui.systemtweaker/files/busybox /data/data/com.nowenui.systemtweaker/files/ash",
@@ -619,11 +620,44 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     ////////////////////////////////
-    ////// Ckeck init.d support ////
+    ////// Add su.d support ////////
+    ////////////////////////////////
+    public int addSUDSupport() {
+        File sud = new File("/system/su.d");
+        File initd = new File("/system/etc/init.d");
+        if ((!initd.exists()) && (!initd.isDirectory()) && (sud.exists()) && (sud.isDirectory())) {
+            if (RootTools.isAccessGiven()) {
+                Command command1 = new Command(0,
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                        "busybox ln -s /system/su.d /system/etc/init.d",
+                        "chmod 777 /system/etc/init.d",
+                        "chown -R root root /system/etc/init.d",
+                        "chmod 777 /system/su.d",
+                        "chown -R root root /system/su.d",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox dos2unix /system/su.d/*",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                        "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system");
+                try {
+                    RootTools.getShell(true).add(command1);
+                } catch (IOException | RootDeniedException | TimeoutException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return 1;
+        }
+        return 0;
+    }
+
+    ////////////////////////////////
+    ////// Check init.d support ////
     ////////////////////////////////
     public int isInitdSupport() {
-        File f = new File("/system/etc/init.d");
-        if ((f.exists()) && (f.isDirectory())) {
+        File sud = new File("/system/su.d");
+        File initd = new File("/system/etc/init.d");
+        if ((initd.exists()) && (initd.isDirectory()) || (sud.exists()) && (sud.isDirectory())) {
             return 1;
         }
         return 0;

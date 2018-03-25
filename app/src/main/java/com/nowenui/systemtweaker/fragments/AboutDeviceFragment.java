@@ -328,7 +328,8 @@ public class AboutDeviceFragment extends Fragment {
                 + easyDisplayMod.getResolution() + "\n" + "• DPI: "
                 + easyDisplayMod.getDensity() + "\n"
                 + res.getString(R.string.cll) + " " + Math.round(easyDisplayMod.getPhysicalSize() * Math.pow(10, 3)) / Math.pow(10, 3) + "\n"
-                + "• Screen FPS: " + easyDisplayMod.getRefreshRate() + "\n");
+                + "• Screen FPS: " + easyDisplayMod.getRefreshRate() + "\n"
+                + "• Screen Display ID: " + easydevicemod.getScreenDisplayID() + "\n");
 
     }
 

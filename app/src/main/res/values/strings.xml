@@ -14,6 +14,7 @@
     <string name="speedy">This speeding up includes:</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="reboot">Reboot</string>
     <string name="cal">CALIBRATE</string>
     <string name="calinfo">If button "CALIBRATE" not active, verify the implementation of both the calibration terms (100% battery level and connected power).\n\nCalibrate process includes deleting files from /data/system/:\n- batterystats.bin\n- batterystats-daily.xml\n- batterystats-checkin.bin</string>
     <string name="batterylevel">Battery Level</string>
@@ -21,7 +22,8 @@
     <string name="cautonbattery">ATTENTION! CALIBRATION MAY DAMAGE THE BATTERY OR THE DEVICE!  DO ONLY AT YOUR OWN RISK</string>
     <string name="calibrate">You can make battery calibration only if you have problems with low energy efficiency devices without objective reasons (e.g., battery swelling), incorrectly shows the battery level. Also you can make calibrate when you reinstalled ROM on your device. \nPlease do not make battery calibration just like that, because you can damage your device or battery\n\nBut if you do decide to do the calibration (of course, at your own risk), follow the instructions below:</string>
     <string name="calsucess">Calibration successful!</string>
-    <string name="reboot">Reboot</string>
+    <string name="cal1">1) Fully charge your device</string>
+    <string name="cal2">2) Press on the button \'Calibrate\'</string>
     <string name="rebootdialog">It is recommended to reboot now. \n\nDo you want to reboot your device? \n\n</string>
     <string name="errordev">ERROR! PLEASE CONNECT WITH DEVELOPER</string>
     <string name="erroroot">ERROR! YOU HAVENT ROOT!</string>
@@ -110,6 +112,7 @@
     <string name="author">The author: Alexander Kirillov (NowenUI)\n</string>
     <string name="libraries">Used libraries:</string>
     <string name="site">Official Site: NowenUI.com</string>
+    <string name="batterydynbs">DynBS will help reduce power consumption by reducing unnecessary high processor frequency when these do not need \ nFor tweak say thank igaryasha94</string>
     <string name="opensite">Click to open site</string>
     <string name="agreement">Before using the program, you should read agreement</string>
     <string name="systemteweaks">This section contains tweaks that can be used to increase the stability and speed of the system and customize it\n</string>
@@ -222,11 +225,6 @@
     <string name="dpi8">Custom DPI</string>
     <string name="licensecheckbox">You agree with the Agreement</string>
     <string name="kerneltweaks">Kernel Tuner</string>
-    <string-array name="kernellist">
-        <item>(standart)</item>
-        <item>\'Light tweaks system\'</item>
-        <item>\'Heavy tweaks system\'</item>
-    </string-array>
     <string-array name="oomlist">
         <item>(standart)</item>
         <item>Enabled</item>
@@ -236,11 +234,11 @@
         <item>(standart)</item>
         <item>Balanced</item>
         <item>Multitasking</item>
+        <item>Gaming</item>
     </string-array>
-    <string name="ram">RAM Mode</string>
+    <string name="ram">Device\n usage \nmode</string>
     <string name="displayfix">Improve display quality\nImplemented by the system display calibration </string>
     <string name="kerneltweakshello">On this page you can manage your kernel</string>
-    <string name="tweakssystem">Apply the following tweak system:</string>
     <string name="kernel1">Enable battery saving on multicore devices\nUse only if your device has two or more processors!</string>
     <string name="kernel2">Interactive Governor tweak</string>
     <string name="kernel3">Optimize kernel sleeping mode</string>
@@ -415,7 +413,6 @@ In this case- it increases the intensity and minimum illumination threshold
     <string name="oh">Ondemand/Hotplug governors tweak\nThe use of optimal values in order to achieve a balanced performance and energy efficiency</string>
     <string name="fpsss">FPS Unlocker</string>
     <string name="fpset">[ТВИК BUILD.PROP:\n\ndebug.egl.swapinterval=-60] \n\nTweak improves performance thought enabling new algorithms of FPS management</string>
-    <string name="gm">Gaming mode</string>
     <string name="okmusic">Installation successful!</string>
 
     <string name="delmusic">Removed successfully!</string>
@@ -438,12 +435,10 @@ In this case- it increases the intensity and minimum illumination threshold
     <string name="b2017">Disabling memory limit and a low memory notification when installing applications in GPlay</string>
     <string name="c2017">To disable tweak clear \'Storage Settings\' (Settings Provider) data in settings and reboot the device. For tweak we say thank you SmoothDenis</string>
     <string name="dang">DANGEROUS TWEAKS!</string>
-    <string name="d2017">Dynamic Battery Saving (DynBS)\nIt will help reduce power consumption by reducing unnecessary high processor frequency when these do not need \ nFor tweak say thank igaryasha94</string>
+    <string name="d2017">Dynamic Battery Saving (DynBS)</string>
     <string name="clear">Clearing</string>
     <string name="cleardalvik">Clear dalvik-cache</string>
     <string name="clearcache">Clear /cache</string>
-    <string name="gamingmode">[ТВИК BUILD.PROP:\n\n persist.sys.NV_FPSLIMIT=60\n\npersist.sys.NV_POWERMODE=1\n\npersist.sys.NV_PROFVER=1\n\npersist.sys.NV_STEREOCTRL=0\n\npersist.sys.NV_STEREOSEPCHG=0
-               \n\npersist.sys.NV_STEREOSEP=20\n\npersist.sys.purgeable_assets=1]\n\n[ТВИК INIT.D cfq_improve_gaming (применяется только если установлен текущий планировщик cfq] \n\nTweak improves gaming experience!</string>
     <string name="cachetr">Transfer dalvik-cache to /cache</string>
     <string name="appnalozh">Disable hardware overlay </string>
     <string name="aboutmnogozadrestr">[ТВИК BUILD.PROP:\n\n MIN_HIDDEN_APPS=false \n\n
@@ -512,16 +507,11 @@ tcp_fin_timeout=30] \n\nTweak improves internet speed!</string>
     <string name="email">Your e-mail</string>
     <string name="lic">Unfortunately, APK check failed! The application should not be modified or rebuilted \n\nIf you have any problems, please contact to NowenUI@bk.ru\n\nThank you very much for your understanding!</string>
 
-    <string name="before1">Make system and data backups using custom recovery (if you can make it)</string>
-    <string name="before2">Make build.prop file and init.d folder backups using utility, which presents in this programm</string>
-    <string name="before3">You must understand that tweaks should be installed with the mind, because many installed tweaks can cause conflicts</string>
-
     <string name="whatdo1">Using a special balanced profile of the device</string>
     <string name="whatdo2">Clear RAM</string>
     <string name="whatdo3">Speeding up and optimizing partitions (fstrim)</string>
     <string name="whatdo4">Cleaning up the system from unnecessary files and cache (your files will remain untouched)</string>
     <string name="whatdo5">Optimizing system files</string>
-    <string name="aboutsystem">Light kernel tweaks - the most optimal setting, the risk of getting problems is minimal. The applied values are slightly different from the standard ones.\nHeavy kernel tweaks - aggressive changes in important kernel parameters, the values have strong discrepancies with the original. The risk of getting problems is pretty big!</string>
     <string name="sdfixinfo1">1) Click on the SD FIX button</string>
     <string name="sdfixinfo2">2) If your device has a version of Android 6.0 and higher, and if you used SDFix earlier, but installed new applications that need support for writing to the memory card- in this situation, use the \'Re-registration\' button</string>
     <string name="sdfixinfo3">Note: on Android 4.4-6.0 this fix works even after data reset, i.e. it is executed once, after execution it is not required to repeat the procedure, and on Android 6.0 and higher after data reset it is necessary to apply the tweak again! \n\n</string>
@@ -533,8 +523,6 @@ tcp_fin_timeout=30] \n\nTweak improves internet speed!</string>
     <string name="agree3">3) All the features of the program is for information only, their presence does not mean their using</string>
     <string name="agree4">4) You can not use the program for their own purposes, or any part of the code of the program without the consent of the developer, but bear in mind paragraph 5</string>
     <string name="agree5">5) All of the features, presented in the program (tweaks, battery calibration technology, speed-up technology with one click and etc.), are available to the public, you can use them for their own purposes (for example, commercial purposes)</string>
-    <string name="cal1">1) Fully charge your device</string>
-    <string name="cal2">2) Press on the button \'Calibrate\'</string>
     <string name="soundinfo1">- installing special libraries in /system</string>
     <string name="soundinfo2">- using special, optimized profile to make sound better</string>
     <string name="braviainfo1">BRAVIA Engine 4 Installing</string>
@@ -557,6 +545,8 @@ tcp_fin_timeout=30] \n\nTweak improves internet speed!</string>
     <string name="spcheck5">Service checking...</string>
     <string name="gpsstandart">Standart</string>
     <string name="gpsru">Russia</string>
+    <string name="gpsindia">India</string>
+    <string name="gpsindonesia">Indonesia</string>
     <string name="gpsbe">Belarus</string>
     <string name="gpsuk">Ukraine</string>
     <string name="gpskz">Kazakhstan</string>
@@ -577,5 +567,5 @@ tcp_fin_timeout=30] \n\nTweak improves internet speed!</string>
     <string name="cant">NOT AVAILABLE</string>
     <string name="statusssl">NOT INSPECTED OR INIT.D NOT SUPPORTED!</string>
     <string name="info">If the TCP mode is not applied after the reboot, check the following conditions:\n1) SELinux must be Permissive\n2) Init.d Support</string>
-
+    <string name="pleasewait">Please wait....</string>
 </resources>
