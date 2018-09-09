@@ -1,18 +1,11 @@
 package com.nowenui.systemtweaker.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,9 +14,8 @@ import android.widget.CompoundButton;
 
 import com.franmontiel.localechanger.LocaleChanger;
 import com.franmontiel.localechanger.utils.ActivityRecreationHelper;
-import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
-import com.nowenui.systemtweaker.Utility;
+import com.nowenui.systemtweaker.ThemeUtility;
 
 import java.util.Locale;
 
@@ -42,13 +34,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public void recreateActivity() {
@@ -60,85 +45,9 @@ public class SettingsFragment extends Fragment {
         getActivity().overridePendingTransition(0, 0);
     }
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_user:
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                    new android.app.AlertDialog.Builder(this.getContext())
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, parent, false);
+        return inflater.inflate(R.layout.settings, parent, false);
     }
 
 
@@ -174,7 +83,8 @@ public class SettingsFragment extends Fragment {
         ////// Dangerous tweak enabling option  ////////////
         ///////////////////////////////////////////////////
         final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if (mSharedPreference.contains("ALERTCHECK")) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (mSharedPreference.contains("alerttweaks")) {
             alerttweaks.setChecked(true);
         } else {
             alerttweaks.setChecked(false);
@@ -188,43 +98,28 @@ public class SettingsFragment extends Fragment {
                                                    public void onCheckedChanged(CompoundButton buttonView,
                                                                                 boolean isChecked) {
                                                        if (isChecked) {
-                                                           SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                                                            SharedPreferences.Editor editor = prefs.edit();
-                                                           editor.putString("ALERTCHECK", "789487947878477");
+                                                           editor.putString("alerttweaks", "alerttweaks");
                                                            editor.commit();
                                                        } else {
-                                                           SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                                                            SharedPreferences.Editor editor = prefs.edit();
-                                                           editor.remove("ALERTCHECK");
+                                                           editor.remove("alerttweaks");
                                                            editor.commit();
                                                        }
-
                                                    }
                                                }
-
         );
-
-        ////////////////////////////////////////
-        ////// Buttons appearance  ////////////
-        ///////////////////////////////////////
-        light_theme_btn.setBackgroundResource(R.drawable.roundbuttoncal);
-        light_theme_btn.setTextColor(Color.WHITE);
-        dark_theme_btn.setBackgroundResource(R.drawable.roundbuttoncal);
-        dark_theme_btn.setTextColor(Color.WHITE);
-        amoled_theme_btn.setBackgroundResource(R.drawable.roundbuttoncal);
-        amoled_theme_btn.setTextColor(Color.WHITE);
-
         /////////////////////////////////////////////////////////
         ////// Show selected theme symbol on buttons ////////////
         /////////////////////////////////////////////////////////
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-            light_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
+            light_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-            dark_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
+            dark_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-            amoled_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
+            amoled_theme_btn.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
 
@@ -235,7 +130,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Utility.setTheme(getContext(), 1);
+                ThemeUtility.setTheme(getContext(), 1);
                 recreateActivity();
             }
         });
@@ -245,7 +140,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Utility.setTheme(getContext(), 2);
+                ThemeUtility.setTheme(getContext(), 2);
                 recreateActivity();
             }
         });
@@ -255,7 +150,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Utility.setTheme(getContext(), 3);
+                ThemeUtility.setTheme(getContext(), 3);
                 recreateActivity();
             }
         });

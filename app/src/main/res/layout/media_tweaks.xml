@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/mediatweakshello"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:paddingBottom="10dp"
+            android:text="@string/nowe"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/photomaxquality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mediaone" />
+
+        <CheckBox
+            android:id="@+id/bpsandmemcapmaxquality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mediatwo" />
+
+        <CheckBox
+            android:id="@+id/amrwidebandtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mediathree" />
+
+        <CheckBox
+            android:id="@+id/stagefrighttweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mediafour" />
+
+        <CheckBox
+            android:id="@+id/flashlighttweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mediafive" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/mediaserver"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/StopMediaScanner"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left|top"
+                        android:background="@drawable/roundbuttoncal"
+                        android:gravity="center_vertical|center|center_horizontal"
+                        android:text="@string/stopmediascanner"
+                        android:textColor="@android:color/white" />
+
+                    <Button
+                        android:id="@+id/StartMediaScanner"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/StopMediaScanner"
+                        android:layout_alignBottom="@+id/StopMediaScanner"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:background="@drawable/roundbuttoncal"
+                        android:gravity="center_vertical|center|center_horizontal"
+                        android:text="@string/startmediascanner"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
+            </LinearLayout>
+        </TableLayout>
+
+
+        <Button
+            android:id="@+id/StopMediaServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:background="@drawable/roundbuttoncal"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/stopmediaserver"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/stopmediaserveratboot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.04"
+            android:checked="false"
+            android:text="@string/bootmediaserver" />
+
+        <CheckBox
+            android:id="@+id/stopmediascanneratboot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="-15dp"
+            android:layout_weight="0.04"
+            android:checked="false"
+            android:text="@string/bootmediascanner" />
+
+
+    </LinearLayout>
+</ScrollView>

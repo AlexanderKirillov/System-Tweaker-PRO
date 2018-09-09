@@ -388,7 +388,7 @@ public final class RootToolsInternalMethods {
             }
 
             RootTools.remount("/system", "ro");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -403,7 +403,7 @@ public final class RootToolsInternalMethods {
      * exceptions.
      * @throws Exception if the operation cannot be completed.
      */
-    public boolean fixUtils(String[] utils) throws Exception {
+    public boolean fixUtils(String[] utils) {
 
         for (String util : utils) {
             if (!checkUtil(util)) {
@@ -557,7 +557,7 @@ public final class RootToolsInternalMethods {
                 commandWait(rootShell, command);
             }
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             RootTools.log("BusyBox was not found, more information MAY be available with Debugging on.");
             return "";
         }
@@ -587,7 +587,7 @@ public final class RootToolsInternalMethods {
                 sb.append(spaceStr.charAt(i));
             }
             return (long) Math.ceil(Double.valueOf(sb.toString()) * multiplier);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return -1;
         }
     }
@@ -632,7 +632,7 @@ public final class RootToolsInternalMethods {
             installer = new Installer(context);
         } catch (IOException ex) {
             if (RootTools.debugMode) {
-                ex.printStackTrace();
+
             }
             return false;
         }
@@ -683,7 +683,7 @@ public final class RootToolsInternalMethods {
                                     RootTools.log("Symlink found.");
                                     symlink_final = symlink[symlink.length - 1];
                                 }
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
                             }
 
                             try {
@@ -739,11 +739,14 @@ public final class RootToolsInternalMethods {
                         RootTools.log(line);
 
                         String[] fields = line.split(" ");
-                        InternalVariables.mounts.add(new Mount(new File(fields[0]), // device
-                                new File(fields[1]), // mountPoint
-                                fields[2], // fstype
-                                fields[3] // flags
-                        ));
+
+                        if (fields.length > 3) {
+                            InternalVariables.mounts.add(new Mount(new File(fields[0]), // device
+                                    new File(fields[1]), // mountPoint
+                                    fields[2], // fstype
+                                    fields[3] // flags
+                            ));
+                        }
                     }
 
                     super.commandOutput(id, line);
@@ -821,7 +824,7 @@ public final class RootToolsInternalMethods {
             Shell.startRootShell().add(command);
             commandWait(Shell.startRootShell(), command);
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         if (InternalVariables.space != null) {
@@ -1088,7 +1091,7 @@ public final class RootToolsInternalMethods {
             installer = new Installer(context);
         } catch (IOException ex) {
             if (RootTools.debugMode) {
-                ex.printStackTrace();
+
             }
             return false;
         }
@@ -1111,7 +1114,7 @@ public final class RootToolsInternalMethods {
             installer = new Installer(context);
         } catch (IOException ex) {
             if (RootTools.debugMode) {
-                ex.printStackTrace();
+
             }
             return false;
         }
@@ -1301,7 +1304,7 @@ public final class RootToolsInternalMethods {
         return i;
     }
 
-    private void commandWait(Shell shell, Command cmd) throws Exception {
+    private void commandWait(Shell shell, Command cmd) {
 
         while (!cmd.isFinished()) {
 

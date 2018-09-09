@@ -1,0 +1,1379 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="Советы по улучшению энергосбережения"
+            android:textColor="@color/resultbad"
+            android:textSize="25dp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="Каждый человек хотя бы раз в жизни задумывался об увеличении автономной работы своего устройства.
+В этой инструкции я расскажу о разных, но эффективных методах увеличения автономности устройств на базе Android.
+Выполнение некоторых советов зависит от Вашего использования (например, совет отключения GPS актуален только для тех, кому он не важен, и кто не использует навигацию) "
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="1)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:layout_toEndOf="@+id/textView12"
+                        android:layout_toRightOf="@+id/textView12"
+                        android:text="Добиться наибольшего увеличения автономности можно путем удаления встроенных в систему ненужных приложений (через любой Root-файловый менеджер, например через Root Explorer), которыми Вы не пользуетесь, но они работают в фоновом режиме и пожирают драгоценный заряд аккумулятора.\nОпределить постоянно работающие в фоне приложения можно с помощью утилиты:\nWakeLock Detector (скачайте в Google Play)\nНеобходимо полностью зарядить устройство, включить утилиту (в настройках необходимо поставить галочку на \'Расширенный режим\') и, сняв смартфон зарядки, положить куда-нибудь и не трогать приблизительно 6-7 часов.\nПосле истечения необходимого времени зайдите в WakeLock Detector и посмотрите, какие приложения будят устройство во время сна.\nСделав анализ, для себя выявите, какие из этих приложений вам не нужны и удалите их"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="2)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView5"
+                        android:layout_toRightOf="@+id/textView5"
+                        android:gravity="left"
+                        android:text="Используйте программу LeanDroid для автоматического управления беспроводными интерфейсами (включение или выключение моб. данных, WiFi, GPS, по-времени и при выключении экрана, есть возможность настройки периода синхронизации). Программа имеет очень понятный интерфейс, легко настраивается. "
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="3)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/textView6"
+                        android:layout_toRightOf="@+id/textView6"
+                        android:text="С помощью приложения Greenify можно \'усыпить\' все приложения, которые в этом нуждаются и это позволяет увеличить время работы устройства от аккумулятора.
+Довольно полезная и интересная программа, но использовать ее надо с умом."
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="4)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView7"
+                        android:layout_toRightOf="@+id/textView7"
+                        android:text="Удалите все установленные антивирусы, \'чистильщики системы\', вроде CleanMaster, сомнительные бесполезные программы для увеличения производительности\nВы спросите, как это так, удалить антивирус, это ведь поставит устройство под угрозу?! Я скажу, это не совсем так, любая антивирусная программа постоянно работает в фоне и сканирует систему, и благодаря этому снижается как производительность, так и время автономной работы. Впринципе, антивирус-то и не нужен, главное с умом относиться к использованию устройства, а именно:\n- не скачивать приложения с непроверенных источников\n- не посещать сомнительные рекламные сайты, не реагировать на всплывающую рекламу (которая, например, утверждает о том, что Ваше устройство или заражено, или работает медленно, необходимо скачать какое-либо приложение для исправления)"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="5)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView8"
+                        android:layout_toRightOf="@+id/textView8"
+                        android:text="Если Вы не пользуетесь LTE (4G) или он Вам не важен, то отключите его, переведите устройство в режим WCDMA/GSM\n
+Это поможет очень сильно увеличить автономность устройства, особенно если в режиме LTE Ваш смартфон имеет слабый сигнал "
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="6)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView9"
+                        android:layout_toRightOf="@+id/textView9"
+                        android:text='[XPOSED] Существует еще один полезный модуль Xposed: Amplify Pro - Battery Extender \n
+Приложение автоматически устанавливает нужную конфигурацию и настройку системы в целом. Также оно показывает точный расход батареи, сколько устройство бодрствовало, как часто просыпалось и т.д.'
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="7)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView3"
+                        android:layout_toRightOf="@+id/textView3"
+                        android:text="Отключите следующие пункты в приложении \'Настройки Google\' в пункте \'Безопасность\'\n- Удаленный поиск устройства\n- Удаленная блокировка и сброс настроек\n- Проверять наличие проблем с безопасностью\n- Борьба с вредоносными программами"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="8)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView4"
+                        android:layout_toRightOf="@+id/textView4"
+                        android:text="Включите пункт \'Отключить подбор рекламы\' в приложении \'Настройки Google\' в пункте \'Реклама\'"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="9)"
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView13"
+                        android:layout_toRightOf="@+id/textView13"
+                        android:text="Отключите автоматическую синхронизацию аккаунтов в настройках устройства"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="10) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView15"
+                        android:layout_toRightOf="@+id/textView15"
+                        android:text='Используйте темную тему оформления (например, Dark Material), если Ваше устройство имеет возможность смены темы. Применимо к устройствам с AMOLED экранами (например, к устройствам Samsung из линейки Galaxy)'
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="11) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView16"
+                        android:layout_toRightOf="@+id/textView16"
+                        android:text="Не используйте живые обои"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="12) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView21"
+                        android:layout_toRightOf="@+id/textView21"
+                        android:text="Отключите оповещения из неиспользуемых приложений (или тех, из которых уведомления не важны, например, некоторые игры).\nНапример, очень часто приложение \'Aliexpress\' посылает бессмысленные Push-уведомления, что сказывается на автономной работе. В таком случае, в диспетчере приложений найдите приложение Aliexpress, нажмите на него и отключите уведомления (снимите галку с пункта \'Выводить уведомления\' или зайдите во вкладку \'Уведомления\' и отключите их там)"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="13) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView22"
+                        android:layout_toRightOf="@+id/textView22"
+                        android:text="Зайдите в Google Play-> Настройки-> отключите автоматическое обновление приложений"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="14) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView23"
+                        android:layout_toRightOf="@+id/textView23"
+                        android:text="Отключите неиспользуемые жесты в настройках устройства, если таковые имеются"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="15) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView24"
+                        android:layout_toRightOf="@+id/textView24"
+                        android:text="[XPOSED] Испольуйте программу BootManager для отключения автозагрузки приложений."
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="16) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView25"
+                        android:layout_toRightOf="@+id/textView25"
+                        android:text="Выключите отправку \'Отчетов о диагностике\' в настройках устройства (на всех устройствах по-разному, обычно этот пункт находится во вкладке \'Об устройстве\')"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="17) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView26"
+                        android:layout_toRightOf="@+id/textView26"
+                        android:text="Отключите отправку истории о метоположении устройства в настройках геоданных "
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="18) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView27"
+                        android:layout_toRightOf="@+id/textView27"
+                        android:text="Если Вы не пользуетесь резервным копированием устройства в аккаунт Google, то отключите Резервное копирование данных и Автовосстановление в  настройках устройства"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="19) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView28"
+                        android:layout_toRightOf="@+id/textView28"
+                        android:text="Отключите постоянный поиск Wifi сетей в настройках Wifi (пункт \'Всегда разрешать поиск\')"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="20) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView29"
+                        android:layout_toRightOf="@+id/textView29"
+                        android:text="Если Ваша прошивка поддерживает функцию печати,и Вы не используете службы печати, то зайдите в настройки устройства и отключите включенные службы"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="21) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView32"
+                        android:layout_toRightOf="@+id/textView32"
+                        android:text="Отключайте NFC, когда его не используете"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="22) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView33"
+                        android:layout_toRightOf="@+id/textView33"
+                        android:text="Если не пользуетесь навигацией (GPS), то в настройках геоданных выберите метод обнаружения \'WiFi и мобильные сети\'. Это позволит значительно сохранить заряд батареи."
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView34"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="23) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView34"
+                        android:layout_toRightOf="@+id/textView34"
+                        android:text="После перепрошивки со сбросом данных , а также каждые 3 месяца, делайте калибровку аккумулятора встроенной в эту программу утилитой."
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView35"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="24) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView35"
+                        android:layout_toRightOf="@+id/textView35"
+                        android:text="Если у Вас устройство Samsung и Вы используете Galaxy Apps, зайдите в настройки Galaxy Apps и снимите галку с пункта \'Push-уведомления\'. Еще лучшим вариантом будет полное удаление Samsung Push Service из системы, так как этот сервис очень часто \'будит\' устройство, что сказывается на автономности"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView36"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="25) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView36"
+                        android:layout_toRightOf="@+id/textView36"
+                        android:text="Используйте блокировку рекламы в приложениях, рекомендую приложение AdAway"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView37"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="26) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView37"
+                        android:layout_toRightOf="@+id/textView37"
+                        android:text="Ну наверное самым примитивным советом будет (он может Вам не подойти, вдруг Вы не спите ночью, а все время сидите в своем устройстве): отключать WIFI/GPS/Bluetooth/моб.сеть на ночь (ну или когда Вы долгое время не используете устройство), а лучше всего конечно на этот период включать режим \'В самолете\'"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/textView38"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:text="27) "
+                        android:textColor="@color/resultbad"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="193dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="right"
+                        android:layout_toEndOf="@+id/textView38"
+                        android:layout_toRightOf="@+id/textView38"
+                        android:text="В настройках камеры отключаем геотеги (если они Вам не нужны) , применимо не ко всем устройствам!"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </TableLayout>
+
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/variostweaks"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:paddingBottom="10dp"
+            android:text="@string/nowe"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/quickboottweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:text="@string/var1" />
+
+        <CheckBox
+            android:id="@+id/disablebootanimtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disableboot" />
+
+        <CheckBox
+            android:id="@+id/adbnotifytweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/adb" />
+
+        <CheckBox
+            android:id="@+id/appnalozenietweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/appnalozh" />
+
+
+    </LinearLayout>
+</ScrollView>

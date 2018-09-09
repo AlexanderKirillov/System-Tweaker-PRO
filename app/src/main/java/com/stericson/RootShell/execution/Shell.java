@@ -124,20 +124,23 @@ public class Shell {
                     if (write < commands.size()) {
                         isExecuting = true;
                         Command cmd = commands.get(write);
-                        cmd.startExecution();
-                        RootShell.log("Executing: " + cmd.getCommand() + " with context: " + shellContext);
 
-                        //write the command
-                        outputStream.write(cmd.getCommand());
-                        outputStream.flush();
+                        if (null != cmd) {
+                            cmd.startExecution();
+                            RootShell.log("Executing: " + cmd.getCommand() + " with context: " + shellContext);
 
-                        //write the token...
-                        String line = "\necho " + token + " " + totalExecuted + " $?\n";
-                        outputStream.write(line);
-                        outputStream.flush();
+                            //write the command
+                            outputStream.write(cmd.getCommand());
+                            outputStream.flush();
 
-                        write++;
-                        totalExecuted++;
+                            //write the token...
+                            String line = "\necho " + token + " " + totalExecuted + " $?\n";
+                            outputStream.write(line);
+                            outputStream.flush();
+
+                            write++;
+                            totalExecuted++;
+                        }
                     } else if (close) {
                         /**
                          * close the thread, the shell is closing.
@@ -223,14 +226,14 @@ public class Shell {
 
                             try {
                                 id = Integer.parseInt(fields[1]);
-                            } catch (NumberFormatException e) {
+                            } catch (NumberFormatException ignored) {
                             }
 
                             int exitCode = -1;
 
                             try {
                                 exitCode = Integer.parseInt(fields[2]);
-                            } catch (NumberFormatException e) {
+                            } catch (NumberFormatException ignored) {
                             }
 
                             if (id == totalRead) {
@@ -277,7 +280,7 @@ public class Shell {
                 try {
                     proc.waitFor();
                     proc.destroy();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
                 while (read < commands.size()) {
@@ -375,7 +378,7 @@ public class Shell {
 
                 try {
                     this.proc.destroy();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
                 closeQuietly(this.inputStream);
@@ -391,7 +394,7 @@ public class Shell {
 
                 try {
                     this.proc.destroy();
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
                 closeQuietly(this.inputStream);
@@ -419,7 +422,7 @@ public class Shell {
                 so.setPriority(Thread.NORM_PRIORITY);
                 so.start();
             }
-        } catch (InterruptedException ex) {
+        } catch (InterruptedException ignored) {
             worker.interrupt();
             Thread.currentThread().interrupt();
             throw new TimeoutException();
@@ -594,13 +597,13 @@ public class Shell {
                 RootShell.log("Using Existing Shell!");
             }
             return Shell.shell;
-        } catch (RootDeniedException e) {
+        } catch (RootDeniedException ignored) {
             //Root Denied should never be thrown.
             throw new IOException();
         }
     }
 
-    public Command add(Command command) throws IOException {
+    public Command add(Command command) {
         if (this.close) {
             throw new IllegalStateException(
                     "Unable to add commands to a closed shell");
@@ -614,7 +617,6 @@ public class Shell {
 
         while (this.isCleaning) {
             //Don't add commands while cleaning
-            ;
         }
 
         this.commands.add(command);
@@ -624,7 +626,7 @@ public class Shell {
         return command;
     }
 
-    public final void useCWD(Context context) throws IOException, TimeoutException, RootDeniedException {
+    public final void useCWD(Context context) throws IOException {
         add(
                 new Command(
                         -1,
@@ -665,7 +667,7 @@ public class Shell {
         }
     }
 
-    public void close() throws IOException {
+    public void close() {
         RootShell.log("Request to close shell!");
 
         int count = 0;
@@ -758,12 +760,12 @@ public class Shell {
                 while ((line = reader.readLine()) != null) {
                     stdout.add(line);
                 }
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
             // make sure our stream is closed and resources will be freed
             try {
                 reader.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
 
             process.destroy();
@@ -783,7 +785,7 @@ public class Shell {
                                 version = line;
                                 break;
                             }
-                        } catch (NumberFormatException e) {
+                        } catch (NumberFormatException ignored) {
                         }
                     }
                 }
@@ -820,7 +822,7 @@ public class Shell {
                         } finally {
                             is.close();
                         }
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
 
@@ -877,7 +879,7 @@ public class Shell {
         if (this.shellType == ShellType.ROOT) {
             try {
                 Shell.closeRootShell();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
                 RootShell.log("Problem closing shell while trying to switch context...");
             }
 
@@ -891,25 +893,26 @@ public class Shell {
         }
     }
 
-    public static enum ShellType {
+    public enum ShellType {
         NORMAL,
         ROOT,
         CUSTOM
     }
 
     //this is only used with root shells
-    public static enum ShellContext {
+    public enum ShellContext {
         NORMAL("normal"), //The normal context...
         SHELL("u:r:shell:s0"), //unprivileged shell (such as an adb shell)
         SYSTEM_SERVER("u:r:system_server:s0"), // system_server, u:r:system:s0 on some firmwares
         SYSTEM_APP("u:r:system_app:s0"), // System apps
         PLATFORM_APP("u:r:platform_app:s0"), // System apps
         UNTRUSTED_APP("u:r:untrusted_app:s0"), // Third-party apps
-        RECOVERY("u:r:recovery:s0"); //Recovery
+        RECOVERY("u:r:recovery:s0"), //Recovery
+        SUPERSU("u:r:supersu:s0"); //SUPER SU default
 
         private String value;
 
-        private ShellContext(String value) {
+        ShellContext(String value) {
             this.value = value;
         }
 
@@ -982,7 +985,7 @@ public class Shell {
                 Field field;
                 try {
                     field = processClass.getDeclaredField("pid");
-                } catch (NoSuchFieldException e) {
+                } catch (NoSuchFieldException ignored) {
                     field = processClass.getDeclaredField("id");
                 }
                 field.setAccessible(true);

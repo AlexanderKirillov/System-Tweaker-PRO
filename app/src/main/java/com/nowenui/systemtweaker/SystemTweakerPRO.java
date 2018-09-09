@@ -21,9 +21,9 @@ public class SystemTweakerPRO extends Application {
     @Override
     public void onCreate() {
 
-        ////////////////////////////////////////
-        ////// Check theme and apply ///////////
-        ////////////////////////////////////////
+        ///////////////////////////////////////////
+        ////// Check language and apply ///////////
+        ///////////////////////////////////////////
         super.onCreate();
         LocaleChanger.initialize(getApplicationContext(), SUPPORTED_LOCALES);
 

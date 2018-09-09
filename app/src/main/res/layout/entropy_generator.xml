@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <TextView
+            android:id="@+id/entropystatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.04"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.19"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/entropy"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="168dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:layout_width="211dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_vertical|center_horizontal|center"
+                        android:text="Entropy Pull:"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/entropy_pull"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical|center_horizontal|center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="0.23"
+                    android:foregroundGravity="center_vertical|center_horizontal|center"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+        </TableLayout>
+
+
+        <Button
+            android:id="@+id/entropy"
+            android:layout_width="330dp"
+            android:layout_height="55dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/entrinstall" />
+
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <Button
+                        android:id="@+id/startentropy"
+                        android:layout_width="138dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/startservice" />
+
+                    <Button
+                        android:id="@+id/stopentropy"
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_weight="0.33"
+                        android:text="@string/stopservice" />
+                </RelativeLayout>
+            </LinearLayout>
+        </TableLayout>
+
+        <CheckBox
+            android:id="@+id/bootenropyservice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.04"
+            android:text="@string/entboot" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/delentr" />
+
+
+    </LinearLayout>
+</ScrollView>

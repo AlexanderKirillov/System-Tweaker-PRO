@@ -61,7 +61,7 @@ public class Runner extends Thread {
                 Shell.startRootShell().add(command);
                 commandWait(command);
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

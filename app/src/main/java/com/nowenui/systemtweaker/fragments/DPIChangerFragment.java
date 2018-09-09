@@ -1,5 +1,6 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,9 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,13 +23,12 @@ import android.widget.TextView;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
-import com.nowenui.systemtweaker.Utility;
+import com.nowenui.systemtweaker.ThemeUtility;
 import com.stericson.RootShell.exceptions.RootDeniedException;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,92 +51,11 @@ public class DPIChangerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_user:
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                    new android.app.AlertDialog.Builder(this.getContext())
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dpi_changer, parent, false);
+        return inflater.inflate(R.layout.dpi_changer, parent, false);
     }
 
 
@@ -150,7 +66,7 @@ public class DPIChangerFragment extends Fragment {
         final TextView statedpi = view.findViewById(R.id.statedpi);
         if (getActivity() == null)
             return;
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
 
             final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -163,10 +79,10 @@ public class DPIChangerFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     dialog.dismiss();
-                        }
+                }
             }, 1500);
         }
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
 
             final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -179,10 +95,10 @@ public class DPIChangerFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     dialog.dismiss();
-                        }
+                }
             }, 1500);
         }
-        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
 
             final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -195,7 +111,7 @@ public class DPIChangerFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     dialog.dismiss();
-                         }
+                }
             }, 1500);
         }
 
@@ -227,7 +143,7 @@ public class DPIChangerFragment extends Fragment {
                             });
                         }
                     }
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         };
@@ -259,69 +175,63 @@ public class DPIChangerFragment extends Fragment {
                         editor.apply();
 
 
-                        if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
                             if (choose[position].contains("120DPI")) {
                                 new AlertDialog.Builder(getContext())
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi120)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=120\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=120\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        new android.support.v7.app.AlertDialog.Builder(view.getContext())
+                                                                .setTitle(R.string.reboot)
+                                                                .setMessage(R.string.rebootdialog)
+                                                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int which) {
 
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                                                                        if (RootTools.isAccessGiven()) {
+                                                                            Command command1 = new Command(0,
+                                                                                    "reboot");
+                                                                            try {
+                                                                                RootTools.getShell(true).add(command1);
+                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                                                ex.printStackTrace();
+                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                                            }
+                                                                        } else {
+                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                                                                         }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
                                                                     }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                                })
+                                                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int which) {
+                                                                        dialog.dismiss();
+                                                                    }
+                                                                })
+                                                                .setIcon(R.drawable.warning)
+                                                                .show();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
+
                                         })
                                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
@@ -337,60 +247,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi160)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=160\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=160\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -408,60 +284,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi240)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=240\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=240\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -479,60 +321,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi320)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=320\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=320\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -544,66 +352,70 @@ public class DPIChangerFragment extends Fragment {
                                         .setIcon(R.drawable.warning)
                                         .show();
                             }
+                            if (choose[position].contains("350DPI")) {
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle(R.string.dpi5)
+                                        .setMessage(R.string.dpi350)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=350\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(R.drawable.warning)
+                                        .show();
+
+                            }
                             if (choose[position].contains("360DPI")) {
                                 new AlertDialog.Builder(getContext())
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi360)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=360\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=360\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -622,60 +434,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi390)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=390\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=390\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -694,132 +472,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi420)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=420\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
-                                                }
-                                            }
-                                        })
-                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .setIcon(R.drawable.warning)
-                                        .show();
-
-                            }
-                            if (choose[position].contains("350DPI")) {
-                                new AlertDialog.Builder(getContext())
-                                        .setTitle(R.string.dpi5)
-                                        .setMessage(R.string.dpi350)
-                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=350\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=420\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -838,60 +510,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi480)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=480\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=480\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -910,60 +548,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi540)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=540\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=540\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -982,60 +586,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi640)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=640\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=640\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot1Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1049,7 +619,7 @@ public class DPIChangerFragment extends Fragment {
 
                             }
                             if (choose[position].contains("Custom") || choose[position].contains("свое значение")) {
-                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.dpi_dialog, null);
+                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.custom_dpi_dialog, null);
                                 Button dpichange = viewdpi.findViewById(R.id.dialogdpiok);
                                 dpichange.setBackgroundResource(R.drawable.roundbuttoncal);
                                 dpichange.setTextColor(Color.WHITE);
@@ -1075,60 +645,26 @@ public class DPIChangerFragment extends Fragment {
                                                 .setMessage(getResources().getString(R.string.customdpi) + dpivalue + " ?")
                                                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        try {
-                                                            Process su = Runtime.getRuntime().exec("su");
-                                                            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("echo \"ro.sf.lcd_density=" + dpivalue + "\" >> /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("exit\n");
-                                                            outputStream.flush();
-                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                            new android.support.v7.app.AlertDialog.Builder(view.getContext())
-                                                                    .setTitle(R.string.reboot)
-                                                                    .setMessage(R.string.rebootdialog)
-                                                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-
-                                                                            if (RootTools.isAccessGiven()) {
-                                                                                Command command1 = new Command(0,
-                                                                                        "reboot");
-                                                                                try {
-                                                                                    RootTools.getShell(true).add(command1);
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                    ex.printStackTrace();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            } else {
-                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                            }
-                                                                        }
-                                                                    })
-                                                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-                                                                            dialog.dismiss();
-                                                                        }
-                                                                    })
-                                                                    .setIcon(R.drawable.warning)
-                                                                    .show();
-                                                        } catch (Exception ex) {
-                                                            new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                        if (RootTools.isAccessGiven()) {
+                                                            @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                                    "echo \"ro.sf.lcd_density=\"" + dpivalue + "\" >> /system/build.prop",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                            );
+                                                            try {
+                                                                RootTools.getShell(true).add(installdpi);
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                                Reboot1Dialog();
+                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                            }
+                                                        } else {
+                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                         }
                                                     }
                                                 })
@@ -1148,67 +684,33 @@ public class DPIChangerFragment extends Fragment {
                                 dialog.show();
                             }
                         }
-                        if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+                        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
                             if (choose[position].contains("120DPI")) {
                                 new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi120)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=120\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getActivity().getApplicationContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=120\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1226,60 +728,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi160)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=160\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=160\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1297,60 +765,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi240)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=240\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=240\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1368,60 +802,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi320)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=320\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=320\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1433,66 +833,70 @@ public class DPIChangerFragment extends Fragment {
                                         .setIcon(R.drawable.warning)
                                         .show();
                             }
+                            if (choose[position].contains("350DPI")) {
+                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
+                                        .setTitle(R.string.dpi5)
+                                        .setMessage(R.string.dpi350)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=350\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(R.drawable.warning)
+                                        .show();
+
+                            }
                             if (choose[position].contains("360DPI")) {
                                 new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi360)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=360\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=360\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1511,60 +915,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi390)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=390\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=390\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1583,132 +953,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi420)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=420\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
-                                                }
-                                            }
-                                        })
-                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .setIcon(R.drawable.warning)
-                                        .show();
-
-                            }
-                            if (choose[position].contains("350DPI")) {
-                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                        .setTitle(R.string.dpi5)
-                                        .setMessage(R.string.dpi350)
-                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=350\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=420\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1727,60 +991,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi480)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=480\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=480\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1799,60 +1029,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi540)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=540\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=540\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1871,60 +1067,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi640)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=640\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=640\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot2Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -1938,7 +1100,7 @@ public class DPIChangerFragment extends Fragment {
 
                             }
                             if (choose[position].contains("Custom") || choose[position].contains("свое значение")) {
-                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.dpi_dialog, null);
+                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.custom_dpi_dialog, null);
                                 Button dpichange = viewdpi.findViewById(R.id.dialogdpiok);
                                 dpichange.setBackgroundResource(R.drawable.roundbuttoncal);
                                 dpichange.setTextColor(Color.WHITE);
@@ -1964,60 +1126,26 @@ public class DPIChangerFragment extends Fragment {
                                                 .setMessage(getResources().getString(R.string.customdpi) + dpivalue + " ?")
                                                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        try {
-                                                            Process su = Runtime.getRuntime().exec("su");
-                                                            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("echo \"ro.sf.lcd_density=" + dpivalue + "\" >> /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("exit\n");
-                                                            outputStream.flush();
-                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                            new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                                    .setTitle(R.string.reboot)
-                                                                    .setMessage(R.string.rebootdialog)
-                                                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-
-                                                                            if (RootTools.isAccessGiven()) {
-                                                                                Command command1 = new Command(0,
-                                                                                        "reboot");
-                                                                                try {
-                                                                                    RootTools.getShell(true).add(command1);
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                    ex.printStackTrace();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            } else {
-                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                            }
-                                                                        }
-                                                                    })
-                                                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-                                                                            dialog.dismiss();
-                                                                        }
-                                                                    })
-                                                                    .setIcon(R.drawable.warning)
-                                                                    .show();
-                                                        } catch (Exception ex) {
-                                                            new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                        if (RootTools.isAccessGiven()) {
+                                                            @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                                    "echo \"ro.sf.lcd_density=\"" + dpivalue + "\" >> /system/build.prop",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                            );
+                                                            try {
+                                                                RootTools.getShell(true).add(installdpi);
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                                Reboot1Dialog();
+                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                            }
+                                                        } else {
+                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                         }
                                                     }
                                                 })
@@ -2037,67 +1165,33 @@ public class DPIChangerFragment extends Fragment {
                                 dialog.show();
                             }
                         }
-                        if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+                        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
                             if (choose[position].contains("120DPI")) {
                                 new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi120)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=120\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=120\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2115,60 +1209,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi160)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=160\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=160\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2186,60 +1246,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi240)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=240\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=240\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2257,60 +1283,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi320)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=320\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=320\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2322,66 +1314,70 @@ public class DPIChangerFragment extends Fragment {
                                         .setIcon(R.drawable.warning)
                                         .show();
                             }
+                            if (choose[position].contains("350DPI")) {
+                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
+                                        .setTitle(R.string.dpi5)
+                                        .setMessage(R.string.dpi350)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=350\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(R.drawable.warning)
+                                        .show();
+
+                            }
                             if (choose[position].contains("360DPI")) {
                                 new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
                                         .setTitle(R.string.dpi5)
                                         .setMessage(R.string.dpi360)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=360\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=360\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2400,60 +1396,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi390)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=390\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=390\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2472,132 +1434,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi420)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=420\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
-                                                }
-                                            }
-                                        })
-                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .setIcon(R.drawable.warning)
-                                        .show();
-
-                            }
-                            if (choose[position].contains("350DPI")) {
-                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                        .setTitle(R.string.dpi5)
-                                        .setMessage(R.string.dpi350)
-                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=350\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=420\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2616,60 +1472,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi480)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=480\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=480\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2688,60 +1510,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi540)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=540\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=540\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2760,60 +1548,26 @@ public class DPIChangerFragment extends Fragment {
                                         .setMessage(R.string.dpi640)
                                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                try {
-                                                    Process su = Runtime.getRuntime().exec("su");
-                                                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("echo \"ro.sf.lcd_density=640\" >> /system/build.prop\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                    outputStream.flush();
-                                                    outputStream.writeBytes("exit\n");
-                                                    outputStream.flush();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                    new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                            .setTitle(R.string.reboot)
-                                                            .setMessage(R.string.rebootdialog)
-                                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                                    if (RootTools.isAccessGiven()) {
-                                                                        Command command1 = new Command(0,
-                                                                                "reboot");
-                                                                        try {
-                                                                            RootTools.getShell(true).add(command1);
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                            ex.printStackTrace();
-                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                        }
-                                                                    } else {
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                    }
-                                                                }
-                                                            })
-                                                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
-                                                                }
-                                                            })
-                                                            .setIcon(R.drawable.warning)
-                                                            .show();
-                                                } catch (Exception ex) {
-                                                    new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                if (RootTools.isAccessGiven()) {
+                                                    @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                            "echo \"ro.sf.lcd_density=640\" >> /system/build.prop",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                    );
+                                                    try {
+                                                        RootTools.getShell(true).add(installdpi);
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                        Reboot3Dialog();
+                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                    }
+                                                } else {
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             }
                                         })
@@ -2827,7 +1581,7 @@ public class DPIChangerFragment extends Fragment {
 
                             }
                             if (choose[position].contains("Custom") || choose[position].contains("свое значение")) {
-                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.dpi_dialog, null);
+                                final View viewdpi = getActivity().getLayoutInflater().inflate(R.layout.custom_dpi_dialog, null);
                                 Button dpichange = viewdpi.findViewById(R.id.dialogdpiok);
                                 dpichange.setBackgroundResource(R.drawable.roundbuttoncal);
                                 dpichange.setTextColor(Color.WHITE);
@@ -2853,60 +1607,26 @@ public class DPIChangerFragment extends Fragment {
                                                 .setMessage(getResources().getString(R.string.customdpi) + dpivalue + " ?")
                                                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        try {
-                                                            Process su = Runtime.getRuntime().exec("su");
-                                                            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("mount -o rw,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("echo \"ro.sf.lcd_density=" + dpivalue + "\" >> /system/build.prop\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                                                            outputStream.flush();
-                                                            outputStream.writeBytes("exit\n");
-                                                            outputStream.flush();
-                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                            new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                                    .setTitle(R.string.reboot)
-                                                                    .setMessage(R.string.rebootdialog)
-                                                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-
-                                                                            if (RootTools.isAccessGiven()) {
-                                                                                Command command1 = new Command(0,
-                                                                                        "reboot");
-                                                                                try {
-                                                                                    RootTools.getShell(true).add(command1);
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                    ex.printStackTrace();
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            } else {
-                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                            }
-                                                                        }
-                                                                    })
-                                                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int which) {
-                                                                            dialog.dismiss();
-                                                                        }
-                                                                    })
-                                                                    .setIcon(R.drawable.warning)
-                                                                    .show();
-                                                        } catch (Exception ex) {
-                                                            new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED! | ROOT НЕОБХОДИМ!").withBackgroundColorId(R.color.textview1bad).show();
+                                                        if (RootTools.isAccessGiven()) {
+                                                            @SuppressLint("SdCardPath") Command installdpi = new Command(0,
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox sed -i '/ro.sf.lcd_density/d' /system/build.prop",
+                                                                    "echo \"ro.sf.lcd_density=\"" + dpivalue + "\" >> /system/build.prop",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                                                                    "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                                                            );
+                                                            try {
+                                                                RootTools.getShell(true).add(installdpi);
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                                                                Reboot3Dialog();
+                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                                            }
+                                                        } else {
+                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                         }
                                                     }
                                                 })
@@ -2935,6 +1655,99 @@ public class DPIChangerFragment extends Fragment {
             }
         });
 
+    }
+
+    public void Reboot1Dialog() {
+        new android.support.v7.app.AlertDialog.Builder(getView().getContext())
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.rebootdialog)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (RootTools.isAccessGiven()) {
+                            Command command1 = new Command(0,
+                                    "reboot");
+                            try {
+                                RootTools.getShell(true).add(command1);
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+                                ex.printStackTrace();
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                            }
+                        } else {
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.warning)
+                .show();
+    }
+
+    public void Reboot2Dialog() {
+        new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getActivity().getApplicationContext(), R.style.AlertDialogDark))
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.rebootdialog)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (RootTools.isAccessGiven()) {
+                            Command command1 = new Command(0,
+                                    "reboot");
+                            try {
+                                RootTools.getShell(true).add(command1);
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                            }
+                        } else {
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.warning)
+                .show();
+    }
+
+    public void Reboot3Dialog() {
+        new android.support.v7.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.rebootdialog)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (RootTools.isAccessGiven()) {
+                            Command command1 = new Command(0,
+                                    "reboot");
+                            try {
+                                RootTools.getShell(true).add(command1);
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                            } catch (IOException | RootDeniedException | TimeoutException ex) {
+
+                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                            }
+                        } else {
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.warning)
+                .show();
     }
 
 }

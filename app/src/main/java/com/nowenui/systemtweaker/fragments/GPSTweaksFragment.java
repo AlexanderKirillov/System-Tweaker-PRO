@@ -2,27 +2,25 @@ package com.nowenui.systemtweaker.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
-import com.nowenui.systemtweaker.Utility;
+import com.nowenui.systemtweaker.ThemeUtility;
+import com.stericson.RootShell.exceptions.RootDeniedException;
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class GPSTweaksFragment extends Fragment {
 
@@ -39,102 +37,11 @@ public class GPSTweaksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_user:
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                    new android.app.AlertDialog.Builder(this.getContext())
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public int standart() {
-        File f = new File("/system/etc/SystemTweaker");
-        if ((f.exists()) && (f.isDirectory())) {
-            return 1;
-        }
-        return 0;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_gpstweaks, parent, false);
+        return inflater.inflate(R.layout.gps_booster, parent, false);
     }
 
     @Override
@@ -156,1521 +63,823 @@ public class GPSTweaksFragment extends Fragment {
         final Button iranexecute = view.findViewById(R.id.iran);
         final Button indiaexecute = view.findViewById(R.id.india);
         final Button indonesiaexecute = view.findViewById(R.id.indonesia);
+        final Button bangladeshexecute = view.findViewById(R.id.bandgladesh);
         final Button standartexecute = view.findViewById(R.id.standart);
 
-        if (standart() == 0) {
-            standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        File systemtweakerpath = new File("/system/etc/SystemTweaker");
+
+        if (!(systemtweakerpath.exists()) && !(systemtweakerpath.isDirectory())) {
+            standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         /////////////////////////
         ////// Russia ///////////
         /////////////////////////
-
-        String russia = "/etc/SystemTweaker/russia";
-        String russia1 = "/system/etc/SystemTweaker/russia";
-
-        if (new File(Environment.getRootDirectory() + russia).exists() || new File(russia1).exists() || new File(Environment.getRootDirectory() + russia1).exists()) {
-            ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/russia").exists()) {
+            ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         ///////////////////////////////
         ////// Morocco ////////////////
         ///////////////////////////////
-        String mor = "/etc/SystemTweaker/mor";
-        String mor1 = "/system/etc/SystemTweaker/mor";
-
-        if (new File(Environment.getRootDirectory() + mor).exists() || new File(mor1).exists() || new File(Environment.getRootDirectory() + mor1).exists()) {
-            morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/mor").exists()) {
+            morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         /////////////////////////////
         ////// Kazakhstan ///////////
         /////////////////////////////
-        String kz = "/etc/SystemTweaker/kz";
-        String kz1 = "/system/etc/SystemTweaker/kz";
-
-        if (new File(Environment.getRootDirectory() + kz).exists() || new File(kz1).exists() || new File(Environment.getRootDirectory() + kz1).exists()) {
-            kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-
+        if (new File("/system/etc/SystemTweaker/kz").exists()) {
+            kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         /////////////////////////
         ////// Ukraine //////////
         /////////////////////////
-        String ukraine = "/etc/SystemTweaker/ukraine";
-        String ukraine1 = "/system/etc/SystemTweaker/ukraine";
-        if (new File(Environment.getRootDirectory() + ukraine).exists() || new File(ukraine1).exists() || new File(Environment.getRootDirectory() + ukraine1).exists()) {
-            ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/ukraine").exists()) {
+            ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
             ukexecute.setEnabled(false);
         }
 
         ///////////////////////////
         ////// Slovakia ///////////
         ///////////////////////////
-        String slovakia = "/etc/SystemTweaker/slovakia";
-        String slovakia1 = "/system/etc/SystemTweaker/slovakia";
-        if (new File(Environment.getRootDirectory() + slovakia).exists() || new File(slovakia1).exists() || new File(Environment.getRootDirectory() + slovakia1).exists()) {
-            slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/slovakia").exists()) {
+            slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         /////////////////////////
         ////// Canada ///////////
         /////////////////////////
-        String canada = "/etc/SystemTweaker/canada";
-        String canada1 = "/system/etc/SystemTweaker/canada";
-        if (new File(Environment.getRootDirectory() + canada).exists() || new File(canada1).exists() || new File(Environment.getRootDirectory() + canada1).exists()) {
-            canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/canada").exists()) {
+            canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
-
 
         //////////////////////////
         ////// Germany ///////////
         //////////////////////////
-        String germany = "/etc/SystemTweaker/germany";
-        String germany1 = "/system/etc/SystemTweaker/germany";
-        if (new File(Environment.getRootDirectory() + germany).exists() || new File(germany1).exists() || new File(Environment.getRootDirectory() + germany1).exists()) {
-            gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/germany").exists()) {
+            gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         //////////////////////////
         ////// Belarus ///////////
         //////////////////////////
-        String belarus = "/etc/SystemTweaker/belarus";
-        String belarus1 = "/system/etc/SystemTweaker/belarus";
-        if (new File(Environment.getRootDirectory() + belarus).exists() || new File(belarus1).exists() || new File(Environment.getRootDirectory() + belarus1).exists()) {
-            beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/belarus").exists()) {
+            beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         /////////////////////
         ////// UK ///////////
         /////////////////////
-        String uk = "/etc/SystemTweaker/uk";
-        String uk1 = "/system/etc/SystemTweaker/uk";
-        if (new File(Environment.getRootDirectory() + uk).exists() || new File(uk1).exists() || new File(Environment.getRootDirectory() + uk1).exists()) {
-            unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/uk").exists()) {
+            unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         ///////////////////////////////////////
         ////// Iran/Iraq/Azerbaijan ///////////
         ///////////////////////////////////////
-        String az = "/etc/SystemTweaker/az";
-        String az1 = "/system/etc/SystemTweaker/az";
-        if (new File(Environment.getRootDirectory() + az).exists() || new File(az1).exists() || new File(Environment.getRootDirectory() + az1).exists()) {
-            iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/iran").exists()) {
+            iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         ///////////////////////////////////////
         ////// India //////////////////////////
         ///////////////////////////////////////
-        String india = "/etc/SystemTweaker/india";
-        String india1 = "/system/etc/SystemTweaker/india";
+        if (new File("/system/etc/SystemTweaker/india").exists()) {
+            indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+        }
 
-        if (new File(Environment.getRootDirectory() + india).exists() || new File(india1).exists() || new File(Environment.getRootDirectory() + india1).exists()) {
-            indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        ///////////////////////////////////////
+        ////// Bangladesh /////////////////////
+        ///////////////////////////////////////
+        if (new File("/system/etc/SystemTweaker/bangladesh").exists()) {
+            bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         ///////////////////////////////////////
         ////// Indonesia //////////////////////
         ///////////////////////////////////////
-        String indonesia = "/etc/SystemTweaker/indonesia";
-        String indonesia1 = "/system/etc/SystemTweaker/indonesia";
-
-        if (new File(Environment.getRootDirectory() + indonesia).exists() || new File(indonesia1).exists() || new File(Environment.getRootDirectory() + indonesia1).exists()) {
-            indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
+        if (new File("/system/etc/SystemTweaker/indonesia").exists()) {
+            indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
         }
 
         standartexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -rf /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -rf /system/etc/SystemTweaker",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         ruexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/russia.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/russia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/russia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/russia.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/russia",
+                            "chmod 777 /system/etc/SystemTweaker/russia",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         beexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/belarus.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/belarus\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/belarus\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/belarus.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/belarus",
+                            "chmod 777 /system/etc/SystemTweaker/belarus",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         kzexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/kazahstan.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/kz\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/kz\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/kazahstan.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/kz",
+                            "chmod 777 /system/etc/SystemTweaker/kz",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         slovexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/slovakia.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/slovakia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/slovakia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/slovakia.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/slovakia",
+                            "chmod 777 /system/etc/SystemTweaker/slovakia",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         canexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/canada.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/canada\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/canada\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/canada.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/canada",
+                            "chmod 777 /system/etc/SystemTweaker/canada",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         ukexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/ukraine.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/ukraine\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/ukraine\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/ukraine.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/ukraine",
+                            "chmod 777 /system/etc/SystemTweaker/ukraine",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         gerexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/germany.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/germany\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/germany\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/germany.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/germany",
+                            "chmod 777 /system/etc/SystemTweaker/germany",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         morrocoexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/morokko.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/mor\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/mor\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/morokko.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/mor",
+                            "chmod 777 /system/etc/SystemTweaker/mor",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         unitedkexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/britain.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/uk\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/uk\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/britain.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/uk",
+                            "chmod 777 /system/etc/SystemTweaker/uk",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         iranexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/az.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/az\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/az\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/iran.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/iran",
+                            "chmod 777 /system/etc/SystemTweaker/iran",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         indiaexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/india.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/india\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/india\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/india.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/india",
+                            "chmod 777 /system/etc/SystemTweaker/india",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
         indonesiaexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
             @Override
             public void onClick(View v) {
-                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.oksmall), null, null, null);
-                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notok), null, null, null);
-                try {
-                    Process su = Runtime.getRuntime().exec("su");
-                    DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mount -o rw,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("rm -f /system/etc/SystemTweaker/*\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("cp /data/data/com.nowenui.systemtweaker/files/indonesia.conf /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 644 /system/etc/gps.conf\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("mkdir /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 755 /system/etc/SystemTweaker\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("echo \"EXCUTED\" > /system/etc/SystemTweaker/indonesia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("chmod 777 /system/etc/SystemTweaker/indonesia\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system\n");
-                    outputStream.flush();
-                    outputStream.writeBytes("exit\n");
-                    outputStream.flush();
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
 
-                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/indonesia.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/indonesia",
+                            "chmod 777 /system/etc/SystemTweaker/indonesia",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                     }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-
-                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                        dialog.setIndeterminate(false);
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dialog.dismiss();
-                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.textview1good).show();
-                            }
-                        }, 4000);
-                    }
-                } catch (IOException e) {
-                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
                 }
             }
         });
 
+        bangladeshexecute.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SdCardPath")
+            @Override
+            public void onClick(View v) {
+                bangladeshexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.okeysmalllogo), null, null, null);
+                indiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                beexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ruexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                ukexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                standartexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                kzexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                slovexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                canexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                gerexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                morrocoexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                unitedkexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                iranexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+                indonesiaexecute.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.notgood), null, null, null);
+
+                if (RootTools.isAccessGiven()) {
+                    Command installgpsfile = new Command(0,
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
+                            "rm -f /system/etc/gps.conf",
+                            "rm -f /system/etc/SystemTweaker/*",
+                            "cp /data/data/com.nowenui.systemtweaker/files/bangladesh.conf /system/etc/gps.conf",
+                            "chmod 644 /system/etc/gps.conf",
+                            "mkdir /system/etc/SystemTweaker",
+                            "chmod 755 /system/etc/SystemTweaker",
+                            "echo \"EXCUTED\" > /system/etc/SystemTweaker/bangladesh",
+                            "chmod 777 /system/etc/SystemTweaker/bangladesh",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
+                            "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
+                    );
+                    try {
+                        RootTools.getShell(true).add(installgpsfile);
+                        DialogAfterinstalling();
+                    } catch (IOException | RootDeniedException | TimeoutException ex) {
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                    }
+                } else {
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                }
+            }
+        });
+    }
+
+    public void DialogAfterinstalling() {
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
+            final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.resultgood).show();
+                }
+            }, 4000);
+        }
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.resultgood).show();
+                }
+            }, 4000);
+        }
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.sucessreboot)).withBackgroundColorId(R.color.resultgood).show();
+                }
+            }, 4000);
+        }
     }
 
 

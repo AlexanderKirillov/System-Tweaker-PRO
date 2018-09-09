@@ -65,10 +65,8 @@ public class RootClass /* #ANNOTATIONS extends AbstractProcessor */ {
         }
     }
 
-    ;
-
     enum READ_STATE {
-        STARTING, FOUND_ANNOTATION;
+        STARTING, FOUND_ANNOTATION
     }
 
     public @interface Candidate {
@@ -151,8 +149,8 @@ public class RootClass /* #ANNOTATIONS extends AbstractProcessor */ {
                 jarBuilder.directory(builtPath);
                 try {
                     jarBuilder.start().waitFor();
-                } catch (IOException e) {
-                } catch (InterruptedException e) {
+                } catch (IOException ignored) {
+                } catch (InterruptedException ignored) {
                 }
 
                 String strRawFolder = "res" + File.separator + "raw";
@@ -182,8 +180,8 @@ public class RootClass /* #ANNOTATIONS extends AbstractProcessor */ {
                 ProcessBuilder dexBuilder = new ProcessBuilder(cmd);
                 try {
                     dexBuilder.start().waitFor();
-                } catch (IOException e) {
-                } catch (InterruptedException e) {
+                } catch (IOException ignored) {
+                } catch (InterruptedException ignored) {
                 }
             }
             System.out.println("All done. ::: anbuild.dex should now be in your project's src" + File.separator + "main" + File.separator + "res" + File.separator + "raw" + File.separator + " folder :::");

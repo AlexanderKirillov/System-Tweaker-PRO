@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4f5d73">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#4f5d73">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:src="@drawable/animated_logo" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgLogo"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:text="System Tweaker PRO"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/SpinKitView.Large.Wave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:SpinKit_Color="#ffffff" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="right"
+        android:text="V5.0.1"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</RelativeLayout>
+

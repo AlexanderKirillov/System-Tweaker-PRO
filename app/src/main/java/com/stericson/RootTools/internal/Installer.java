@@ -103,7 +103,7 @@ class Installer {
                         try {
                             fos.close();
                             context.deleteFile(BOGUS_FILE_NAME);
-                        } catch (IOException e1) {
+                        } catch (IOException ignored) {
                         }
                     }
                 }
@@ -125,7 +125,6 @@ class Installer {
                 try {
                     long size = iss.available();
                     while ((pos += ofc.transferFrom(rfc, pos, size - pos)) < size) {
-                        ;
                     }
                 } catch (IOException ex) {
                     if (RootTools.debugMode) {
@@ -144,7 +143,7 @@ class Installer {
                         oss.flush();
                         oss.getFD().sync();
                         oss.close();
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
             }
@@ -162,7 +161,7 @@ class Installer {
                 Shell.startRootShell().add(command);
                 commandWait(command);
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return true;
@@ -198,7 +197,6 @@ class Installer {
             DigestInputStream dis = new DigestInputStream(is, md);
             byte[] buffer = new byte[4096];
             while (-1 != dis.read(buffer)) {
-                ;
             }
             byte[] digest = md.digest();
             StringBuffer sb = new StringBuffer();
@@ -215,7 +213,7 @@ class Installer {
         } finally {
             try {
                 is.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
         return signature;

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/main"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/MainInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/processorwo"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/ProcessorInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/memory"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/MemoryInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/batt"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/BatteryInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/screen"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/ScreenInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbuttoncal"
+            android:enabled="false"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Init.d support checker"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/initdinfo"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:id="@+id/buttoncheckinitd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/checkinitd"
+            android:textColor="@android:color/white" />
+
+
+        <Button
+            android:id="@+id/buttoncheckinitdremove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/clearinitd"
+            android:textColor="@android:color/white" />
+
+
+        <TextView
+            android:id="@+id/initdrealstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+</ScrollView>

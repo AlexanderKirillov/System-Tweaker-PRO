@@ -1,5 +1,6 @@
 package com.nowenui.systemtweaker.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
-import com.nowenui.systemtweaker.Utility;
+import com.nowenui.systemtweaker.ThemeUtility;
 import com.tt.whorlviewlibrary.WhorlView;
 
 import java.io.BufferedReader;
@@ -60,7 +61,7 @@ public class WifiPasswordsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_wifipasswords, parent, false);
+        return inflater.inflate(R.layout.wifi_passwords, parent, false);
     }
 
     @Override
@@ -86,6 +87,7 @@ public class WifiPasswordsFragment extends Fragment {
 
     }
 
+    @SuppressLint("SdCardPath")
     private void filldata() {
         handler = new Handler();
         handler.postDelayed(new Thread() {
@@ -139,7 +141,6 @@ public class WifiPasswordsFragment extends Fragment {
             dis.close();
             p.waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         handler = new Handler();
         handler.postDelayed(new Thread() {
@@ -205,7 +206,7 @@ public class WifiPasswordsFragment extends Fragment {
                             TextView tvwificode = view
                                     .findViewById(R.id.wificode);
                             setClipboard(getContext(), tvwificode.getText().toString());
-                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.passwdcopied)).withBackgroundColorId(R.color.textview1good).show();
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.passwdcopied)).withBackgroundColorId(R.color.resultgood).show();
                         }
                     });
                 }
@@ -261,7 +262,7 @@ public class WifiPasswordsFragment extends Fragment {
             View view;
             wifimsg = list.get(position);
             if (convertView == null) {
-                view = View.inflate(context, R.layout.item_wifilist, null);
+                view = View.inflate(context, R.layout.wifi_password_items, null);
                 holder = new ViewHolder();
                 holder.tvwifiname = view
                         .findViewById(R.id.wifiname);
@@ -271,19 +272,19 @@ public class WifiPasswordsFragment extends Fragment {
                         .findViewById(R.id.wificodetext);
                 holder.wifitext = view
                         .findViewById(R.id.wifitext);
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
                     holder.tvwifiname.setTextColor(Color.parseColor("#2d2d2d"));
                     holder.tvwificode.setTextColor(Color.parseColor("#2d2d2d"));
                     holder.wificodetext.setTextColor(Color.parseColor("#2d2d2d"));
                     holder.wifitext.setTextColor(Color.parseColor("#2d2d2d"));
                 }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
                     holder.tvwifiname.setTextColor(Color.WHITE);
                     holder.tvwificode.setTextColor(Color.WHITE);
                     holder.wificodetext.setTextColor(Color.WHITE);
                     holder.wifitext.setTextColor(Color.WHITE);
                 }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
                     holder.tvwifiname.setTextColor(Color.WHITE);
                     holder.tvwificode.setTextColor(Color.WHITE);
                     holder.wificodetext.setTextColor(Color.WHITE);

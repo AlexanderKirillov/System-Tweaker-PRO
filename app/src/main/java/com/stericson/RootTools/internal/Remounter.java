@@ -120,7 +120,7 @@ public class Remounter {
                     Shell.startRootShell().add(command);
                     commandWait(command);
 
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
 
                 mountPoint = findMountPointRecursive(file);

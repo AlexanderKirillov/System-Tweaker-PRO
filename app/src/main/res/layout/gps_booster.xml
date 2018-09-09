@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/gps1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/gps2"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="@string/gpsinfo"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/standart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsstandart"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/ru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsru"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/be"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsbe"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/uk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsuk"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/kz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpskz"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/slov"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsslov"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/can"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpscan"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/ger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsger"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/morrocco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsmarr"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/unitedk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsvelikobr"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/iran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsiran"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/india"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsindia"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/indonesia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsindonesia"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bandgladesh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="right|center_vertical|center_horizontal"
+            android:padding="20dp"
+            android:text="@string/gpsbangladesh"
+            android:textColor="@android:color/white" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/gps3"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+    </LinearLayout>
+</ScrollView>

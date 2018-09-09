@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/internettweakswelcome"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:paddingBottom="10dp"
+            android:text="@string/nowe"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/internetbasetweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/firstinternettweak" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.onebit.spinner2.Spinner2
+                android:id="@+id/tcpspinner"
+                android:layout_width="200dp"
+                android:layout_height="76dp"
+                android:layout_gravity="right|center_vertical" />
+
+            <TextView
+                android:id="@+id/tcpmodeheader"
+                android:layout_width="78dp"
+                android:layout_height="54dp"
+                android:layout_gravity="left|center_vertical"
+                android:gravity="center_vertical|center|center_horizontal"
+                android:text="@string/tcp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/tcpboot"
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/tcponboot" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|top"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:text="@string/info"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <CheckBox
+            android:id="@+id/tcpinettweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/tcptw" />
+
+        <CheckBox
+            android:id="@+id/inetspeedtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/secondinternettweak" />
+
+        <CheckBox
+            android:id="@+id/ppptweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/a2017" />
+
+        <CheckBox
+            android:id="@+id/dnstweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/thirdinternettweak" />
+
+        <CheckBox
+            android:id="@+id/fastdormancytweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/forthinternettweak" />
+
+        <CheckBox
+            android:id="@+id/ipv6tweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/fifthinternettweaks" />
+
+        <CheckBox
+            android:id="@+id/ipv4tweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/sixinternettweaks" />
+
+
+    </LinearLayout>
+</ScrollView>

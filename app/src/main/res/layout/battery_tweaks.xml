@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/batterysection"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:paddingBottom="10dp"
+            android:text="@string/nowe"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/dynbs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/d2017" />
+
+
+        <CheckBox
+            android:id="@+id/dozetweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/dozename" />
+
+
+        <CheckBox
+            android:id="@+id/lcdtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/lcdname" />
+
+        <CheckBox
+            android:id="@+id/radioimprovebattery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/radiobat" />
+
+
+        <CheckBox
+            android:id="@+id/gservicestweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/firstbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/improvepowersavingtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/secondbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/boostdis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/bosstdisable" />
+
+        <CheckBox
+            android:id="@+id/managerestructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/mnogozadachndestrics" />
+
+        <CheckBox
+            android:id="@+id/wifiscantweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/thirdbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/powercollapsetweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/fifthbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/powersupplytweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/sixthbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/deepsleeptweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/sevenbatterytweak" />
+
+        <CheckBox
+            android:id="@+id/disablelogging"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/eithtbatterytweak" />
+
+
+    </LinearLayout>
+</ScrollView>

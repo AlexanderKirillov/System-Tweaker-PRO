@@ -27,30 +27,30 @@ import android.widget.Toast;
 import com.franmontiel.localechanger.LocaleChanger;
 import com.nowenui.systemtweaker.fragments.AboutDeviceFragment;
 import com.nowenui.systemtweaker.fragments.AboutProgramFragment;
-import com.nowenui.systemtweaker.fragments.BackupFragment;
+import com.nowenui.systemtweaker.fragments.AgreementFragment;
+import com.nowenui.systemtweaker.fragments.BackupRestoreFragment;
 import com.nowenui.systemtweaker.fragments.BatteryCalibrationFragment;
 import com.nowenui.systemtweaker.fragments.BatteryTweaksFragment;
-import com.nowenui.systemtweaker.fragments.BraviaFragment;
-import com.nowenui.systemtweaker.fragments.CautonFragment;
-import com.nowenui.systemtweaker.fragments.ConnectWithDeveloperFragment;
+import com.nowenui.systemtweaker.fragments.BraviaEngineFragment;
+import com.nowenui.systemtweaker.fragments.BugReportFragment;
 import com.nowenui.systemtweaker.fragments.DPIChangerFragment;
-import com.nowenui.systemtweaker.fragments.EntropyFragment;
+import com.nowenui.systemtweaker.fragments.EntropyGeneratorFragment;
 import com.nowenui.systemtweaker.fragments.FAQFragment;
 import com.nowenui.systemtweaker.fragments.FstrimFragment;
 import com.nowenui.systemtweaker.fragments.GPSTweaksFragment;
 import com.nowenui.systemtweaker.fragments.HomeFragment;
 import com.nowenui.systemtweaker.fragments.InternetTweaksFragment;
-import com.nowenui.systemtweaker.fragments.KernelFragment;
-import com.nowenui.systemtweaker.fragments.MediaServerFragment;
+import com.nowenui.systemtweaker.fragments.KernelTweaksFragment;
+import com.nowenui.systemtweaker.fragments.MediaBoosterFragment;
 import com.nowenui.systemtweaker.fragments.MediaTweaksFragment;
 import com.nowenui.systemtweaker.fragments.MusicFragment;
 import com.nowenui.systemtweaker.fragments.OneClickFragment;
 import com.nowenui.systemtweaker.fragments.RebootManagerFragment;
 import com.nowenui.systemtweaker.fragments.SDFixFragment;
 import com.nowenui.systemtweaker.fragments.SettingsFragment;
-import com.nowenui.systemtweaker.fragments.SovetsPerfomanceFragment;
-import com.nowenui.systemtweaker.fragments.SovetsPowerSaveFragment;
 import com.nowenui.systemtweaker.fragments.SystemTweaksFragment;
+import com.nowenui.systemtweaker.fragments.TipsPerfomanceFragment;
+import com.nowenui.systemtweaker.fragments.TipsPowerSaveFragment;
 import com.nowenui.systemtweaker.fragments.VariosTweaksFragment;
 import com.nowenui.systemtweaker.fragments.WifiPasswordsFragment;
 
@@ -78,19 +78,19 @@ public class MainActivity extends AppCompatActivity {
     ////// Set Applications Theme //////////////////
     /////////////////////////////////////////////////
     public void updateTheme() {
-        if (Utility.getTheme(getApplicationContext()) <= THEME_LIGHT) {
+        if (ThemeUtility.getTheme(getApplicationContext()) <= THEME_LIGHT) {
             setTheme(R.style.AppTheme_Light);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
-        } else if (Utility.getTheme(getApplicationContext()) == THEME_DARK) {
+        } else if (ThemeUtility.getTheme(getApplicationContext()) == THEME_DARK) {
             setTheme(R.style.AppTheme_Dark);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
-        } else if (Utility.getTheme(getApplicationContext()) == THEME_AMOLED) {
+        } else if (ThemeUtility.getTheme(getApplicationContext()) == THEME_AMOLED) {
             setTheme(R.style.AppTheme_Amoled);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        themestyle = Utility.getTheme(getApplicationContext());
+        themestyle = ThemeUtility.getTheme(getApplicationContext());
     }
 
     @Override
@@ -109,16 +109,14 @@ public class MainActivity extends AppCompatActivity {
         ////////////////////////////////////////
         super.onCreate(savedInstanceState);
 
-
-        final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (check.contains("THEME_BASE")) {
+        final SharedPreferences BD = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        if (BD.contains("THEME_BASE")) {
             updateTheme();
         } else {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            prefs.edit().putInt(getApplicationContext().getString(R.string.prefs_theme_key), 1).apply();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("THEME_BASE", "152458875688545666565989865659885");
-            editor.apply();
+            BD.edit().putInt(getApplicationContext().getString(R.string.prefs_theme_key), 1).apply();
+            SharedPreferences.Editor BDEditor = BD.edit();
+            BDEditor.putString("THEME_BASE", "152458875688545666565989865659885");
+            BDEditor.apply();
 
         }
 
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("System Tweaker PRO");
         }
 
-
         /////////////////////////////////////////////////
         ////// Show starting dialog /////////////////////
         /////////////////////////////////////////////////
@@ -148,18 +145,16 @@ public class MainActivity extends AppCompatActivity {
         boolean isLangKZ = Locale.getDefault().getLanguage().equals("kz");
         if (isLangRU || isLangBE || isLangUK || isLangKK || isLangKZ) {
             LayoutInflater inflater = getLayoutInflater();
-            View dialogru = inflater.inflate(R.layout.hello_ru, null);
-            final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-            if (!mSharedPreference.contains("DIALOGSTART")) {
+            View dialogru = inflater.inflate(R.layout.hello_dialog_ru, null);
+            if (!BD.contains("DIALOGSTART")) {
                 new android.app.AlertDialog.Builder(this)
                         .setView(dialogru)
                         .setCancelable(false)
                         .setPositiveButton(R.string.ponatno, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("DIALOGSTART", "46543");
-                                editor.apply();
+                                SharedPreferences.Editor BDEditor = BD.edit();
+                                BDEditor.putString("DIALOGSTART", "46543");
+                                BDEditor.apply();
                                 dialog.dismiss();
                             }
                         })
@@ -167,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             LayoutInflater inflater = getLayoutInflater();
-            View dialogen = inflater.inflate(R.layout.hello_en, null);
+            View dialogen = inflater.inflate(R.layout.hello_dialog_en, null);
             final SharedPreferences mSharedPreference = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             if (!mSharedPreference.contains("DIALOGSTART")) {
                 new android.app.AlertDialog.Builder(this)
@@ -175,38 +170,35 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton(R.string.ponatno, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("DIALOGSTART", "46543");
-                                editor.apply();
+                                SharedPreferences.Editor BDEditor = BD.edit();
+                                BDEditor.putString("DIALOGSTART", "46543");
+                                BDEditor.apply();
                                 dialog.dismiss();
                             }
                         })
                         .show();
             }
         }
-
-
     }
 
     private void initInstancesDrawer() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
+        androidDrawerLayout = findViewById(R.id.drawer_design_support_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.app_name, R.string.app_name);
         androidDrawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        NavigationView navigationView = findViewById(R.id.navigation_drawer);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
         assert navigationView != null;
         navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.getMenu().performIdentifierAction(R.id.navigation_drawer_item1, 0);
+        navigationView.getMenu().performIdentifierAction(R.id.home_item, 0);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -273,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupDrawerContent(final NavigationView navigationView) {
         final Resources res = getResources();
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -286,16 +278,22 @@ public class MainActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         String fragmentTitle = null;
                         switch (menuItem.getItemId()) {
-                            case R.id.navigation_drawer_item1:
+                            case R.id.home_item:
                                 fragmentTitle = "System Tweaker PRO";
                                 getSupportFragmentManager()
                                         .beginTransaction()
                                         .replace(R.id.content, HomeFragment.newInstance(bundle))
                                         .commit();
-
-
                                 break;
-                            case R.id.navigation_drawer_item2:
+                            case R.id.agreement_item:
+                                fragmentTitle = res.getString(R.string.soglasenie);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, AgreementFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.info_about_device_item:
                                 fragmentTitle = res.getString(R.string.infoabout);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -303,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, AboutDeviceFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item3:
+                            case R.id.speedup_item:
                                 fragmentTitle = res.getString(R.string.speedup);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -311,7 +309,71 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, OneClickFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item4:
+                            case R.id.batterycalibration_item:
+                                fragmentTitle = res.getString(R.string.calbattery);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, BatteryCalibrationFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.soundimprover_item:
+                                fragmentTitle = res.getString(R.string.soundimprover);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, MusicFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.braviainstaller_item:
+                                fragmentTitle = "Bravia Engine Installer";
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, BraviaEngineFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.sdcardfix_item:
+                                fragmentTitle = "SDCard R/W Fix";
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, SDFixFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.dpichanger_item:
+                                fragmentTitle = res.getString(R.string.dpititle);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, DPIChangerFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.kerneltuner_item:
+                                fragmentTitle = res.getString(R.string.kerneltweaks);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, KernelTweaksFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.backuprestore_item:
+                                fragmentTitle = res.getString(R.string.backupandrestore);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, BackupRestoreFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.rebootmanager_item:
+                                fragmentTitle = res.getString(R.string.rebootmanager);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, RebootManagerFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.batterytweaks_item:
                                 fragmentTitle = res.getString(R.string.batterytweaks);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -320,15 +382,7 @@ public class MainActivity extends AppCompatActivity {
                                         .commit();
 
                                 break;
-                            case R.id.navigation_drawer_item5:
-                                fragmentTitle = res.getString(R.string.calbattery);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, BatteryCalibrationFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item6:
+                            case R.id.internettweaks_item:
                                 fragmentTitle = res.getString(R.string.internettweaks);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -336,104 +390,7 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, InternetTweaksFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item7:
-                                fragmentTitle = res.getString(R.string.systemtweaks);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, SystemTweaksFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item13:
-                                fragmentTitle = "FSTRIM";
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, FstrimFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.settings:
-                                fragmentTitle = res.getString(R.string.settingstile);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, SettingsFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item8:
-                                fragmentTitle = res.getString(R.string.mediatweaks);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, MediaTweaksFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item9:
-                                fragmentTitle = res.getString(R.string.backupandrestore);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, BackupFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item32:
-                                fragmentTitle = res.getString(R.string.soundimprover);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, MusicFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.braviainstaller:
-                                fragmentTitle = "Bravia Engine Installer";
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, BraviaFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item10:
-                                fragmentTitle = res.getString(R.string.soglasenie);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, CautonFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item11:
-                                fragmentTitle = res.getString(R.string.connect);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, ConnectWithDeveloperFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item12:
-                                fragmentTitle = res.getString(R.string.aboutapp);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, AboutProgramFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item17:
-                                fragmentTitle = res.getString(R.string.gpstitle);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, GPSTweaksFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item14:
-                                fragmentTitle = "Entropy Generator";
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, EntropyFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-
-                            case R.id.wifipasswords:
+                            case R.id.wifipasswords_item:
                                 fragmentTitle = "WIFI Passwords";
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -441,8 +398,55 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, WifiPasswordsFragment.newInstance(bundle))
                                         .commit();
                                 break;
-
-                            case R.id.navigation_drawer_item15:
+                            case R.id.systemtweaks_item:
+                                fragmentTitle = res.getString(R.string.systemtweaks);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, SystemTweaksFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.fstrim_item:
+                                fragmentTitle = "FSTRIM";
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, FstrimFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.entropy_item:
+                                fragmentTitle = "Entropy Generator";
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, EntropyGeneratorFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.mediamanager_item:
+                                fragmentTitle = "MediaServer | MediaScanner";
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, MediaBoosterFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.mediatweaks_item:
+                                fragmentTitle = res.getString(R.string.mediatweaks);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, MediaTweaksFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.gpsboost_item:
+                                fragmentTitle = res.getString(R.string.gpstitle);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, GPSTweaksFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+                            case R.id.othertweaks_item:
                                 fragmentTitle = res.getString(R.string.varioustweaks);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -450,31 +454,23 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, VariosTweaksFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item16:
+                            case R.id.tipspowersaving_item:
                                 fragmentTitle = res.getString(R.string.sovetspowersave);
                                 getSupportFragmentManager()
                                         .beginTransaction()
                                         .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, SovetsPowerSaveFragment.newInstance(bundle))
+                                        .replace(R.id.content, TipsPowerSaveFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item22:
-                                fragmentTitle = res.getString(R.string.rebootmanager);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, RebootManagerFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item19:
+                            case R.id.tipsperformance_item:
                                 fragmentTitle = res.getString(R.string.sovetsperfomance);
                                 getSupportFragmentManager()
                                         .beginTransaction()
                                         .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, SovetsPerfomanceFragment.newInstance(bundle))
+                                        .replace(R.id.content, TipsPerfomanceFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item30:
+                            case R.id.faq_item:
                                 fragmentTitle = res.getString(R.string.faq);
                                 getSupportFragmentManager()
                                         .beginTransaction()
@@ -482,49 +478,23 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content, FAQFragment.newInstance(bundle))
                                         .commit();
                                 break;
-                            case R.id.navigation_drawer_item20:
-                                fragmentTitle = "MediaServer | MediaScanner";
+                            case R.id.bugreport_item:
+                                fragmentTitle = res.getString(R.string.connect);
                                 getSupportFragmentManager()
                                         .beginTransaction()
                                         .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, MediaServerFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item21:
-                                fragmentTitle = "SDCard R/W Fix";
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, SDFixFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-                            case R.id.navigation_drawer_item23:
-                                fragmentTitle = res.getString(R.string.dpititle);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, DPIChangerFragment.newInstance(bundle))
+                                        .replace(R.id.content, BugReportFragment.newInstance(bundle))
                                         .commit();
                                 break;
 
-                            case R.id.navigation_drawer_item26:
-                                fragmentTitle = res.getString(R.string.kerneltweaks);
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
-                                        .replace(R.id.content, KernelFragment.newInstance(bundle))
-                                        .commit();
-                                break;
-
-                            case R.id.navigation_drawer_item24:
+                            case R.id.official_site_item:
                                 fragmentTitle = "System Tweaker PRO";
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
+                                Handler siteHandler = new Handler();
+                                siteHandler.postDelayed(new Runnable() {
                                     public void run() {
-                                        Intent vk = new Intent();
-                                        Uri address = Uri.parse("http://vk.com/nowenui_official_group");
-                                        Intent openlink = new Intent(Intent.ACTION_VIEW, address);
-                                        startActivity(openlink);
+                                        Uri siteaddress = Uri.parse("http://devnowenui.wixsite.com/nowenui");
+                                        Intent openlinksite = new Intent(Intent.ACTION_VIEW, siteaddress);
+                                        startActivity(openlinksite);
                                     }
                                 }, 300);
 
@@ -532,15 +502,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 break;
 
-                            case R.id.navigation_drawer_item25:
+                            case R.id.vkgroup_item:
                                 fragmentTitle = "System Tweaker PRO";
-                                Handler handler2 = new Handler();
-                                handler2.postDelayed(new Runnable() {
+                                Handler vkgroup = new Handler();
+                                vkgroup.postDelayed(new Runnable() {
                                     public void run() {
-                                        Intent twitter = new Intent();
-                                        Uri addresstwi = Uri.parse("https://twitter.com/intent/user?user_id=4771768877");
-                                        Intent openlinktwi = new Intent(Intent.ACTION_VIEW, addresstwi);
-                                        startActivity(openlinktwi);
+                                        Uri vkaddress = Uri.parse("http://vk.com/nowenui_official_group");
+                                        Intent openvk = new Intent(Intent.ACTION_VIEW, vkaddress);
+                                        startActivity(openvk);
                                     }
                                 }, 300);
 
@@ -548,7 +517,42 @@ public class MainActivity extends AppCompatActivity {
 
                                 break;
 
-                            case R.id.navigation_drawer_item18:
+                            case R.id.twitter_item:
+                                fragmentTitle = "System Tweaker PRO";
+                                Handler twitteropen = new Handler();
+                                twitteropen.postDelayed(new Runnable() {
+                                    public void run() {
+                                        Uri twitadress = Uri.parse("https://twitter.com/intent/user?user_id=4771768877");
+                                        Intent opentwitter = new Intent(Intent.ACTION_VIEW, twitadress);
+                                        startActivity(opentwitter);
+                                    }
+                                }, 300);
+
+                                menuItem.setChecked(false);
+
+                                break;
+
+
+                            case R.id.settings_item:
+                                fragmentTitle = res.getString(R.string.settingstile);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, SettingsFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+
+
+                            case R.id.aboutprogram_item:
+                                fragmentTitle = res.getString(R.string.aboutapp);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                                        .replace(R.id.content, AboutProgramFragment.newInstance(bundle))
+                                        .commit();
+                                break;
+
+                            case R.id.exit_item:
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_HOME);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -573,6 +577,4 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
 }

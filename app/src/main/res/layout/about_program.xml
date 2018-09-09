@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="System Tweaker PRO"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#388f94"
+            android:textSize="35dp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.09"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/version"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:singleLine="false"
+            android:text="@string/thanks"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/author"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:padding="10dp"
+            android:text="@string/libraries"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="RootTools by Stericson"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="RootShell by Stericson"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="android-gif-drawable"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="EasyDeviceInfo by nisrulz"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="AndroidDeviceNames by jaredrummler"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="DeviceInformation by akexorcist"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="Spinner2 by scijoker"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="Snackbar by mrengineer13"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="WiFiPWDWatcher by ycood"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="Android-SpinKit by YBQ"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="LocaleChanger by franmontiel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttonmainbefore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="WhorlView by Kyson"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:paddingBottom="5dip"
+            android:text="@string/mostthanks"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </LinearLayout>
+</ScrollView>

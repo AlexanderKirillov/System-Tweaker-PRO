@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_drawer_item1"
+        android:id="@+id/home_item"
         android:icon="@drawable/home"
         android:title="@string/glavnays" />
     <item
-        android:id="@+id/navigation_drawer_item10"
+        android:id="@+id/agreement_item"
         android:icon="@drawable/warning"
         android:title="@string/soglasenie" />
     <item android:title="@string/main">
         <menu>
             <item
-                android:id="@+id/navigation_drawer_item2"
+                android:id="@+id/info_about_device_item"
                 android:icon="@drawable/phone"
                 android:title="@string/infoabout" />
             <item
-                android:id="@+id/navigation_drawer_item3"
-                android:icon="@drawable/oneclick"
+                android:id="@+id/speedup_item"
+                android:icon="@drawable/oneclickboost"
                 android:title="@string/speedup" />
 
             <item
-                android:id="@+id/navigation_drawer_item5"
+                android:id="@+id/batterycalibration_item"
                 android:icon="@drawable/battery"
                 android:title="@string/calbattery" />
 
             <item
-                android:id="@+id/navigation_drawer_item32"
-                android:icon="@drawable/headp"
+                android:id="@+id/soundimprover_item"
+                android:icon="@drawable/headphones_black"
                 android:title="@string/soundimprover" />
 
             <item
-                android:id="@+id/braviainstaller"
-                android:icon="@drawable/bravia_logotip"
+                android:id="@+id/braviainstaller_item"
+                android:icon="@drawable/bravialogo"
                 android:title="Bravia Engine Installer" />
 
             <item
-                android:id="@+id/navigation_drawer_item21"
-                android:icon="@drawable/sd"
+                android:id="@+id/sdcardfix_item"
+                android:icon="@drawable/sdcard"
                 android:title="SDCard R/W Fix" />
 
             <item
-                android:id="@+id/navigation_drawer_item23"
+                android:id="@+id/dpichanger_item"
                 android:icon="@drawable/dpi"
                 android:title="DPI Changer" />
 
             <item
-                android:id="@+id/navigation_drawer_item26"
+                android:id="@+id/kerneltuner_item"
                 android:icon="@drawable/kernel"
                 android:title="@string/kerneltweaks" />
 
             <item
-                android:id="@+id/navigation_drawer_item9"
+                android:id="@+id/backuprestore_item"
                 android:icon="@drawable/backup"
                 android:title="@string/backupandrestore" />
 
             <item
-                android:id="@+id/navigation_drawer_item22"
-                android:icon="@drawable/reboot_command"
+                android:id="@+id/rebootmanager_item"
+                android:icon="@drawable/reboot"
                 android:title="@string/rebootmanager" />
         </menu>
     </item>
@@ -64,65 +64,65 @@
     <item android:title="@string/tweaks">
         <menu>
             <item
-                android:id="@+id/navigation_drawer_item4"
-                android:icon="@drawable/tweak_battery"
+                android:id="@+id/batterytweaks_item"
+                android:icon="@drawable/batterytweaks"
                 android:title="@string/batterytweaks" />
             <item
-                android:id="@+id/navigation_drawer_item6"
+                android:id="@+id/internettweaks_item"
                 android:icon="@drawable/internet"
                 android:title="@string/internettweaks" />
 
             <item
-                android:id="@+id/wifipasswords"
+                android:id="@+id/wifipasswords_item"
                 android:icon="@drawable/wifi"
                 android:title="WIFI Passwords" />
 
             <item
-                android:id="@+id/navigation_drawer_item7"
+                android:id="@+id/systemtweaks_item"
                 android:icon="@drawable/android"
                 android:title="@string/systemtweaks" />
 
             <item
-                android:id="@+id/navigation_drawer_item13"
+                android:id="@+id/fstrim_item"
                 android:icon="@drawable/fstrim"
                 android:title="FSTRIM" />
             <item
-                android:id="@+id/navigation_drawer_item14"
+                android:id="@+id/entropy_item"
                 android:icon="@drawable/entropy"
                 android:title="Entropy Generator" />
             <item
-                android:id="@+id/navigation_drawer_item20"
-                android:icon="@drawable/mediascanner"
+                android:id="@+id/mediamanager_item"
+                android:icon="@drawable/mediabooster"
                 android:title="MediaServer | MediaScanner" />
             <item
-                android:id="@+id/navigation_drawer_item8"
-                android:icon="@drawable/media_tweaks"
+                android:id="@+id/mediatweaks_item"
+                android:icon="@drawable/mediatweaks"
                 android:title="@string/mediatweaks" />
             <item
-                android:id="@+id/navigation_drawer_item17"
+                android:id="@+id/gpsboost_item"
                 android:icon="@drawable/gps"
                 android:title="@string/gpstitle" />
 
             <item
-                android:id="@+id/navigation_drawer_item15"
-                android:icon="@drawable/varios"
+                android:id="@+id/othertweaks_item"
+                android:icon="@drawable/varioustweaks"
                 android:title="@string/varioustweaks" />
         </menu>
     </item>
     <item android:title="@string/sovets">
         <menu>
             <item
-                android:id="@+id/navigation_drawer_item16"
-                android:icon="@drawable/powersave"
+                android:id="@+id/tipspowersaving_item"
+                android:icon="@drawable/tips_powersave"
                 android:title="@string/sovetspowersave" />
 
             <item
-                android:id="@+id/navigation_drawer_item19"
-                android:icon="@drawable/memory"
+                android:id="@+id/tipsperformance_item"
+                android:icon="@drawable/tips_performance"
                 android:title="@string/sovetsperfomance" />
 
             <item
-                android:id="@+id/navigation_drawer_item30"
+                android:id="@+id/faq_item"
                 android:icon="@drawable/faq"
                 android:title="@string/faq" />
         </menu>
@@ -130,31 +130,36 @@
     <item android:title="@string/prochee">
         <menu>
             <item
-                android:id="@+id/navigation_drawer_item11"
-                android:icon="@drawable/bug"
+                android:id="@+id/bugreport_item"
+                android:icon="@drawable/bugreport"
                 android:title="@string/connect" />
 
             <item
-                android:id="@+id/navigation_drawer_item24"
-                android:icon="@drawable/vkcircle"
+                android:id="@+id/official_site_item"
+                android:icon="@drawable/site"
+                android:title="@string/off_site" />
+
+            <item
+                android:id="@+id/vkgroup_item"
+                android:icon="@drawable/vk"
                 android:title="@string/vk" />
 
             <item
-                android:id="@+id/navigation_drawer_item25"
-                android:icon="@drawable/twittercircle"
+                android:id="@+id/twitter_item"
+                android:icon="@drawable/twitter"
                 android:title="@string/twitter" />
 
             <item
-                android:id="@+id/settings"
+                android:id="@+id/settings_item"
                 android:icon="@drawable/settings"
                 android:title="@string/settings" />
 
             <item
-                android:id="@+id/navigation_drawer_item12"
+                android:id="@+id/aboutprogram_item"
                 android:icon="@drawable/info"
                 android:title="@string/aboutapp" />
             <item
-                android:id="@+id/navigation_drawer_item18"
+                android:id="@+id/exit_item"
                 android:icon="@drawable/exit"
                 android:title="@string/exit" />
         </menu>

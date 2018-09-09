@@ -1,92 +1,136 @@
 package com.nowenui.systemtweaker;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.franmontiel.localechanger.LocaleChanger;
-import com.github.javiersantos.piracychecker.PiracyChecker;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
-import com.github.javiersantos.piracychecker.enums.PirateApp;
 import com.stericson.RootShell.exceptions.RootDeniedException;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeoutException;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int ALERT_DIALOG2 = 2;
-    private static final int ALERT_DIALOG5 = 5;
-    private static final int ALERT_DIALOG4 = 4;
-    private static final int ALERT_DIALOG7 = 7;
-    public static int checksu, checkbusy, selinuxstatus;
+    public static int checksu, selinuxstatus;
     boolean doubleBackToExitPressedOnce = false;
-    private PiracyChecker checker;
 
-    public static int isSELinuxPresent() {
-        File f = new File("/system/bin/getenforce");
-        if ((f.exists())) {
-            return 1;
-        }
-        return 0;
-    }
+    ///////////////////////////////////////////////////////////////////////////////////
+    ////// Show dialog with error, if SELinux is not Permissive ///////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
+    public void BAD_SELINUX_DIALOG() {
+        final Dialog BAD_SELINUX = new Dialog(SplashActivity.this);
+        BAD_SELINUX.setCancelable(false);
+        BAD_SELINUX.setContentView(R.layout.bad_selinux_dialog);
+        final SharedPreferences BD = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-    public void initd() {
-        final Dialog dialog3 = new Dialog(SplashActivity.this);
-        dialog3.setContentView(R.layout.initd);
-        Button rebootrec = dialog3.findViewById(R.id.rebootrec);
-        rebootrec.setOnClickListener(new View.OnClickListener() {
+        Button download_selinux_patcher = BAD_SELINUX.findViewById(R.id.download_selinux_patcher);
+        download_selinux_patcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot recovery"});
-                    proc.waitFor();
-                } catch (Exception ex) {
-                }
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.dropbox.com/s/6b71rnsx78rs48z/SELinux-Perm.zip?dl=0"));
+                startActivity(browserIntent);
             }
         });
-        Button skip = dialog3.findViewById(R.id.skippp);
+        Button download_kernel_permissive_patcher = BAD_SELINUX.findViewById(R.id.download_kernel_permissive_patcher);
+        download_kernel_permissive_patcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.dropbox.com/s/90npo1p0oc2flmh/kernel_permissive_patcher.zip?dl=0"));
+                startActivity(browserIntent);
+            }
+        });
+        Button skip = BAD_SELINUX.findViewById(R.id.skippp);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("skipnitd", "skipnitd");
-                editor.apply();
-                dialog3.dismiss();
+                BAD_SELINUX.dismiss();
+                InitD_ShowDialogOrNot();
+            }
+        });
+        Button skipandsave = BAD_SELINUX.findViewById(R.id.skipppandsave);
+        skipandsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor BDEditor = BD.edit();
+                BDEditor.putString("skip_selinux_check", "skip_selinux_check");
+                BDEditor.apply();
+                BAD_SELINUX.dismiss();
+                InitD_ShowDialogOrNot();
+            }
+        });
+        Button exit = BAD_SELINUX.findViewById(R.id.exitttt);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                SplashActivity.this.finish();
+                System.exit(0);
+            }
+        });
+        BAD_SELINUX.show();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////// Show dialog with error, if init.d isn't supported ///////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    public void NO_INITD_DIALOG() {
+        final Dialog NO_INITD = new Dialog(SplashActivity.this);
+        NO_INITD.setCancelable(false);
+        NO_INITD.setContentView(R.layout.no_initd_support_dialog);
+        final SharedPreferences BD = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Button download_initd_patcher = NO_INITD.findViewById(R.id.download_initd_patcher);
+        download_initd_patcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.dropbox.com/s/vbhtx4ohs8yyd5o/Init.d_Patcher.zip?dl=0"));
+                startActivity(browserIntent);
+            }
+        });
+        Button skip = NO_INITD.findViewById(R.id.skippp);
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NO_INITD.dismiss();
                 startMainActivity();
             }
         });
-        Button exit = dialog3.findViewById(R.id.exitttt);
+        Button skipandsave = NO_INITD.findViewById(R.id.skipppandsave);
+        skipandsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor BDEditor = BD.edit();
+                BDEditor.putString("forever_skip_initd_check", "forever_skip_initd_check");
+                BDEditor.apply();
+                NO_INITD.dismiss();
+                startMainActivity();
+            }
+        });
+        Button exit = NO_INITD.findViewById(R.id.exitttt);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,21 +143,41 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        Button skipandsave = dialog3.findViewById(R.id.skipppandsave);
-        skipandsave.setOnClickListener(new View.OnClickListener() {
+        NO_INITD.show();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////// Show dialog with error, if root not installed ///////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    public void NO_ROOT_DIALOG() {
+        final Dialog NO_ROOT = new Dialog(SplashActivity.this);
+        NO_ROOT.setCancelable(false);
+        NO_ROOT.setContentView(R.layout.no_root_support_dialog);
+        Button norootexit = NO_ROOT.findViewById(R.id.norootexit);
+        norootexit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("skipnitd", "skipnitd");
-                editor.putString("skipsave", "skipsave");
-                editor.apply();
-
-                dialog3.dismiss();
-                startMainActivity();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                SplashActivity.this.finish();
+                System.exit(0);
             }
         });
-        dialog3.show();
+        NO_ROOT.show();
+    }
+
+    /////////////////////////////////////////////////////////////
+    ////// Service void (to prevent repeats in code)  ///////////
+    /////////////////////////////////////////////////////////////
+    public void InitD_ShowDialogOrNot() {
+        final SharedPreferences BD = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if ((BD.contains("forever_skip_initd_check")) || (HelperClass.isInitdSupport() == 1)) {
+            startMainActivity();
+        } else {
+            NO_INITD_DIALOG();
+        }
     }
 
     @Override
@@ -122,17 +186,29 @@ public class SplashActivity extends AppCompatActivity {
         super.attachBaseContext(newBase);
     }
 
-    private boolean isInternetAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null;
+    private void changeStatusBarColor(String color) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(color));
+        }
     }
 
 
-    public void SplashOK() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        changeStatusBarColor("#394454");
+        copyAssets();
+        setContentView(R.layout.loading_screen);
+        addSUDSupport();
+
+        final SharedPreferences BD = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (RootTools.isAccessGiven()) {
-            addSUDSupport();
-            Command com7 = new Command(0,
+            checksu = 1;
+            @SuppressLint("SdCardPath") Command init_commands = new Command(0,
                     "chmod 777 /data/data/com.nowenui.systemtweaker/files/*",
                     "ln -s /data/data/com.nowenui.systemtweaker/files/busybox /data/data/com.nowenui.systemtweaker/files/ash",
                     "chmod 777 /data/data/com.nowenui.systemtweaker/files/ash",
@@ -154,270 +230,38 @@ public class SplashActivity extends AppCompatActivity {
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /proc /system",
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o ro,remount /system", "mount -o ro,remount /system",
                     "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system");
-            Command com6 = new Command(0,
+            Command checking_selinux_command = new Command(0,
                     "getenforce") {
                 @Override
-                public void commandOutput(int id, String line) {
-                    super.commandOutput(id, line);
-                    final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (line.contains("Permissive")) {
+                public void commandOutput(int id, String SELinux) {
+                    super.commandOutput(id, SELinux);
+                    if (SELinux.contains("Permissive")) {
                         selinuxstatus = 1;
+                        InitD_ShowDialogOrNot();
                     } else {
                         selinuxstatus = 0;
-                    }
-                    if ((check.contains("dialog7check"))) {
-                        checksu = 1;
-                        checkbusy = 1;
-                        if ((check.contains("skipsave"))) {
-                            if (isInitdSupport() == 1) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.remove("skipnitd");
-                                editor.remove("skipsave");
-                                editor.apply();
-                                startMainActivity();
-                            } else {
-                                startMainActivity();
-                            }
-
+                        if ((BD.contains("skip_selinux_check"))) {
+                            InitD_ShowDialogOrNot();
                         } else {
-                            if (isInitdSupport() == 1) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.remove("skipnitd");
-                                editor.remove("skipsave");
-                                editor.apply();
-                                startMainActivity();
-                            } else {
-                                initd();
-                            }
-                        }
-
-                    } else {
-                        if (line.contains("Enforcing")) {
-                            showDialog(ALERT_DIALOG7);
-                        } else {
-                            checksu = 1;
-                            checkbusy = 1;
-                            if ((check.contains("skipsave"))) {
-                                if (isInitdSupport() == 1) {
-                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.remove("skipnitd");
-                                    editor.remove("skipsave");
-                                    editor.apply();
-                                    startMainActivity();
-                                } else {
-                                    startMainActivity();
-                                }
-
-                            } else {
-                                if (isInitdSupport() == 1) {
-                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.remove("skipnitd");
-                                    editor.remove("skipsave");
-                                    editor.apply();
-                                    startMainActivity();
-                                } else {
-                                    initd();
-                                }
-                            }
+                            BAD_SELINUX_DIALOG();
                         }
                     }
-
                 }
             };
             try {
-                RootTools.getShell(true).add(com7);
-                if ((isSELinuxPresent() == 1) && (Build.VERSION.SDK_INT >= 18)) {
-                    RootTools.getShell(true).add(com6);
+                RootTools.getShell(true).add(init_commands);
+                if ((HelperClass.isSELinuxPresent() == 1) && (Build.VERSION.SDK_INT >= 18)) {
+                    RootTools.getShell(true).add(checking_selinux_command);
                 } else {
-                    final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    checksu = 1;
-                    checkbusy = 1;
-                    if ((check.contains("skipsave"))) {
-                        if (isInitdSupport() == 1) {
-                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.remove("skipnitd");
-                            editor.remove("skipsave");
-                            editor.apply();
-                            startMainActivity();
-                        } else {
-                            startMainActivity();
-                        }
-
-                    } else {
-                        if (isInitdSupport() == 1) {
-                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.remove("skipnitd");
-                            editor.remove("skipsave");
-                            editor.apply();
-                            startMainActivity();
-                        } else {
-                            initd();
-                        }
-                    }
+                    selinuxstatus = 1;
+                    InitD_ShowDialogOrNot();
                 }
-            } catch (IOException | RootDeniedException | TimeoutException ex) {
+            } catch (IOException | RootDeniedException | TimeoutException ignored) {
             }
         } else {
-            showDialog(ALERT_DIALOG2);
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        copyAssets();
-
-        if (isInternetAvailable()) {
-            new DownloadFileFromURL().execute("https://www.dropbox.com/s/fw5skey255th8gk/initd_any_stock_v1.3.zip?dl=1");
+            NO_ROOT_DIALOG();
         }
 
-        setContentView(R.layout.splash_activity);
-        final TextView status = (TextView) findViewById(R.id.status);
-
-        //Show fake text progress launching
-        final Timer timer = new Timer();
-        final Timer timer2 = new Timer();
-        final Timer timer3 = new Timer();
-        final Timer timer4 = new Timer();
-        final Timer timer5 = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        status.setText(R.string.spcheck1);
-
-                    }
-                });
-            }
-        }, 1000);
-
-        timer2.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        status.setText(R.string.spcheck2);
-
-                    }
-                });
-            }
-        }, 2000);
-        timer3.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer2.cancel();
-                        status.setText(R.string.spcheck3);
-
-                    }
-                });
-            }
-        }, 3000);
-        timer4.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer3.cancel();
-                        status.setText(R.string.spcheck4);
-
-                    }
-                });
-            }
-        }, 4000);
-        timer5.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer4.cancel();
-                        status.setText(R.string.spcheck5);
-
-                    }
-                });
-            }
-        }, 5000);
-
-        final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(this);
-        if (check == null) {
-            verify();
-        } else {
-            if ((check.contains("systemtweakerlicense")) || check.contains("licensed")) {
-                SplashOK();
-            } else {
-                verify();
-            }
-        }
-
-    }
-
-    public void verify() {
-        checker = new PiracyChecker(this)
-                .enableSigningCertificate("xH7p3Ewa6/imZOQaqcb/mschpvs=")
-                .enableDebugCheck()
-                .callback(new PiracyCheckerCallback() {
-                    @Override
-                    public void allow() {
-                        if (isInternetAvailable()) {
-                            if (isInitdSupport() == 1) {
-                                SplashOK();
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("systemtweakerlicense", "licensed");
-                                editor.apply();
-                            } else {
-                                new DownloadFileFromURL().execute("https://www.dropbox.com/s/fw5skey255th8gk/initd_any_stock_v1.3.zip?dl=1");
-                                SplashOK();
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("systemtweakerlicense", "licensed");
-                                editor.apply();
-                            }
-
-                        } else {
-                            showDialog(ALERT_DIALOG4);
-                        }
-
-                    }
-
-                    @Override
-                    public void dontAllow(@NonNull PiracyCheckerError error, @Nullable PirateApp app) {
-                        showDialog(ALERT_DIALOG5);
-                    }
-
-                    @Override
-                    public void onError(@NonNull PiracyCheckerError error) {
-                        if (isInternetAvailable()) {
-                            if (checker != null) {
-                                checker.destroy();
-                                checker.start();
-                            } else {
-                                checker.start();
-                            }
-
-
-                        } else {
-                            showDialog(ALERT_DIALOG4);
-                        }
-
-                    }
-                });
-        checker.start();
     }
 
     @Override
@@ -444,170 +288,14 @@ public class SplashActivity extends AppCompatActivity {
         }, 2500);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    ////// Show dialogs with errors, if root or init.d not installed ///////////
-    ////////////////////////////////////////////////////////////////////////////
-    @Override
-    protected Dialog onCreateDialog(int id) {
-
-        Dialog dialog;
-        AlertDialog.Builder builder;
-        switch (id) {
-            case ALERT_DIALOG2:
-                builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle(R.string.error)
-                        .setMessage(R.string.rootbusybox)
-                        .setCancelable(false)
-                        .setNegativeButton(R.string.okinstall, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                                System.exit(0);
-                            }
-                        });
-
-                dialog = builder.create();
-                break;
-
-            case ALERT_DIALOG7:
-                builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle(R.string.error)
-                        .setMessage(R.string.selinux)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.skip, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                checksu = 1;
-                                checkbusy = 1;
-                                final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                if ((check.contains("skipsave"))) {
-                                    if (isInitdSupport() == 1) {
-                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        SharedPreferences.Editor editor = prefs.edit();
-                                        editor.remove("skipnitd");
-                                        editor.remove("skipsave");
-                                        editor.apply();
-                                        startMainActivity();
-                                    } else {
-                                        startMainActivity();
-                                    }
-
-                                } else {
-                                    if (isInitdSupport() == 1) {
-                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                        SharedPreferences.Editor editor = prefs.edit();
-                                        editor.remove("skipnitd");
-                                        editor.remove("skipsave");
-                                        editor.apply();
-                                        startMainActivity();
-                                    } else {
-                                        initd();
-                                    }
-                                }
-                            }
-                        })
-                        .setNeutralButton(R.string.notshow, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("dialog7check", "dialog7check");
-                                editor.apply();
-                                checksu = 1;
-                                checkbusy = 1;
-                                final SharedPreferences check = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                if ((check.contains("skipsave"))) {
-                                    if (isInitdSupport() == 1) {
-                                        editor.remove("skipnitd");
-                                        editor.remove("skipsave");
-                                        editor.apply();
-                                        startMainActivity();
-                                    } else {
-                                        startMainActivity();
-                                    }
-
-                                } else {
-                                    if (isInitdSupport() == 1) {
-                                        editor.remove("skipnitd");
-                                        editor.remove("skipsave");
-                                        editor.apply();
-                                        startMainActivity();
-                                    } else {
-                                        initd();
-                                    }
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                                System.exit(0);
-                            }
-                        });
-
-                dialog = builder.create();
-                break;
-
-            case ALERT_DIALOG4:
-                builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle(R.string.error)
-                        .setMessage(R.string.ineterrorcheck)
-                        .setCancelable(false)
-                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                                System.exit(0);
-                            }
-                        });
-                dialog = builder.create();
-
-                break;
-            case ALERT_DIALOG5:
-                builder = new AlertDialog.Builder(SplashActivity.this);
-
-                builder.setTitle(R.string.error)
-                        .setMessage(R.string.lic)
-                        .setCancelable(false)
-                        .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.addCategory(Intent.CATEGORY_HOME);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                                System.exit(0);
-                            }
-                        });
-
-                dialog = builder.create();
-                break;
-
-            default:
-                dialog = null;
-        }
-        return dialog;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (checker != null) {
-            checker.destroy();
-        }
     }
 
-    ///////////////////////////////////
+    ////////////////////////////////////
     ////// Start application ///////////
-    ///////////////////////////////////
+    ////////////////////////////////////
     private void startMainActivity() {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
@@ -616,7 +304,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 4500);
+        }, 3800);
     }
 
     ////////////////////////////////
@@ -643,21 +331,9 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     RootTools.getShell(true).add(command1);
                 } catch (IOException | RootDeniedException | TimeoutException ex) {
-                    ex.printStackTrace();
+
                 }
             }
-            return 1;
-        }
-        return 0;
-    }
-
-    ////////////////////////////////
-    ////// Check init.d support ////
-    ////////////////////////////////
-    public int isInitdSupport() {
-        File sud = new File("/system/su.d");
-        File initd = new File("/system/etc/init.d");
-        if ((initd.exists()) && (initd.isDirectory()) || (sud.exists()) && (sud.isDirectory())) {
             return 1;
         }
         return 0;
@@ -671,7 +347,7 @@ public class SplashActivity extends AppCompatActivity {
         String[] files = null;
         try {
             files = assetManager.list("");
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         if (files != null) for (String filename : files) {
             InputStream in = null;
@@ -686,18 +362,18 @@ public class SplashActivity extends AppCompatActivity {
                 out = new FileOutputStream(outFile);
                 copyFile(in, out);
 
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                     }
                 }
             }
@@ -706,7 +382,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     ////////////////////////////////
-    ////// Copy assets files ///////
+    ////////// Copy file ///////////
     ////////////////////////////////
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
@@ -715,61 +391,4 @@ public class SplashActivity extends AppCompatActivity {
             out.write(buffer, 0, read);
         }
     }
-
-    //////////////////////////////////////////
-    ////// Download init.d enabler zip ///////
-    /////////////////////////////////////////
-    private class DownloadFileFromURL extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... f_url) {
-            int count;
-            try {
-                URL url = new URL(f_url[0]);
-                URLConnection conection = url.openConnection();
-                conection.connect();
-                int lenghtOfFile = conection.getContentLength();
-                InputStream input = new BufferedInputStream(url.openStream(),
-                        8192);
-
-                OutputStream output = new FileOutputStream(getApplicationInfo().dataDir + "/initd.zip");
-
-                byte data[] = new byte[1024];
-
-                long total = 0;
-
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
-                    output.write(data, 0, count);
-                }
-                output.flush();
-                output.close();
-                input.close();
-
-            } catch (Exception e) {
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String file_url) {
-            if (RootTools.isAccessGiven()) {
-                Command com6 = new Command(0,
-                        "mkdir /sdcard/SystemTweaker",
-                        "cp /data/data/com.nowenui.systemtweaker/initd.zip /sdcard/SystemTweaker");
-                try {
-                    RootTools.getShell(true).add(com6);
-                } catch (IOException | RootDeniedException | TimeoutException ex) {
-                }
-            }
-        }
-    }
-
 }

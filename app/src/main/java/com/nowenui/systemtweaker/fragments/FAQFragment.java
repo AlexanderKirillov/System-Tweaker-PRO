@@ -23,12 +23,7 @@ public class FAQFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fixes, parent, false);
+        return inflater.inflate(R.layout.faq, parent, false);
     }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-    }
-
 
 }

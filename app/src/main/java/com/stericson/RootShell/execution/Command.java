@@ -240,7 +240,7 @@ public class Command {
             Shell.closeAll();
             RootShell.log("Terminating all shells.");
             terminated(reason);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

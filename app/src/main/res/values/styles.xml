@@ -61,13 +61,4 @@
         <item name="android:textColor">#ffffffff</item>
     </style>
 
-    <style name="Splash" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#116062</item>
-        <item name="colorPrimaryDark">#1C4749</item>
-        <item name="colorAccent">#116062</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-
 </resources>

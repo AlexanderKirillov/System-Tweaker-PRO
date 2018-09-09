@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical|center|center_horizontal"
+            android:text="@string/reboothello"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/full_reboot"
+            android:layout_width="230dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/reboot"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/hotrebootbutton"
+            android:layout_width="230dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/hotreboot"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/shutdown_button"
+            android:layout_width="230dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/shutdown"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/rebootrecoverybutton"
+            android:layout_width="230dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/rebootrec"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/rebootbootloader"
+            android:layout_width="230dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/roundbuttoncal"
+            android:text="@string/rebootbottloader"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+</ScrollView>

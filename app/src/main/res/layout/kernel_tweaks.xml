@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/kerneltweakshello"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal|center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:paddingBottom="10dp"
+            android:text="@string/nowe"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/mpcstweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checked="false"
+            android:text="@string/kernel1" />
+
+        <CheckBox
+            android:id="@+id/interactivetweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/kernel2" />
+
+        <CheckBox
+            android:id="@+id/ondemandhotplugtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/oh" />
+
+        <CheckBox
+            android:id="@+id/sdcardtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/io3" />
+
+        <CheckBox
+            android:id="@+id/kernelsleepertweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/kernel3" />
+
+        <CheckBox
+            android:id="@+id/normsleepertweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:checked="false"
+            android:text="@string/kernel5" />
+
+        <CheckBox
+            android:id="@+id/ksmtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:checked="false"
+            android:text="@string/kernel6" />
+
+        <CheckBox
+            android:id="@+id/fastchargetweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:checked="false"
+            android:text="@string/kernel7" />
+
+        <CheckBox
+            android:id="@+id/zramtweak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:checked="false"
+            android:text="@string/kernel8" />
+
+    </LinearLayout>
+</ScrollView>

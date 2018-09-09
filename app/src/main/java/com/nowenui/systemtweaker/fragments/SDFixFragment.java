@@ -11,16 +11,13 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.nowenui.systemtweaker.R;
-import com.nowenui.systemtweaker.Utility;
+import com.nowenui.systemtweaker.ThemeUtility;
 import com.stericson.RootShell.exceptions.RootDeniedException;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
@@ -45,93 +42,11 @@ public class SDFixFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_user:
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                    new android.app.AlertDialog.Builder(this.getContext())
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                    new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                            .setTitle(R.string.reboot)
-                            .setMessage(R.string.rebootactionbar)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot"});
-                                        proc.waitFor();
-                                    } catch (Exception ex) {
-                                        new SnackBar.Builder(getActivity()).withMessage("ROOT NEEDED!").withBackgroundColorId(R.color.textview1bad).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIcon(R.drawable.warning)
-                            .show();
-                }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sdfix, parent, false);
+        return inflater.inflate(R.layout.sdfix, parent, false);
 
     }
 
@@ -143,10 +58,8 @@ public class SDFixFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
-
                     if (RootTools.isAccessGiven()) {
-                        Command command1 = new Command(0, "/data/data/com.nowenui.systemtweaker/files/busybox sed -n '1p' /data/excuted") {
+                        Command executedcommand = new Command(0, "/data/data/com.nowenui.systemtweaker/files/busybox sed -n '1p' /data/excuted") {
                             @Override
                             public void commandOutput(int id, String line) {
                                 super.commandOutput(id, line);
@@ -183,9 +96,8 @@ public class SDFixFragment extends Fragment {
                                             perereg.setEnabled(false);
                                             perereg.setBackgroundResource(R.drawable.roundbuttonfuck);
 
-
                                             if (RootTools.isAccessGiven()) {
-                                                Command command1 = new Command(0,
+                                                @SuppressLint("SdCardPath") Command processsdfixcommand = new Command(0,
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /data",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
@@ -196,160 +108,18 @@ public class SDFixFragment extends Fragment {
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
                                                 );
                                                 try {
-                                                    RootTools.getShell(true).add(command1);
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                                                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(v.getContext())
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-
+                                                    RootTools.getShell(true).add(processsdfixcommand);
+                                                    RebootDialog();
                                                 } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                    ex.printStackTrace();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             } else {
-                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                             }
                                         }
                                     });
 
                                 } else {
-
                                     Button perereg = view.findViewById(R.id.pereregistrate);
                                     perereg.setEnabled(false);
                                     perereg.setBackgroundResource(R.drawable.roundbuttonfuck);
@@ -414,7 +184,7 @@ public class SDFixFragment extends Fragment {
                                                     perereg.setBackgroundResource(R.drawable.roundbuttonfuck);
 
                                                     if (RootTools.isAccessGiven()) {
-                                                        Command command1 = new Command(0,
+                                                        @SuppressLint("SdCardPath") Command pereregcommand = new Command(0,
                                                                 "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /data",
                                                                 "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
                                                                 "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
@@ -425,161 +195,19 @@ public class SDFixFragment extends Fragment {
                                                                 "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,ro /system"
                                                         );
                                                         try {
-                                                            RootTools.getShell(true).add(command1);
-                                                            if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                                                                final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                dialog.setIndeterminate(false);
-                                                                dialog.setCancelable(false);
-                                                                dialog.show();
-
-                                                                Handler handler = new Handler();
-                                                                handler.postDelayed(new Runnable() {
-                                                                    public void run() {
-                                                                        dialog.dismiss();
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        new AlertDialog.Builder(v.getContext())
-                                                                                .setTitle(R.string.reboot)
-                                                                                .setMessage(R.string.rebootdialog)
-                                                                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                                                        if (RootTools.isAccessGiven()) {
-                                                                                            Command command1 = new Command(0,
-                                                                                                    "reboot");
-                                                                                            try {
-                                                                                                RootTools.getShell(true).add(command1);
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                                ex.printStackTrace();
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                            }
-                                                                                        } else {
-                                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                        }
-                                                                                    }
-                                                                                })
-                                                                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                                        dialog.dismiss();
-                                                                                    }
-                                                                                })
-                                                                                .setIcon(R.drawable.warning)
-                                                                                .show();
-
-                                                                    }
-                                                                }, 4000);
-
-                                                            }
-                                                            if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                                                                final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                dialog.setIndeterminate(false);
-                                                                dialog.setCancelable(false);
-                                                                dialog.show();
-
-                                                                Handler handler = new Handler();
-                                                                handler.postDelayed(new Runnable() {
-                                                                    public void run() {
-                                                                        dialog.dismiss();
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                                                .setTitle(R.string.reboot)
-                                                                                .setMessage(R.string.rebootdialog)
-                                                                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                                                        if (RootTools.isAccessGiven()) {
-                                                                                            Command command1 = new Command(0,
-                                                                                                    "reboot");
-                                                                                            try {
-                                                                                                RootTools.getShell(true).add(command1);
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                                ex.printStackTrace();
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                            }
-                                                                                        } else {
-                                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                        }
-
-                                                                                    }
-                                                                                })
-                                                                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                                        dialog.dismiss();
-                                                                                    }
-                                                                                })
-                                                                                .setIcon(R.drawable.warning)
-                                                                                .show();
-
-                                                                    }
-                                                                }, 4000);
-
-                                                            }
-                                                            if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                                                                final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                                dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                                dialog.setIndeterminate(false);
-                                                                dialog.setCancelable(false);
-                                                                dialog.show();
-
-                                                                Handler handler = new Handler();
-                                                                handler.postDelayed(new Runnable() {
-                                                                    public void run() {
-                                                                        dialog.dismiss();
-                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                        new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                                                .setTitle(R.string.reboot)
-                                                                                .setMessage(R.string.rebootdialog)
-                                                                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                                                        if (RootTools.isAccessGiven()) {
-                                                                                            Command command1 = new Command(0,
-                                                                                                    "reboot");
-                                                                                            try {
-                                                                                                RootTools.getShell(true).add(command1);
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                            } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                                ex.printStackTrace();
-                                                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                            }
-                                                                                        } else {
-                                                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                        }
-                                                                                    }
-                                                                                })
-                                                                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                                        dialog.dismiss();
-                                                                                    }
-                                                                                })
-                                                                                .setIcon(R.drawable.warning)
-                                                                                .show();
-
-                                                                    }
-                                                                }, 4000);
-
-                                                            }
-
-
+                                                            RootTools.getShell(true).add(pereregcommand);
+                                                            RebootDialog();
                                                         } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                            ex.printStackTrace();
-                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                                                         }
                                                     } else {
-                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                                     }
                                                 }
                                             });
 
-
                                             if (RootTools.isAccessGiven()) {
-                                                Command command1 = new Command(0,
+                                                @SuppressLint("SdCardPath") Command sdfixcommand = new Command(0,
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /data",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
@@ -600,153 +228,13 @@ public class SDFixFragment extends Fragment {
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw=o /data"
                                                 );
                                                 try {
-                                                    RootTools.getShell(true).add(command1);
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                                                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(v.getContext())
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-
+                                                    RootTools.getShell(true).add(sdfixcommand);
+                                                    RebootDialog();
                                                 } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                    ex.printStackTrace();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             } else {
-                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                             }
                                         }
                                     });
@@ -755,13 +243,12 @@ public class SDFixFragment extends Fragment {
                         };
 
                         try {
-                            RootTools.getShell(true).add(command1);
+                            RootTools.getShell(true).add(executedcommand);
                         } catch (IOException | RootDeniedException | TimeoutException ex) {
-                            ex.printStackTrace();
-                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                         }
                     } else {
-                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                     }
 
                 }
@@ -771,13 +258,11 @@ public class SDFixFragment extends Fragment {
             handler1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     Button perereg = view.findViewById(R.id.pereregistrate);
                     perereg.setEnabled(false);
                     perereg.setBackgroundResource(R.drawable.roundbuttonfuck);
                     perereg.setTextSize(22);
                     perereg.setTextColor(Color.WHITE);
-
 
                     if (RootTools.isAccessGiven()) {
                         Command command2 = new Command(0, "sed -n '1p' /system/etc/excuted") {
@@ -792,7 +277,6 @@ public class SDFixFragment extends Fragment {
                                     sdfix.setTextSize(22);
                                     sdfix.setTextColor(Color.WHITE);
                                 } else {
-
                                     final Button sdfix = view.findViewById(R.id.sdfix);
                                     sdfix.setBackgroundResource(R.drawable.roundbuttoncal);
                                     sdfix.setTextSize(22);
@@ -819,7 +303,7 @@ public class SDFixFragment extends Fragment {
                                             sdfix.setEnabled(false);
 
                                             if (RootTools.isAccessGiven()) {
-                                                Command command1 = new Command(0,
+                                                @SuppressLint("SdCardPath") Command command1 = new Command(0,
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /proc /system",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o rw,remount /system",
                                                         "/data/data/com.nowenui.systemtweaker/files/busybox mount -o remount,rw /system", "mount -o rw,remount /system",
@@ -834,154 +318,12 @@ public class SDFixFragment extends Fragment {
                                                 );
                                                 try {
                                                     RootTools.getShell(true).add(command1);
-
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
-                                                        final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(v.getContext())
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-                                                    if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
-                                                        final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
-                                                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                                        dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
-                                                        dialog.setIndeterminate(false);
-                                                        dialog.setCancelable(false);
-                                                        dialog.show();
-
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(new Runnable() {
-                                                            public void run() {
-                                                                dialog.dismiss();
-                                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.textview1good).show();
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
-                                                                        .setTitle(R.string.reboot)
-                                                                        .setMessage(R.string.rebootdialog)
-                                                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                                                if (RootTools.isAccessGiven()) {
-                                                                                    Command command1 = new Command(0,
-                                                                                            "reboot");
-                                                                                    try {
-                                                                                        RootTools.getShell(true).add(command1);
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.textview1good).show();
-                                                                                    } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                                                        ex.printStackTrace();
-                                                                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                    }
-                                                                                } else {
-                                                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.textview1bad).show();
-                                                                                }
-
-                                                                            }
-                                                                        })
-                                                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                dialog.dismiss();
-                                                                            }
-                                                                        })
-                                                                        .setIcon(R.drawable.warning)
-                                                                        .show();
-
-                                                            }
-                                                        }, 4000);
-
-                                                    }
-
-
+                                                    RebootDialog();
                                                 } catch (IOException | RootDeniedException | TimeoutException ex) {
-                                                    ex.printStackTrace();
-                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                                                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                                                 }
                                             } else {
-                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                                                new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                                             }
                                         }
 
@@ -989,15 +331,13 @@ public class SDFixFragment extends Fragment {
                                 }
                             }
                         };
-
                         try {
                             RootTools.getShell(true).add(command2);
                         } catch (IOException | RootDeniedException | TimeoutException ex) {
-                            ex.printStackTrace();
-                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.textview1bad).show();
+                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
                         }
                     } else {
-                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.textview1bad).show();
+                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.error)).withBackgroundColorId(R.color.resultbad).show();
                     }
 
                 }
@@ -1015,7 +355,7 @@ public class SDFixFragment extends Fragment {
         aboutfix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 1) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
                     new android.app.AlertDialog.Builder(getContext())
                             .setTitle(R.string.sdfix8)
                             .setMessage(R.string.sdfix9)
@@ -1027,7 +367,7 @@ public class SDFixFragment extends Fragment {
                             .setIcon(R.drawable.info)
                             .show();
                 }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 2) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
                     new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
                             .setTitle(R.string.sdfix8)
                             .setMessage(R.string.sdfix9)
@@ -1039,7 +379,7 @@ public class SDFixFragment extends Fragment {
                             .setIcon(R.drawable.info)
                             .show();
                 }
-                if (Utility.getTheme(getActivity().getApplicationContext()) == 3) {
+                if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
                     new android.app.AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
                             .setTitle(R.string.sdfix8)
                             .setMessage(R.string.sdfix9)
@@ -1055,5 +395,148 @@ public class SDFixFragment extends Fragment {
             }
         });
 
+    }
+
+    public void RebootDialog() {
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 1) {
+            final ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                    new AlertDialog.Builder(getView().getContext())
+                            .setTitle(R.string.reboot)
+                            .setMessage(R.string.rebootdialog)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    if (RootTools.isAccessGiven()) {
+                                        Command command1 = new Command(0,
+                                                "reboot");
+                                        try {
+                                            RootTools.getShell(true).add(command1);
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
+
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                        }
+                                    } else {
+                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                                    }
+
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+
+                }
+            }, 4000);
+
+        }
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 2) {
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                    new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogDark))
+                            .setTitle(R.string.reboot)
+                            .setMessage(R.string.rebootdialog)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    if (RootTools.isAccessGiven()) {
+                                        Command command1 = new Command(0,
+                                                "reboot");
+                                        try {
+                                            RootTools.getShell(true).add(command1);
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
+
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                        }
+                                    } else {
+                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+
+                }
+            }, 4000);
+
+        }
+        if (ThemeUtility.getTheme(getActivity().getApplicationContext()) == 3) {
+            final ProgressDialog dialog = new ProgressDialog(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack));
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage(getContext().getResources().getString(R.string.speedmessage));
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    dialog.dismiss();
+                    new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.ok)).withBackgroundColorId(R.color.resultgood).show();
+                    new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogBlack))
+                            .setTitle(R.string.reboot)
+                            .setMessage(R.string.rebootdialog)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    if (RootTools.isAccessGiven()) {
+                                        Command command1 = new Command(0,
+                                                "reboot");
+                                        try {
+                                            RootTools.getShell(true).add(command1);
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.reboot)).withBackgroundColorId(R.color.resultgood).show();
+                                        } catch (IOException | RootDeniedException | TimeoutException ex) {
+
+                                            new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.errordev)).withBackgroundColorId(R.color.resultbad).show();
+                                        }
+                                    } else {
+                                        new SnackBar.Builder(getActivity()).withMessage(getContext().getResources().getString(R.string.erroroot)).withBackgroundColorId(R.color.resultbad).show();
+                                    }
+
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.warning)
+                            .show();
+
+                }
+            }, 4000);
+
+        }
     }
 }

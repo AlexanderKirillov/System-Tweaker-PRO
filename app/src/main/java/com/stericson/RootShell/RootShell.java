@@ -239,7 +239,7 @@ public class RootShell {
 
             found = !foundPaths.isEmpty();
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             RootShell.log(binaryName + " was not found, more information MAY be available with Debugging on.");
         }
 
@@ -281,7 +281,7 @@ public class RootShell {
      * @throws com.stericson.RootShell.exceptions.RootDeniedException
      * @throws IOException
      */
-    public static Shell getCustomShell(String shellPath, int timeout) throws IOException, TimeoutException, RootDeniedException {
+    public static Shell getCustomShell(String shellPath, int timeout) {
         return RootShell.getCustomShell(shellPath, timeout);
     }
 
@@ -548,7 +548,7 @@ public class RootShell {
         }
     }
 
-    private static void commandWait(Shell shell, Command cmd) throws Exception {
+    private static void commandWait(Shell shell, Command cmd) {
         while (!cmd.isFinished()) {
 
             RootShell.log(version, shell.getCommandQueuePositionString(cmd));
@@ -590,7 +590,7 @@ public class RootShell {
     // # Public Methods #
     // --------------------
 
-    public static enum LogLevel {
+    public enum LogLevel {
         VERBOSE,
         ERROR,
         DEBUG,
