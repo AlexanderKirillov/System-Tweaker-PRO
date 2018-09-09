@@ -1,9 +1,9 @@
 <p align="center">
-  <i><b>Current version: 4.2.0</b></i>
+  <i><b>Current version: 5.0.0</b></i>
 </p>
 
-[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)<br><br>
-[![4PDA](http://s.4pda.to/IhH7WppM5BiNVg742YhOtE9HnCGIOv6bNez0yNNTbkFooz2gO2waN6.png)](http://4pda.ru/forum/index.php?showtopic=768857&view=findpost&p=52780864)
+[Google Play](https://play.google.com/store/apps/details?id=com.nowenui.systemtweaker)
+[4PDA](http://4pda.ru/forum/index.php?showtopic=768857&view=findpost&p=52780864)
 
 ## Description
 Speeding up your device has never been so easy! With this program you can really speed up your device, increase powersaving and etc!
@@ -77,14 +77,12 @@ Send to NowenUI@bk.ru:
 * akexorcist: [DeviceInformation](https://github.com/akexorcist/DeviceInformation)
 * scijoker: [Spinner2](https://github.com/scijoker/spinner2)
 * MrEngineer13: [SnackBar](https://github.com/MrEngineer13/SnackBar)
-* javiersantos: [PiracyChecker](https://github.com/javiersantos/PiracyChecker)
 * DreaminginCodeZH: [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
 * Kyson: [WhorlView](https://github.com/Kyson/WhorlView)
 * ckurtm: [FabButton](https://github.com/ckurtm/FabButton)
 * franmontiel: [LocaleChanger](https://github.com/franmontiel/LocaleChanger)
 
 ## Credits #2 (Used Projects):
-* hrc: [No-frills CPU Control CLASSIC](https://github.com/hrk/no-frills-cpu-classic)
 * ycood: [wifipwdwatcher](https://github.com/ycood/wifipwdwatcher)
 
 ## Developed by
